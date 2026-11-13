@@ -35,9 +35,13 @@ Reference product for feel and features: Dreamie by Hello Ambient (helloambient.
 Interface concept: `/mockups/ux-concept.html` (open in a browser). PCB: `/pcb/halo-driver`. Code: `/firmware` (ESP-IDF project, from Phase 3) · CAD: `/enclosure` (from Phase 4).
 
 ## Build & flash
-Not yet available (firmware starts in Phase 3). The planned toolchain is ESP-IDF v5.x:
+The product firmware starts in Phase 3. A hardware **bring-up test** exists now in `/firmware/bringup` (see its README).
+Toolchain: ESP-IDF **v5.5.6**, installed at `~/esp/esp-idf`.
 ```bash
-cd firmware && idf.py set-target esp32s3 && idf.py build flash monitor
+. ~/esp/esp-idf/export.sh
+```
+```bash
+cd firmware/bringup && idf.py flash monitor
 ```
 
 ## Picking up this project (for a new person or AI chat)

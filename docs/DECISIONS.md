@@ -157,3 +157,9 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
 - **Why:** The cable leaves from the back instead of the side, and ring brightness is no longer held to 0.9 A by the unknown capacity of the Waveshare VBUS pin.
 - **Options considered:** keep the ring on the board's VBUS pin (simplest, but side cable and 0.9 A cap) · panel-mount USB-C extension cable to the board's port (rear cable, but cap stays) · USB-C PD at 9–12 V with a buck converter (more power than a 24-LED ring can use) · **USB-C 5 V on the PCB (chosen)**.
 - **Consequences:** Surface-mount parts, so factory assembly or fine soldering. Bench check V10 must pass. Firmware keeps a current ceiling, now set by the adapter and by heat. The first (breadboard) build is unchanged.
+
+## D-022 — Toolchain pinned; Waveshare board package used; early bring-up test
+- **Date:** 2026-11-12 · **Status:** Accepted (owner asked to try the hardware today) · refines D-001
+- **Decision:** ESP-IDF is pinned to **v5.5.6**. The firmware uses Waveshare's official board package `waveshare/esp32_s3_touch_amoled_1_75` (v3.0.1, needs IDF ≥ 5.5) for display, touch, I2C, audio and SD card. That package drives LVGL 9 through `esp_lvgl_adapter`, not `esp_lvgl_port` as D-001 assumed. The ring uses `espressif/led_strip` v3 (RMT, SK6812 GRBW).
+- A throwaway **bring-up test** (`/firmware/bringup`) is built before Phase 2 to prove the screen, touch, ring and speaker and to answer bench checks early. It is not the product firmware and does not follow the D-002 task layout.
+- **Consequences:** Phase 3 must check that the board package's LVGL task and I2C handling can live on core 0 without touching the alarm path. If not, the package is used only as a pin and driver reference.

@@ -32,6 +32,11 @@ Last updated: 2026-11-12
 - Owner answers recorded as D-010, D-013, D-015…D-018. Proposed: D-012, D-014.
 - Project under git, pushed to GitHub
 
+## Bring-up test (ahead of Phase 2, at the owner's request)
+- ESP-IDF v5.5.6 installed on the Mac. `/firmware/bringup` compiles. **Not yet run on the board.**
+- Quick wiring: ring straight to VBUS / GND / GPIO17, no level shifter or fuse, ring capped at 300 mA.
+- Waiting for: owner to solder 3 wires to the ring, flash, and send back the monitor output.
+
 ## Waiting for owner
 1. **Approve Phase 1** (accepts D-012, D-014, D-019).
 2. PCB v2 direction (D-021): USB-C socket on the PCB at the rear, ring powered directly. Layout comes after the case design.

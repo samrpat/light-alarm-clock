@@ -149,7 +149,7 @@ Note for Phase 4: the ring's 52.2 mm opening is wider than the 44.5 mm screen, s
 
 | # | Check | How | Why |
 |---|-------|-----|-----|
-| V1 | I2S MCLK is GPIO42, and GPIO16 is free | Run Waveshare's audio demo; scope or logic-probe GPIO16 and 42 | Their two sources disagree. |
+| V1 | I2S MCLK is GPIO42, and GPIO16 is free | ✅ Settled on paper: Waveshare's official board package (v3.0.1) uses GPIO42 for MCLK and does not touch GPIO16–18. Confirmed for real when the bring-up test plays sound. | Their two older sources disagreed. |
 | V2 | Battery connector polarity | Multimeter on the plug vs the "+" silk mark | Reverse polarity kills the PMIC. |
 | V3 | Header VBUS pin really carries USB 5 V and holds ≥ 4.6 V at 0.9 A | POWER.md M2 | Trace and any series part are unknown. |
 | V4 | Amplifier supply rail | POWER.md M5 | Sets real maximum loudness. |

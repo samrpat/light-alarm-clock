@@ -24,3 +24,8 @@
 - D-019: halo driver PCB v1 (44 × 28 mm, through-hole). Added `/pcb/halo-driver/` with generator script, Gerbers, drill files, zip and preview. HARDWARE.md §7 describes it.
 - D-020: first build on a breadboard (HARDWARE.md §3a); PCB deferred until after the case design.
 - D-021: PCB v2 will take USB-C power at the rear, switch the ring directly and feed the board through VBUS (POWER.md §10). New bench check V10.
+
+## 2026-11-12 — Bring-up test
+- Installed ESP-IDF v5.5.6 (`~/esp/esp-idf`), cmake and ninja on the development Mac.
+- Added `/firmware/bringup`: screen + touch, ring sunrise on GPIO17 (300 mA cap), white noise and tone. Compiles; not yet run on hardware.
+- D-022: toolchain pinned, Waveshare board package adopted (uses esp_lvgl_adapter). Bench check V1 settled from the package's pin definitions (MCLK = GPIO42).
