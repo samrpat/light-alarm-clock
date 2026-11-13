@@ -31,3 +31,4 @@
 - D-022: toolchain pinned, Waveshare board package adopted (uses esp_lvgl_adapter). Bench check V1 settled from the package's pin definitions (MCLK = GPIO42).
 - Bring-up test flashed and booted on the real board: display, touch, all 7 I2C chips, ring driver and speaker codec initialised without errors. Visual and audio results still to be confirmed by the owner.
 - Owner confirmed the bring-up test works on the hardware: touch, ring (GRBW order, direct 3.3 V data at short range), white noise and tone.
+- Bring-up test: sunrise made smooth with dithering across the 24 LEDs and across time (250 frames a second), plus eased colour curves. To be carried into the product light engine (R12).

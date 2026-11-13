@@ -4,7 +4,7 @@
  *   screen + touch, the RGBW ring on GPIO17, the speaker, and the chips on the I2C bus.
  *
  * Tap the screen to step through the tests:
- *   Idle -> Sunrise (20 s loop) -> White light -> White noise -> Tone 440 Hz -> Idle
+ *   Idle -> Sunrise (30 s loop) -> White light -> White noise -> Tone 440 Hz -> Idle
  *
  * Safety: the ring is held to RING_CAP_MA (300 mA) because this test rig has no fuse.
  */
@@ -43,32 +43,57 @@ static lv_obj_t *s_time_lbl, *s_mode_lbl, *s_info_lbl;
 static volatile int s_ring_ma;
 
 /* ---------- ring ---------- */
-typedef struct { uint8_t r, g, b, w; } rgbw_t;
+typedef struct { float r, g, b, w; } rgbw_t;   /* each channel 0.0 .. 255.0, fractions allowed */
 
-/* Fill the whole ring with one colour, scaled down if it would exceed the current cap. */
+/*
+ * Fill the ring with one colour, smoothly.
+ * An LED only accepts whole steps 0..255, and at low brightness one step is a visible jump.
+ * So the fractional part is spread out two ways:
+ *   - across the ring: each LED rounds up at a different point, giving 24 in-between levels;
+ *   - across time: the rounding point shifts every frame (4-frame cycle at 250 Hz), giving 4 more.
+ * Together that is about 96 finer levels between any two whole steps.
+ * The colour is also scaled down if it would exceed the current cap.
+ */
 static void ring_fill(rgbw_t c)
 {
+    static uint32_t frame;
     if (!s_ring) return;
-    int sum = (c.r + c.g + c.b + c.w) * RING_LEDS;
-    int ma = RING_IDLE_MA + sum * MA_PER_CH / 255;
+    float ma = RING_IDLE_MA + (c.r + c.g + c.b + c.w) * RING_LEDS * MA_PER_CH / 255.0f;
     if (ma > RING_CAP_MA) {
-        float k = (float)(RING_CAP_MA - RING_IDLE_MA) / (float)(ma - RING_IDLE_MA);
+        float k = (RING_CAP_MA - RING_IDLE_MA) / (ma - RING_IDLE_MA);
         c.r *= k; c.g *= k; c.b *= k; c.w *= k;
         ma = RING_CAP_MA;
     }
-    s_ring_ma = ma;
-    for (int i = 0; i < RING_LEDS; i++) led_strip_set_pixel_rgbw(s_ring, i, c.r, c.g, c.b, c.w);
+    s_ring_ma = (int)ma;
+    float ch[4] = { c.r, c.g, c.b, c.w };
+    uint8_t out[4];
+    float tphase = (frame++ & 3) * 0.25f / RING_LEDS;        /* time shift, finer than one LED slot */
+    for (int i = 0; i < RING_LEDS; i++) {
+        /* golden-ratio order so neighbouring LEDs do not step together */
+        float thr = fmodf(i * 0.6180340f, 1.0f) + tphase;
+        if (thr >= 1.0f) thr -= 1.0f;
+        for (int k = 0; k < 4; k++) {
+            /* a different offset per colour so the four LEDs in a pixel do not step together */
+            float t = thr + k * 0.25f; if (t >= 1.0f) t -= 1.0f;
+            float v = ch[k] + t;
+            out[k] = v >= 255.0f ? 255 : (uint8_t)v;
+        }
+        led_strip_set_pixel_rgbw(s_ring, i, out[0], out[1], out[2], out[3]);
+    }
     led_strip_refresh(s_ring);
 }
 
-/* p = 0..1 : dark -> deep red -> amber -> warm white (the W LED). */
+static float ramp(float p, float start, float end)       /* 0 before start, 1 after end, eased */
+{
+    float x = (p - start) / (end - start);
+    x = x < 0 ? 0 : x > 1 ? 1 : x;
+    return powf(x, 2.2f);                                /* the eye sees brightness roughly this way */
+}
+
+/* p = 0..1 : dark -> deep red -> amber -> warm white (the W LED). Every curve starts from zero slope. */
 static rgbw_t sunrise_colour(float p)
 {
-    float r = fminf(1.0f, p * 2.5f);
-    float g = fmaxf(0.0f, p - 0.2f) * 0.5f;
-    float w = fmaxf(0.0f, (p - 0.35f) / 0.65f);
-    float bright = p * p;                       /* slow start, like a real dawn */
-    rgbw_t c = { .r = 255 * r * fmaxf(bright, 0.02f), .g = 255 * g * bright, .b = 0, .w = 255 * w * w };
+    rgbw_t c = { .r = 255.0f * ramp(p, 0.0f, 0.55f), .g = 110.0f * ramp(p, 0.15f, 1.0f), .b = 0, .w = 255.0f * ramp(p, 0.30f, 1.0f) };
     return c;
 }
 
@@ -77,11 +102,15 @@ static void ring_task(void *arg)
     while (1) {
         float t = (esp_timer_get_time() - s_mode_t0) / 1e6f;
         switch (s_mode) {
-        case MODE_SUNRISE: ring_fill(sunrise_colour(fmodf(t, 20.0f) / 20.0f)); break;
+        case MODE_SUNRISE: {                             /* 30 s up, hold 5 s, then repeat */
+            float u = fmodf(t, 35.0f);
+            ring_fill(sunrise_colour(u < 30.0f ? u / 30.0f : 1.0f));
+            break;
+        }
         case MODE_WHITE:   ring_fill((rgbw_t){0, 0, 0, 255}); break;
         default:           ring_fill((rgbw_t){0, 0, 0, 0}); break;
         }
-        vTaskDelay(pdMS_TO_TICKS(20));
+        vTaskDelay(pdMS_TO_TICKS(4));                    /* 250 frames a second */
     }
 }
 
