@@ -2,7 +2,7 @@
 
 > Phase 0 content: architecture, task layout and alarm state machine.
 > Phase 3 adds: module APIs, data model, NVS layout detail, build/flash steps.
-> Phase 6 adds: the BLE service/characteristic table.
+> No BLE table: the product has no radios (D-030).
 
 Framework: ESP-IDF v5.x + LVGL 9 + FreeRTOS (see [D-001](DECISIONS.md#d-001--firmware-framework-esp-idf--lvgl-9--freertos)).
 
@@ -19,7 +19,7 @@ flowchart LR
 
   subgraph MCU[ESP32-S3R8  8MB PSRAM / 16MB flash]
     C1[Core 1: alarm-critical<br/>supervisor · alarm_engine · audio_out · light_fx · power_mon]
-    C0[Core 0: non-critical<br/>ui_lvgl · input · ble · storage]
+    C0[Core 0: non-critical<br/>ui_lvgl · input · storage]
   end
 
   V33 --> MCU
@@ -34,7 +34,6 @@ flowchart LR
   MCU -- SDMMC/SPI --- SD[TF card]
   BOOT[BOOT btn GPIO0] --> MCU
   PWRK[PWR key] --> AXP
-  BLE((BLE / Wi-Fi)) -.-> MCU
 ```
 `*` = confirmed in Phase 1 from Waveshare's hardware reference (one shared I2C bus; ES8311 + NS4150B, amp enable on GPIO46). The ring is fed from USB VBUS, not from a boost (D-012). Pins are in [HARDWARE.md](HARDWARE.md).
 
@@ -52,10 +51,10 @@ Critical tasks are on **core 1**. Nothing on core 1 waits on anything owned by c
 | `storage` | 1 | 8 | 6 KB | queue | — | A/B NVS writes with verify (write-behind, never on the fire path) |
 | `input` | 0 | 10 | 4 KB | touch/IMU INT | heartbeat | Gesture recognition → UI events, snooze events → alarm queue |
 | `ui_lvgl` | 0 | 6 | 16 KB | 5–33 ms | heartbeat | Screens, night theme, display power |
-| `ble` (NimBLE host) | 0 | 5 | IDF default | events | heartbeat | Settings sync (Phase 6) |
+| ~~`ble`~~ | — | — | — | — | — | **Not in the product** (D-030). No radios are ever started. |
 
 Inter-task channels:
-- `alarm_cmd_q` (UI/BLE/input → alarm_engine): validated commands such as `SET_DAY`, `SET_OVERRIDE`, `SNOOZE`, `DISMISS`, `PREVIEW`.
+- `alarm_cmd_q` (UI/input → alarm_engine): validated commands such as `SET_DAY`, `SET_OVERRIDE`, `SNOOZE`, `DISMISS`, `PREVIEW`.
 - `alarm_state` snapshot (alarm_engine → everyone): double-buffered struct + sequence counter, read without locks.
 - `audio_cmd_q`, `light_cmd_q` (alarm_engine / UI → workers): target level + ramp time.
 - I2C: one bus mutex, every access with a ≤ 50 ms timeout and bus recovery on failure. **Not used on the alarm fire path.**
@@ -86,3 +85,11 @@ stateDiagram-v2
 `*` The auto-stop policy is an open decision. Default proposal: sound stops after 30 min of ringing, light stays at full and the screen shows "Alarm missed at 07:00".
 
 The step levels and timings above are placeholders and become final in Phase 3. On boot, the engine rebuilds its state from the occurrence time and `now`, so it resumes at the right stage (R21) and catches up on missed alarms (R20).
+
+## 4. Longevity notes (D-030, D-031)
+
+- Radios are never initialised. Build with Bluetooth off and no Wi-Fi start-up.
+- `time_t` is 64-bit (build assert). Dates are computed by the firmware, never trusted from the RTC's weekday.
+- Region rules are stored as time-zone rule strings. An SD-card file `region.txt` can replace them. Details in [LONGEVITY.md](LONGEVITY.md).
+- `light_fx` follows [LIGHT.md](LIGHT.md): a 64-point dawn table, caps by time of day, dithering, the 0.9 A limit.
+- A small `hw_profile` header records which optional parts are fitted (D-025).

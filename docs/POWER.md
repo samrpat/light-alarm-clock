@@ -45,6 +45,8 @@ If `I > 900 mA`, every channel is scaled down by `900 / I`. No mode can bypass t
 
 **Weak-charger guard:** `power_mon` reads VBUS voltage from the AXP2101 once a second while the ring is lit. Below 4.6 V the cap drops in 20 % steps until VBUS recovers.
 
+**The dawn (LIGHT.md §3) peaks at about 0.6 A:** 24 LEDs with white at full and a little red, green and blue, about 25 mA of idle current, well under the 0.9 A cap. The night face and the ring-off rule mean the ring draws almost nothing overnight.
+
 ## 3. Level shifting and protection parts
 
 | Part | Value | Why |
@@ -70,7 +72,7 @@ Converted to current at the 5 V USB input (3.3 V loads ÷ 0.88 regulator efficie
 | D. Reading light 60 % | 50 mA | 285 mA | **~335 mA** |
 | E. Sunrise at peak | 75 mA | 900 mA (cap) | **~1.0 A** |
 | F. Alarm, full volume, sunrise full | 410 mA | 900 mA | **~1.3 A** |
-| G. F + battery charging + Wi-Fi burst | 1000 mA (PMIC limit) | 900 mA | **1.9 A max** |
+| G. F + battery charging | 1000 mA (PMIC limit) | 900 mA | **1.9 A max** |
 
 Board-side detail used above (at 3.3 V): ESP32-S3 ~40 mA average with radios idle, up to 340 mA in Wi-Fi bursts · AMOLED ~10 mA dim, ~100 mA full white · codec ~15 mA · sensors and PMIC ~5 mA · amplifier ~25 mA for white noise, ~1.2 W at full alarm volume.
 
@@ -91,22 +93,23 @@ Register names and library calls are confirmed in Phase 3 against the AXP2101 da
 
 ## 6. Battery (backup) and runtime
 
-**Recommendation:** 3.7 V Li-polymer, **2000 mAh, size 103450** (10 × 34 × 50 mm), with built-in protection board, **MX1.25 2-pin** plug.
+**Recommendation (D-035):** a 3.7 V Li-polymer **503450 cell (5 × 34 × 50 mm), about 1000 mAh**, with a built-in protection board and a **1.25 mm 2-pin plug** (Molex PicoBlade type). Order by specification and follow the checklist in HARDWARE.md §1. It is thin so the case can stay thin, and it is a consumable you replace every 3–5 years.
 
-> **Check polarity before plugging in.** Hobby cells often have red and black swapped relative to a given board. With a multimeter, confirm the plug's positive pin lines up with the "+" marking by the board's battery connector. Reversed polarity can destroy the PMIC. Waveshare's documents do not state the polarity in text, so this must be checked on the board itself.
+> **Check polarity before plugging in.** Hobby cells often have red and black swapped relative to a given board, and Waveshare's documents do not state the polarity. Reversed polarity can destroy the PMIC.
 
-Usable energy: 2000 mAh × 3.7 V = 7.4 Wh, × 0.8 (ageing, cut-off) = **5.9 Wh**.
+Usable energy: 1000 mAh × 3.7 V = 3.7 Wh, × 0.8 (ageing, cut-off) = **about 3.0 Wh**. Everything below is calculated, not measured.
 
 | On battery | Power | Runtime |
 |------------|-------|---------|
-| Clock only, dim | 0.20 W | ~29 h |
-| White noise continuously | 0.35 W | ~17 h |
-| Alarm at full volume, screen white | 2.0 W | (0.33 Wh per 10 min) |
-| **One unplugged night: 8 h white noise + 10 min alarm** | — | **3.1 Wh = 53 % of usable** |
+| Clock only, dim | 0.20 W | about 15 h |
+| White noise continuously | 0.35 W | about 8.5 h |
+| Alarm at full volume, screen white | 2.0 W | 0.33 Wh per 10 min |
+| **A typical unplugged night: 90 min of white noise, 6.5 h clock only, 10 min alarm** | — | **2.2 Wh, about 73 % of usable** |
+| A full 8 h of white noise plus the alarm | — | 3.1 Wh, **105 %: not covered** |
 
-So a 2000 mAh cell covers a full unplugged night with about 47 % left. A 1000 mAh cell does not (it has ~3.0 Wh usable).
+So the thin cell covers a normal night and any power cut, but not eight hours of noise on battery. A thicker 1500–2000 mAh cell would (and costs 3–5 mm of case thickness).
 
-Without any battery: the clock works on USB, but an unplug or power cut stops it and the RTC loses the time. On power return it shows "Set time" until Wi-Fi or the phone resyncs it. Any alarm in that gap is missed.
+Without any battery: the clock works on USB, but an unplug or power cut stops it and the RTC loses the time. On power return it shows "Set time" and the alarm waits until you set it (LONGEVITY.md §2). Any alarm in that gap is missed.
 
 ## 7. Behaviour on power events
 

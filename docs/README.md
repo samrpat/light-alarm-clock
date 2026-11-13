@@ -5,7 +5,7 @@ A battery-backed bedside clock built on a **Waveshare ESP32-S3-Touch-AMOLED-1.75
 2. **Wake gently.** A 24-LED NeoPixel halo plays a sunrise, then sound escalates softly → loud.
 3. **Fall asleep.** White noise with a sleep timer that fades out before the sunrise starts.
 
-It is controlled with gestures on a 1.75" round touchscreen. The phone is optional (BLE settings sync in Phase 6).
+It is controlled by touch on a 1.75" round screen, needs no network or phone, and is built to run for decades (LONGEVITY.md).
 Reference product for feel and features: Dreamie by Hello Ambient (helloambient.com). Differences are in [REQUIREMENTS.md](REQUIREMENTS.md#reference-product-dreamie-helloambientcom).
 
 ## Current phase
@@ -28,6 +28,8 @@ Reference product for feel and features: Dreamie by Hello Ambient (helloambient.
 | [HARDWARE.md](HARDWARE.md) | BOM, pin table, wiring, speaker, bench checks | Phase 1 |
 | [POWER.md](POWER.md) | Power design, current budget, runtime math | Phase 1 |
 | [UX.md](UX.md) | Gestures, options compared, screen map, day/night look, type and layout rules, acceptance checks | Phase 2 |
+| [LIGHT.md](LIGHT.md) | The evidence and the ring and screen light plan: dawn, evening, night | Phase 2 |
+| [LONGEVITY.md](LONGEVITY.md) | 30-year, offline plan: time, daylight saving, wear, updates | Phase 2 |
 | `licenses/` | Third-party licence texts (Ubuntu Font Licence) | Phase 2 |
 | RELIABILITY.md | FMEA, watchdog design | Phase 3 |
 | TEST_PLAN.md | Test cases T-xx ↔ requirements | Phase 3 |

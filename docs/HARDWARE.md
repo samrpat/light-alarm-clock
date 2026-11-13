@@ -17,11 +17,11 @@ Prices are approximate (USD, late 2026) and not checked against a live listing.
 | 3 | Speaker 8 Ω 2 W, 20 × 30 × 6.8 mm cavity type, 1.25 mm 2-pin plug, 120 mm lead | Waveshare "8Ω 2W Speaker (B)", SKU 27859 | 1 | $2 | Have |
 | 4 | Level shifter 74AHCT125, DIP-14 | Adafruit #1787, or TI SN74AHCT125N | 1 | $1.50 | **Optional** (add if the ring flickers) |
 | 5 | Resettable fuse, 1.1 A hold | Bourns MF-R110 | 1 | $0.50 | Buy (needed before the ring goes above 0.3 A) |
-| 6 | Electrolytic capacitor 1000 µF, 10–16 V, radial, **10 mm diameter, 5 mm lead pitch** | e.g. Panasonic EEU-FR1C102 (check the pitch before ordering) | 1 | $0.60 | Buy (needed before the ring goes above 0.3 A) |
+| 6 | Electrolytic capacitor 1000 µF, 10–16 V, **105 °C long-life**, radial, **10 mm diameter, 5 mm lead pitch** | e.g. Panasonic EEU-FR1C102 (check the pitch before ordering) | 1 | $0.60 | Buy (needed before the ring goes above 0.3 A) |
 | 7 | Resistor 470 Ω, ¼ W | any | 1 | $0.05 | Buy (needed before the ring goes above 0.3 A) |
 | 8 | Resistor 10 kΩ, ¼ W | any | 1 | $0.05 | **Optional** (only with the level shifter) |
 | 9 | Ceramic capacitor 100 nF | any | 1 | $0.05 | **Optional** (only with the level shifter) |
-| 10 | Li-polymer cell 3.7 V 2000 mAh, 103450, with protection, MX1.25 2-pin | generic; **check polarity** | 1 | $9 | Recommended (owner agreed). The firmware runs without it. |
+| 10 | **Li-polymer cell 3.7 V, 503450 (5 × 34 × 50 mm), about 1000 mAh, built-in protection board, 1.25 mm 2-pin plug (Molex PicoBlade type), wires ≥ 50 mm** | Order by this specification; D-035. Ask the seller to confirm the plug and the protection board. **Check polarity on arrival.** | 1 | $6–9 | Recommended (owner agreed). A consumable: replace every 3–5 years. The firmware runs without it. |
 | 11 | USB-C power adapter 5 V 3 A | e.g. Raspberry Pi 15 W USB-C supply | 1 | $8 | Buy if you have none |
 | 12 | ~~MX1.25 pigtail for the speaker~~ | Not needed: the speaker's own 1.25 mm plug fits the board | — | — | — |
 | 13 | *Later:* Halo driver PCB, 44 × 28 mm, 2-layer | `/pcb/halo-driver/halo-driver-gerbers.zip`, see §7 | 1 (min. order usually 5) | ~$5 + shipping | After Phase 4 |
@@ -32,6 +32,14 @@ Prices are approximate (USD, late 2026) and not checked against a live listing.
 Baseline total to buy: about **$25**.
 
 > **Optional parts (D-025).** You can build and run the firmware with only the board, ring and speaker. **Required:** rows 1–3, the adapter and wire. **Needed before the ring goes above 0.3 A:** the fuse, capacitor and 470 Ω resistor (rows 5–7, about $1.15, soldered inline, §3b). **Optional:** the level shifter and its two small parts (rows 4, 8, 9), the PCB, the breadboard and headers. **Recommended:** the battery. Each missing part has a defined firmware behaviour (UX.md §10).
+
+### Battery checklist (D-035)
+
+Waveshare's documents do not say which battery pin is positive, and their only recommendation is "3.7 V lithium, MX1.25 2-pin".
+1. **Before ordering:** the listing says 3.7 V, protection board (PCM or PCB), and a 1.25 mm plug. A plug sold as "JST 1.25" or "micro JST" is often **not** the same as Molex PicoBlade; ask, or buy bare leads and fit your own plug.
+2. **On arrival:** measure the cell with a multimeter (3.6–4.2 V) and note which wire is positive. Compare with the "+" marking next to the board's battery socket. If reversed, release the two pins from the plug with a needle and swap them. Never connect it unchecked.
+3. **Mark the date** on the cell. Replace it every 3–5 years.
+4. Never glue it down (LONGEVITY.md §4).
 
 ## 2. Pin table
 
@@ -163,10 +171,10 @@ Same circuit as above, no PCB.
 |------|------|
 | RGBW ring | 65.5 mm outer, 52.2 mm inner, 3.25 mm thick |
 | Display active area | 1.75" ≈ 44.5 mm across |
-| Battery 103450 | 10 × 34 × 50 mm |
-| Board outline and mounting holes | ⚠ Not given in text by Waveshare. Measure the board or use their dimension drawing in Phase 4. |
+| Battery 503450 | 5 × 34 × 50 mm (D-035) |
+| Board outline and mounting holes | About 48.96 mm across × 10.40 mm deep, 3 × M2 holes (third-party listing, Core Electronics). ⚠ Confirm with calipers (ENCLOSURE.md §9, E1). |
 
-Note for Phase 4: the ring's 52.2 mm opening is wider than the 44.5 mm screen, so the ring can sit around the display as a halo, if the board's outer body fits inside 52 mm. That has to be measured.
+Note for Phase 4: the ring's 52.2 mm opening is wider than the board (about 49 mm by the listing), so the ring can sit around the display as a halo. The draft case layout is in [ENCLOSURE.md](ENCLOSURE.md).
 
 ## 6. Checks to do on the real board before Phase 3
 

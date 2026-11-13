@@ -50,3 +50,14 @@
 - Day and night look on a schedule (D-027). Time shows in 12-hour AM/PM.
 - Optional hardware (D-025) replaces the fewest-parts verdicts of D-023. Firmware must run with no battery and no ring (R36).
 - UX.md rewritten. R2, R5, R6 reworded; R36, R37 added. Concept page rebuilt and republished.
+
+## 2026-11-13 — Early enclosure draft
+- Added ENCLOSURE.md (draft, ahead of Phase 4): three stand options compared, fold-out weighted foot recommended, layout of every part, 30-year rules (brass inserts, no glue, metal hinge, ASA or PETG, replaceable wear parts, board carrier), ports and buttons, materials, shopping list, measurements E1–E6, checks C1–C7.
+- D-029 proposed. HARDWARE.md §5 gets the board size from a third-party listing (to be measured).
+
+## 2026-11-13 — Phase 2 revision, round 2
+- Fewer words and a short settings list (eight pages). The face now follows the day with a 3-hour wind-down (D-032). Sun arc removed at the owner's request.
+- The touch rim dial restored, tap zones kept as the backup (D-034). Concept page passes a simulated drag test and the layout check (257 states, 1,796 boxes, 0 issues, max four text lines).
+- Added LIGHT.md (evidence-based dawn, evening and night light, D-033) and LONGEVITY.md (30-year, offline, daylight saving without a server, D-030, D-031).
+- Battery: a thin 503450-class cell by specification (D-035). Wi-Fi, BLE and OTA dropped; Phase 6 repurposed.
+- Renumbered: the enclosure draft kept D-029; this round is D-030 to D-035. R5, R6, R12, R13, R16, R28, R30 reworded; N1–N3 dropped; R38–R43 and K11–K12 added.

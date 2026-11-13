@@ -25,13 +25,16 @@ p{margin:0}
 .btns{display:flex;flex-wrap:wrap;gap:10px}
 button{font:inherit;font-weight:400;font-size:15px;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:999px;padding:9px 18px;cursor:pointer}
 button:hover{border-color:var(--ink3)}
-button:focus-visible,.mini:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+button:focus-visible,.mini:focus-visible,input:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
 button.go{background:var(--amber);border-color:var(--amber);color:#2a1806;font-weight:500}
 .stage{display:flex;flex-direction:column;align-items:center;gap:14px;min-width:0}
 .devwrap{position:relative;width:100%;max-width:440px;display:flex;justify-content:center}
 .glow{position:absolute;inset:-4%;border-radius:50%;filter:blur(56px);opacity:0;background:#000;pointer-events:none}
 #dev{position:relative;width:100%;max-width:440px;height:auto;touch-action:none;user-select:none;-webkit-user-select:none;cursor:pointer;font-family:var(--ui)}
 #fb{font-size:15px;color:var(--amber);min-height:24px;text-align:center}
+.tod{width:100%;max-width:440px;display:grid;grid-template-columns:auto minmax(0,1fr) 92px;gap:12px;align-items:center;font-size:14px;color:var(--ink2)}
+.tod output{color:var(--ink);font-weight:400;text-align:right;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--amber)}
 .legend{width:100%;max-width:440px;display:flex;flex-direction:column}
 .legend div{display:flex;gap:14px;font-size:15px;padding:8px 0;border-top:1px solid var(--line);color:var(--ink2)}
 .legend b{font-weight:500;color:var(--ink);flex:0 0 104px}
@@ -48,22 +51,22 @@ section{display:flex;flex-direction:column;gap:28px}
 .mini{display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;border-radius:16px;padding:6px;font-size:14px;color:var(--ink2)}
 .mini svg{width:100%;height:auto;font-family:var(--ui)}
 .mini small{font-size:12px;color:var(--ink3)}
-.axis{font-size:13px;color:var(--ink3);text-align:center;align-self:center}
 .counts{display:flex;flex-direction:column}
 .counts div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;padding:13px 0;border-top:1px solid var(--line);align-items:baseline}
 .counts div p{min-width:0}
 .counts small{display:block;color:var(--ink3);font-size:14px}
 .counts strong{font-weight:300;font-size:30px;color:var(--amber);font-variant-numeric:tabular-nums}
-.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:520px}
-.pair figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:14px;color:var(--ink2)}
-.pair svg{width:100%;height:auto;font-family:var(--ui)}
+.four{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.four figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:14px;color:var(--ink2);text-align:center}
+.four svg{width:100%;height:auto;font-family:var(--ui)}
 .tl{display:flex;flex-direction:column;gap:10px}
-.bar{height:44px;border-radius:10px;background:linear-gradient(90deg,#050505 0%,#3a0500 12%,#b8320a 34%,#ff8a2e 58%,#ffbf73 80%,#ffeacb 100%)}
-.fade{height:14px;border-radius:7px;background:linear-gradient(90deg,var(--teal) 0%,rgba(132,216,192,0) 9%)}
-.steps{display:grid;grid-template-columns:86% 1fr;height:30px;align-items:end}
+.bar{height:44px;border-radius:10px;background:linear-gradient(90deg,#050505 0%,#3a0500 10%,#8a1a05 30%,#e0551a 50%,#ff9a3c 70%,#ffcf90 85%,#ffeedd 100%)}
+.fade{height:14px;border-radius:7px;background:linear-gradient(90deg,var(--teal) 0%,rgba(132,216,192,0) 5%)}
+.steps{display:grid;grid-template-columns:75% 1fr;height:30px;align-items:end}
 .steps .s{display:flex;align-items:flex-end;gap:2px;height:30px}
 .steps .s b{flex:1;background:var(--amber);border-radius:2px 2px 0 0}
-.axisrow{display:flex;justify-content:space-between;font-size:13px;color:var(--ink3);font-variant-numeric:tabular-nums}
+.axisrow{display:grid;grid-template-columns:repeat(4,1fr);font-size:13px;color:var(--ink3)}
+.axisrow span:last-child{text-align:right}
 .tlrow{display:grid;grid-template-columns:120px minmax(0,1fr);gap:14px;align-items:center;font-size:14px;color:var(--ink2)}
 .prin{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:36px 44px}
 .prin div{display:flex;flex-direction:column;gap:8px;min-width:0}
@@ -77,12 +80,11 @@ section{display:flex;flex-direction:column;gap:28px}
   <div class="hero">
     <div class="hero-copy">
       <p class="eyebrow">Interface concept · 44 mm round touchscreen · touch only</p>
-      <h1>Everything is <em>one swipe</em> from the time.</h1>
-      <p class="lede">A screen this small has no room for menus, and nothing on it turns. The clock sits in the middle. Swipe to go somewhere, tap to start, hold to stop. Three gestures run the whole product.</p>
+      <h1>A clock that follows <em>your day</em> until you sleep.</h1>
+      <p class="lede">Few words. Swipe, tap, hold, and turn the rim. The face changes colour and brightness through the day, winds down toward bedtime, and ends as a dim amber clock. Drag the time slider below the device to watch it.</p>
       <div class="btns">
         <button class="go" id="bMorn">Play a morning</button>
         <button id="bRing">Ring the alarm</button>
-        <button id="bLook">Look: night</button>
         <button id="bReset">Reset</button>
       </div>
       <p class="scale">The device is live. Use your mouse or finger on it. <span id="szl">Shown enlarged.</span><button id="bSize">Real size</button></p>
@@ -103,17 +105,19 @@ section{display:flex;flex-direction:column;gap:28px}
           <g id="chk" opacity="0" pointer-events="none"></g>
         </svg>
       </div>
-      <div id="fb" aria-live="polite">Swipe up on the clock</div>
+      <div class="tod"><label for="tod">Time of day</label><input type="range" id="tod" min="300" max="1439" step="5" value="1394"><output id="todl" for="tod"></output></div>
+      <div id="fb" aria-live="polite">Drag the slider, or swipe up on the clock</div>
       <div class="legend" id="lg"></div>
     </div>
   </div>
 
   <section>
     <p class="eyebrow">The whole vocabulary</p>
-    <h2>Three gestures. No menus, no dials, no double-taps.</h2>
+    <h2>Four gestures. No menus, no double-taps.</h2>
     <div class="verbs">
       <div class="verb"><span>Swipe</span><p>Go somewhere. Every screen is one swipe from the clock, and the opposite swipe brings you back.</p></div>
       <div class="verb"><span>Tap</span><p>Start something, or nudge a value. The top of the screen means more and the bottom means less.</p></div>
+      <div class="verb"><span>Turn</span><p>Run a finger around the rim to set a value. Slow is one minute at a time, fast is half an hour. The marker shows where you are.</p></div>
       <div class="verb"><span>Hold</span><p>For anything that could stop an alarm: turning a day off, skipping tomorrow, dismissing. The rim fills while you hold.</p></div>
     </div>
   </section>
@@ -122,9 +126,8 @@ section{display:flex;flex-direction:column;gap:28px}
     <div class="two">
       <div class="col">
         <p class="eyebrow">Changing a time</p>
-        <h2>Tap above for later, below for earlier.</h2>
-        <p class="lede">Nothing on the screen has to be found or dragged. The left half of every time moves the hour, the right half moves the minutes in steps of five. Hold a tap zone and it keeps going, faster the longer you hold. A change of 15 minutes is three taps. An hour is one.</p>
-        <p class="lede">The rim of a round screen is hard to hit in the dark and may be covered by the case, so no gesture depends on it.</p>
+        <h2>Turn the rim, or tap above and below.</h2>
+        <p class="lede">The fast way is to run a finger around the rim: clockwise is later, and the faster you go the bigger the step. The sure way is to tap: above is later, below is earlier, the left half moves the hour and the right half the minutes. If the case ever covers part of the rim, the taps still work.</p>
       </div>
       <svg id="zoneFig" viewBox="0 0 466 466" style="width:100%;max-width:420px;justify-self:center;font-family:var(--ui)" role="img" aria-label="Tap zones: top is later, bottom is earlier, left is hours, right is minutes"></svg>
     </div>
@@ -152,7 +155,7 @@ section{display:flex;flex-direction:column;gap:28px}
       <div class="col">
         <p class="eyebrow">Touches, counted</p>
         <h2>Every nightly task takes two gestures.</h2>
-        <p class="lede">Counted from the clock face, half asleep, in the dark. Nothing needs small text or a precise aim.</p>
+        <p class="lede">Counted from the clock face, half asleep, in the dark.</p>
       </div>
       <div class="counts">
         <div><p>Wake an hour earlier tomorrow<small>swipe up, tap the lower left</small></p><strong>2</strong></div>
@@ -160,7 +163,7 @@ section{display:flex;flex-direction:column;gap:28px}
         <div><p>Start white noise<small>swipe left, tap</small></p><strong>2</strong></div>
         <div><p>Night light on<small>swipe right, tap</small></p><strong>2</strong></div>
         <div><p>Move every Wednesday an hour earlier<small>swipe down, tap Wed, tap the lower left</small></p><strong>3</strong></div>
-        <div><p>Move it half an hour<small>swipe down, tap Wed, hold the lower right</small></p><strong>3</strong></div>
+        <div><p>Fix the clock after a daylight saving change<small>hold the clock, tap the hour zone</small></p><strong>2</strong></div>
         <div><p>Snooze<small>tap anywhere</small></p><strong>1</strong></div>
         <div><p>Turn the alarm off<small>hold for two seconds</small></p><strong>1</strong></div>
       </div>
@@ -168,139 +171,134 @@ section{display:flex;flex-direction:column;gap:28px}
   </section>
 
   <section>
-    <p class="eyebrow">Two looks, one schedule</p>
-    <h2>A bright face by day. Almost dark by night.</h2>
-    <div class="two">
-      <div class="pair" id="lookPair"></div>
-      <p class="lede">The look follows a schedule you set once, 9 PM to 7 AM to begin with. Day shows the date, a bit more light, and an accent colour you choose. Night is amber only, with no blue, dimmed through the panel, and the whole face shifts by a few pixels every minute to protect the screen. A tap lifts the night face for five seconds.</p>
-    </div>
+    <p class="eyebrow">A face that follows your day</p>
+    <h2>Bright and cool by day. Warm and fading toward bed.</h2>
+    <div class="four" id="dayFour"></div>
+    <p class="lede">After you wake the colour moves from gold through cool white at noon to amber. Three hours before bedtime the face winds down: the blue drains out, the brightness falls on a smooth curve, the date fades, and at bedtime it is the dim amber night clock. Two settings drive it: when you go to bed and when you wake.</p>
   </section>
 
   <section>
-    <p class="eyebrow">The morning</p>
-    <h2>Light first. Sound only if you need it.</h2>
+    <p class="eyebrow">The morning light</p>
+    <h2>Thirty minutes of dawn, built from the evidence.</h2>
     <div class="tl">
-      <div class="tlrow"><span>Sunrise light</span><div class="bar"></div></div>
+      <div class="tlrow"><span>Ring colour</span><div class="bar"></div></div>
       <div class="tlrow"><span>White noise</span><div class="fade"></div></div>
       <div class="tlrow"><span>Alarm sound</span><div class="steps"><i></i><div class="s"><b style="height:25%"></b><b style="height:50%"></b><b style="height:75%"></b><b style="height:100%"></b></div></div></div>
-      <div class="tlrow"><span></span><div class="axisrow"><span>6:30</span><span>6:40</span><span>6:50</span><span>7:00</span><span>7:05</span></div></div>
+      <div class="tlrow"><span></span><div class="axisrow"><span>Deep red</span><span>Amber</span><span>Warm white</span><span>Daylight</span></div></div>
     </div>
-    <p class="lede">The halo climbs from deep red to daylight over thirty minutes while the white noise fades away. At the alarm time a soft tone starts and steps up each minute. Press "Play a morning" at the top to watch it in ten seconds.</p>
+    <p class="lede">It starts with deep red, which passes through closed eyelids and barely touches the body clock, then climbs through amber and warm white to a daylight white at the alarm. The rise is exponential, like a real dawn. After the alarm it holds bright for ten minutes. At night the ring is off completely. Press "Play a morning" to watch it.</p>
   </section>
 
   <section>
-    <p class="eyebrow">Why it works at 3 a.m.</p>
-    <h2>Designed for a hand that can't see.</h2>
+    <p class="eyebrow">Built to last</p>
+    <h2>No Wi-Fi, no servers, no updates needed.</h2>
     <div class="prin">
-      <div><h3>Targets bigger than a fingertip</h3><p>A fingertip covers about 10 mm of a 44 mm screen. Every tap zone is at least 11 mm tall, and nothing depends on the rim.</p></div>
-      <div><h3>Easy to snooze, hard to cancel</h3><p>Any tap snoozes, up to three times. Turning an alarm off takes a deliberate hold, and the rim fills so you can see it working.</p></div>
-      <div><h3>One layout everywhere</h3><p>Title on top, big value in the middle, a hint underneath. Up means more, down means less. Learn one screen and you know them all.</p></div>
-      <div><h3>Text that never collides</h3><p>Every line sits inside a safe zone and an automatic check measures all screens in the real font before anything is built.</p></div>
+      <div><h3>It never calls out</h3><p>The time is set by hand once. Daylight saving is a rule stored inside the clock, with a one-tap fix if the law ever changes.</p></div>
+      <div><h3>Few settings</h3><p>Eight pages, and four of them you touch once: time, date, region and sleep hours.</p></div>
+      <div><h3>The alarm outlives the screen</h3><p>If the display ever fails, the light and sound still run, and a button on the back still turns the alarm off.</p></div>
+      <div><h3>Repairable</h3><p>The battery is a swappable part, and the firmware and tools are kept offline so it can be rebuilt decades from now.</p></div>
     </div>
   </section>
 
-  <p class="note">Concept prototype. Colours, glow and timing are simulated in the browser, and the real LED ring and AMOLED panel will look different. The clock runs at a fixed demo time of Tuesday 11:14 PM. Type is Ubuntu.</p>
+  <p class="note">Concept prototype. Colours, glow and timing are simulated in the browser, and the real LED ring and AMOLED panel will look different. The date is fixed at Tuesday, Nov 12 and type is Ubuntu.</p>
 </div>
 
 <script>
 const $=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg';
-const C=233,SAFE=209,MINFONT=26;
+const C=233,SAFE=209,MINFONT=26,MAXLINES=4;
 const DN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],DF=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-const TIMER=[['Sleep in 15 min',15],['Sleep in 30 min',30],['Sleep in 1 hour',60],['Sleep in 90 min',90],['Plays all night',0]];
-const TZ=[['Eastern','New York'],['Central','Chicago'],['Mountain','Denver'],['Pacific','Los Angeles'],['Alaska','Anchorage'],['Hawaii','Honolulu'],['UTC','No daylight saving']];
-const ACC=[{n:'Amber',t:'#FFC27A',s:'#C48A4F',h:'#8A6B4A'},{n:'Sky',t:'#9AD6FF',s:'#6BA3CC',h:'#4F7490'},{n:'Mint',t:'#9BE8CC',s:'#6BB89C',h:'#4D8571'},{n:'Rose',t:'#FFAAB8',s:'#CC7F8D',h:'#8F5B66'}];
-const NIGHT_DIM={t:'#8C5022',s:'#573619',h:'#3f2a16'},NIGHT_ACT={t:'#FFB869',s:'#B27C4A',h:'#8A6B4A'};
-const WARN='#E5703E',OK='#5FC9A8',OFFC='#5a4c40',ZONE='#17120c';
-const PG=['Time zone','Set time','Day look','Night hours','Night dimness','Sunrise length','Alarm loudness','Preview alarm','Wi-Fi','About'];
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const TIMER=[['15 min',15],['30 min',30],['1 hour',60],['90 min',90],['All night',0]];
+const REG=[['US Eastern','Daylight saving on'],['US Central','Daylight saving on'],['US Mountain','Daylight saving on'],['US Pacific','Daylight saving on'],['US Alaska','Daylight saving on'],['US Hawaii','No daylight saving'],['UK','Daylight saving on'],['Central Europe','Daylight saving on'],['Manual','You change the clock']];
+const PG=['Time','Date','Region','Sleep hours','Brightness','Alarm volume','Preview alarm','About'];
+const WARN='#E5703E',OK='#5FC9A8',OFFC='#5a4c40';
 
 //<draw>
 const wrap=m=>((m%1440)+1440)%1440,clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 function t12(m){m=wrap(m);const h=Math.floor(m/60);return{h:((h+11)%12)+1,mm:String(m%60).padStart(2,'0'),ap:h<12?'AM':'PM'}}
 const f12=m=>{const t=t12(m);return t.h+':'+t.mm+' '+t.ap};
-function fresh(){return{scr:'clock',mode:'night',now:1394,awake:false,days:[0,1,2,3,4,5,6].map(i=>({on:i<5,min:i<5?405:510})),sel:2,skip:false,one:null,vol:40,play:false,ti:1,lt:{on:false,m:0,l:[20,60]},snz:3,hold:0,done:false,sun:null,msg:'',pg:0,clk:1394,acc:0,dayB:50,ns:1260,ne:420,nd:2,sl:30,ld:70,tz:0,ring:false}}
+function fresh(){return{scr:'clock',now:1394,awake:false,days:[0,1,2,3,4,5,6].map(i=>({on:i<5,min:i<5?405:510})),sel:2,skip:false,one:null,vol:40,play:false,ti:1,lt:{on:false,m:0,l:[20,60]},snz:3,hold:0,done:false,sunT:null,msg:'',pg:0,clk:1394,dat:{m:10,d:12,y:2026},rg:0,dayB:60,ns:1350,ne:420,ld:70}}
+const mix=(a,b,k)=>a.map((v,i)=>v+(b[i]-v)*k);
+const hex=c=>'#'+c.map(v=>clamp(Math.round(v),0,255).toString(16).padStart(2,'0')).join('');
+const KF=[[360,[255,193,120]],[480,[255,224,178]],[600,[255,238,214]],[720,[228,238,255]],[900,[255,238,218]],[1080,[255,208,150]]],NA=[224,128,28];
+function sky(m){m=wrap(m);if(m<=KF[0][0])return KF[0][1];for(let i=1;i<KF.length;i++)if(m<=KF[i][0]){const[a,ca]=KF[i-1],[b,cb]=KF[i];return mix(ca,cb,(m-a)/(b-a))}return KF[KF.length-1][1]}
+function phase(s){const span=wrap(s.ns-s.ne),since=wrap(s.now-s.ne);if(since<span){const left=span-since;return left>180?{p:'day',w:0,f:since/span}:{p:'wind',w:1-left/180,f:since/span}}return{p:'night',w:1,f:1}}
+function face(s,active){const ph=phase(s),w=ph.w,ws=w*w*(3-2*w),base=ph.p==='night'?NA:mix(sky(s.now),NA,ws);
+ const dayVis=.55+.45*s.dayB/100,nightVis=.5;let vis=ph.p==='night'?nightVis:nightVis*Math.pow(dayVis/nightVis,1-w);if(active&&ph.p!=='day')vis=Math.max(vis,.85);
+ const t=base.map(v=>v*vis);return{t:hex(t),s:hex(t.map(v=>v*.72)),h:hex(t.map(v=>v*.5)),ph,ws,vis}}
 const P=(a,r)=>[C+r*Math.sin(a*Math.PI/180),C-r*Math.cos(a*Math.PI/180)];
 function T(x,y,sz,t,c,w,extra){return `<text data-k="1" x="${x}" y="${(y+.35*sz).toFixed(1)}" font-size="${sz}" fill="${c}" text-anchor="middle" font-weight="${w||400}" ${extra||''}>${t}</text>`}
 function TM(x,y,sz,m,c,w,apSz){const t=t12(m);return `<text data-k="1" x="${x}" y="${(y+.35*sz).toFixed(1)}" font-size="${sz}" fill="${c}" text-anchor="middle" font-weight="${w}">${t.h}:${t.mm}<tspan font-size="${apSz}" dx="${Math.round(sz/14)}">${t.ap}</tspan></text>`}
-function arc(r,a0,a1,col,w){if(a1-a0>=359.9)return `<circle cx="${C}" cy="${C}" r="${r}" fill="none" stroke="${col}" stroke-width="${w}"/>`;if(a1-a0<=.1)return '';const[x0,y0]=P(a0,r),[x1,y1]=P(a1,r);return `<path d="M${x0} ${y0}A${r} ${r} 0 ${a1-a0>180?1:0} 1 ${x1} ${y1}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round"/>`}
+function arc(r,a0,a1,col,w,op){if(a1-a0>=359.9)return `<circle cx="${C}" cy="${C}" r="${r}" fill="none" stroke="${col}" stroke-width="${w}"/>`;if(a1-a0<=.1)return '';const[x0,y0]=P(a0,r),[x1,y1]=P(a1,r);return `<path d="M${x0} ${y0}A${r} ${r} 0 ${a1-a0>180?1:0} 1 ${x1} ${y1}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" opacity="${op==null?1:op}"/>`}
 function wedge(a0,a1,r0,r1,fill,st){const[a,b]=P(a0,r1),[c,d]=P(a1,r1),[e,g]=P(a1,r0),[h,k]=P(a0,r0);return `<path d="M${a} ${b}A${r1} ${r1} 0 0 1 ${c} ${d}L${e} ${g}A${r0} ${r0} 0 0 0 ${h} ${k}Z" fill="${fill}" stroke="${st}" stroke-width="1"/>`}
 function chev(x,y,up,col){return `<path data-k="1" d="M${x-20} ${y+(up?8:-8)}L${x} ${y+(up?-8:8)}L${x+20} ${y+(up?8:-8)}" fill="none" stroke="${col}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>`}
-function ico(n,x,y,col){const p={cal:'<rect x="-15" y="-13" width="30" height="28" rx="4"/><path d="M-15 -3H15M-7 -18V-9M7 -18V-9"/>',bell:'<path d="M0 -15C-9 -15 -11 -5 -11 2L-15 9H15L11 2C11 -5 9 -15 0 -15ZM-5 13A5 5 0 0 0 5 13"/>',sun:'<circle r="6"/><path d="M0 -17V-11M0 11V17M-17 0H-11M11 0H17M-12 -12L-8 -8M8 8L12 12M-12 12L-8 8M8 -8L12 -12"/>',spk:'<path d="M-15 -6H-8L2 -14V14L-8 6H-15Z"/><path d="M8 -7A10 10 0 0 1 8 7M13 -12A17 17 0 0 1 13 12"/>'}[n];return `<g data-k="1" transform="translate(${x} ${y})" fill="none" stroke="${col}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${p}</g>`}
+const chevs=(xs,y1,y2,col)=>xs.map(x=>chev(x,y1,1,col)+chev(x,y2,0,col)).join('');
+function ico(n,x,y,col){const p={cal:'<rect x="-15" y="-13" width="30" height="28" rx="4"/><path d="M-15 -3H15M-7 -18V-9M7 -18V-9"/>',bell:'<path d="M0 -15C-9 -15 -11 -5 -11 2L-15 9H15L11 2C11 -5 9 -15 0 -15ZM-5 13A5 5 0 0 0 5 13"/>',sun:'<circle r="6"/><path d="M0 -17V-11M0 11V17M-17 0H-11M11 0H17M-12 -12L-8 -8M8 8L12 12M-12 12L-8 8M8 -8L12 -12"/>',spk:'<path d="M-15 -6H-8L2 -14V14L-8 6H-15Z"/><path d="M8 -7A10 10 0 0 1 8 7M13 -12A17 17 0 0 1 13 12"/>',moon:'<path d="M6 -15A15 15 0 1 0 15 7A12 12 0 0 1 6 -15Z"/>',gear:'<circle r="5"/><path d="M0 -16V-11M0 11V16M-16 0H-11M11 0H16M-11 -11L-8 -8M8 8L11 11M-11 11L-8 8M8 -8L11 -11"/>'}[n];return `<g data-k="1" transform="translate(${x} ${y})" fill="none" stroke="${col}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${p}</g>`}
 function playIco(x,y,on,col){return on?`<g data-k="1" transform="translate(${x} ${y})" fill="${col}"><rect x="-14" y="-18" width="9" height="36" rx="2"/><rect x="5" y="-18" width="9" height="36" rx="2"/></g>`:`<path data-k="1" transform="translate(${x} ${y})" d="M-12 -19L19 0L-12 19Z" fill="${col}"/>`}
+function rimT(m,pc,on){const a=(wrap(m)%720)/720*360,[x,y]=P(a,212);return `<circle cx="${C}" cy="${C}" r="212" fill="none" stroke="${pc.h}" stroke-width="3" opacity=".6"/>`+(on?arc(212,0,a,pc.s,3,.9):'')+`<circle cx="${x}" cy="${y}" r="9" fill="${on?pc.t:OFFC}"/>`}
+function rimL(v,lo,pc){const a=-135+270*(v-lo)/(100-lo),[x,y]=P(a,212);return arc(212,-135,135,pc.h,3,.5)+arc(212,-135,a,pc.s,3,.9)+`<circle cx="${x}" cy="${y}" r="9" fill="${pc.t}"/>`}
 function pill(x,y,w,h,col){return `<rect x="${x-w/2}" y="${y-h/2}" width="${w}" height="${h}" rx="${h/2}" fill="none" stroke="${col}" stroke-width="2"/>`}
 const usual=s=>s.days[2].on?s.days[2].min:null;
 function next(s){const t=s.one??usual(s);if(t!=null&&!s.skip)return{i:2,min:t};for(let k=2;k<=7;k++){const i=(1+k)%7;if(s.days[i].on)return{i,min:s.days[i].min,sk:t!=null&&s.skip}}return{none:1,sk:t!=null&&s.skip}}
-function pal(s,dim){return s.mode==='night'?(dim?NIGHT_DIM:NIGHT_ACT):ACC[s.acc]}
-const MINT=t=>t;
+function picker(s,m,pc,title,on,sub,subCol){const a=t12(m);let h=rimT(m,pc,on)+chevs([150,316],70,396,pc.s)+T(C,140,30,title,pc.s,400);
+ h+=T(150,218,100,a.h,on?pc.t:OFFC,300)+T(C,214,80,':',on?pc.s:OFFC,300)+T(316,218,100,a.mm,on?pc.t:OFFC,300)+T(C,282,30,a.ap,on?pc.s:OFFC,400);
+ if(sub)h+=T(C,324,28,sub,subCol||pc.h,400);return h}
 
-function picker(s,m,pc,dim,labels,sub,title,state,statusCol){
-  let h=chev(150,70,1,pc.s)+chev(316,70,1,pc.s)+chev(150,396,0,pc.s)+chev(316,396,0,pc.s);
-  h+=T(150,104,26,labels[0],pc.h,400)+T(316,104,26,labels[1],pc.h,400);
-  h+=T(C,145,30,title,pc.s,400);
-  const a=t12(m);
-  h+=T(150,222,100,a.h,state?pc.t:OFFC,300)+T(C,218,80,':',state?pc.s:OFFC,300)+T(316,222,100,a.mm,state?pc.t:OFFC,300);
-  h+=T(C,285,30,a.ap,state?pc.s:OFFC,400);
-  h+=T(C,322,28,sub,statusCol||pc.h,400);
-  return h}
-
-function draw(n,s){let h='';const pc=pal(s,false);
-if(n==='clock'){const dim=s.mode==='night'&&!s.awake&&s.sun==null,c=pal(s,dim),nx=next(s);
- if(s.mode==='day'&&s.sun==null)h+=T(C,140,30,'Tuesday, Nov 12',c.s,400);
- const m=s.sun!=null?Math.round(390+30*s.sun):s.now;
- h+=TM(C,213,104,m,c.t,300,30);
- h+=T(C,290,34,s.sun!=null?'Sunrise · alarm 7:00 AM':nx.none?'No alarm set':DN[nx.i]+' '+f12(nx.min),c.s,400);
- const st=s.msg||(nx.sk?'Wed skipped':'')||(s.awake?'Hold for settings':'');
- if(st)h+=T(C,336,28,st,s.msg||nx.sk?WARN:c.h,400);
- if(s.awake&&s.sun==null){h+=ico('cal',C,52,c.h)+T(C,92,26,'Week',c.h,400)+ico('bell',C,414,c.h)+T(C,374,26,'Tomorrow',c.h,400)+ico('sun',44,C,c.h)+ico('spk',422,C,c.h)}}
+function draw(n,s){let h='';const pc=face(s,true);
+if(n==='clock'){const f=face(s,s.awake),ph=f.ph,nx=next(s),dimOff=0;
+ if(ph.p==='day'||(ph.p==='wind'&&ph.w<.5))h+=T(C,140,30,'Tue, Nov 12',f.s,400);
+ const m=s.sunT!=null?wrap(420+Math.round(s.sunT)):s.now;
+ h+=TM(C,213,104,m,f.t,300,30);
+ h+=T(C,290,34,s.sunT!=null?'Sunrise · alarm 7:00 AM':nx.none?'No alarm set':DN[nx.i]+' '+f12(nx.min),f.s,400);
+ const st=s.msg||(nx.sk?'Wed skipped':'');
+ if(st)h+=T(C,336,28,st,WARN,400);else if(s.awake&&s.sunT==null)h+=ico('gear',C,340,f.h);
+ if(s.awake&&s.sunT==null)h+=ico('cal',C,52,f.h)+ico('bell',C,414,f.h)+ico('sun',44,C,f.h)+ico('spk',422,C,f.h)}
 if(n==='tmr'){const u=usual(s),t=s.one??u;
- if(t==null)h+=chev(150,70,1,pc.s)+chev(316,70,1,pc.s)+chev(150,396,0,pc.s)+chev(316,396,0,pc.s)+T(C,145,30,'Tomorrow · Wed',pc.s,400)+T(C,222,64,'No alarm',OFFC,300)+T(C,322,28,'Tap above to set one',pc.h,400);
- else{const sub=s.skip?'Skipped · tap to restore':s.one!=null?'Once only · was '+(u!=null?f12(u):'off'):'Hold to skip';
-  h+=picker(s,t,pc,false,['Hour','Min'],sub,'Tomorrow · Wed',!s.skip,s.skip?WARN:(s.one!=null?OK:pc.h));
-  if(s.skip)h+=`<line x1="90" y1="228" x2="376" y2="228" stroke="${WARN}" stroke-width="5" stroke-linecap="round"/>`}}
+ if(t==null)h+=chevs([150,316],70,396,pc.s)+T(C,140,30,'Tomorrow',pc.s,400)+T(C,222,64,'No alarm',OFFC,300)+T(C,324,28,'Tap above to set one',pc.h,400);
+ else{const sub=s.skip?'Skipped':s.one!=null?'Once only':'';h+=picker(s,t,pc,'Tomorrow',!s.skip,sub,s.skip?WARN:OK);if(s.skip)h+=`<line x1="90" y1="218" x2="376" y2="218" stroke="${WARN}" stroke-width="5" stroke-linecap="round"/>`}}
 if(n==='week'){const nx=next(s);for(let i=0;i<7;i++){const a0=i*360/7-180/7+1,a1=a0+360/7-2,d=s.days[i],[x,y]=P((a0+a1)/2,148);
   h+=wedge(a0,a1,98,222,d.on?'#1f150b':'#0d0c0b',d.on?'#3d2815':'#1b1917')+T(x,y-15,28,DN[i],d.on?pc.t:OFFC,500)+T(x,y+16,26,d.on?f12(d.min).replace(' ',''):'off',d.on?pc.s:'#6a5a4a',400)}
-  h+=`<circle cx="${C}" cy="${C}" r="92" fill="#0b0b0b" stroke="#2a2420"/>`+T(C,190,26,'Next',pc.h,400)+T(C,226,34,nx.none?'None':DN[nx.i],pc.t,500)+(nx.none?'':T(C,264,30,f12(nx.min),pc.s,400))}
-if(n==='day'){const d=s.days[s.sel];h+=picker(s,d.min,pc,false,['Hour','Min'],d.on?'On · hold to turn off':'Off · tap to turn on','Every '+DF[s.sel],d.on);
+ h+=`<circle cx="${C}" cy="${C}" r="92" fill="#0b0b0b" stroke="#2a2420"/>`+(nx.none?T(C,233,34,'None',pc.t,500):T(C,214,34,DN[nx.i],pc.t,500)+T(C,254,30,f12(nx.min),pc.s,400))}
+if(n==='day'){const d=s.days[s.sel];h+=picker(s,d.min,pc,DF[s.sel],d.on,d.on?'':'Off',pc.h);
   for(let i=0;i<7;i++)h+=`<circle cx="${185+i*16}" cy="428" r="${i==s.sel?4.5:3}" fill="${i==s.sel?pc.t:'#3a3129'}"/>`}
-if(n==='sound'){const tm=TIMER[s.ti][0];
- h+=chev(C,70,1,pc.s)+T(C,146,30,'White noise',pc.s,400)+playIco(C,192,s.play,pc.t)+T(C,230,26,'Volume '+s.vol+'%',pc.h,400)+pill(C,293,290,56,pc.h)+T(C,293,30,tm,pc.s,400)+chev(C,396,0,pc.s)}
-if(n==='light'){const l=s.lt.l[s.lt.m],lc=s.lt.m?'#e8a050':'#d8683a';
- h+=chev(C,70,1,pc.s)+T(C,146,30,s.lt.m?'Reading light':'Night light',pc.s,400)+T(C,200,64,s.lt.on?l+'%':'Off',s.lt.on?pc.t:OFFC,300)+pill(C,293,290,56,pc.h)+T(C,293,30,s.lt.m?'Switch to night':'Switch to reading',pc.s,400)+chev(C,396,0,pc.s)}
-if(n==='ring'){if(s.done)h+=T(C,225,56,'Good morning','#fff0dc',300)+T(C,278,30,'Alarm off','#c8b098',400);
- else{h+=TM(C,185,112,420,'#fff0dc',300,30)+T(C,262,30,s.snz?'Tap to snooze · '+s.snz+' left':'No snoozes left','#e8cfae',400)+T(C,308,28,'Hold to turn off','#a8927a',400);if(s.hold>0)h+=arc(222,0,360*s.hold,'#fff0dc',8)}}
-if(n==='set'){const g=PG[s.pg],foot=(s.pg+1)+' / '+PG.length;
- const stp=(v)=>chev(C,70,1,pc.s)+chev(C,396,0,pc.s);
- h+=T(C,145,30,g,pc.s,400);
- if(g==='Time zone')h+=stp()+T(C,222,60,TZ[s.tz][0],pc.t,300)+T(C,290,28,TZ[s.tz][1],pc.h,400);
- if(g==='Set time')h=picker(s,s.clk,pc,false,['Hour','Min'],'Wi-Fi sets it for you',g,true);
- if(g==='Day look')h+=stp()+T(C,210,64,s.dayB+'%',pc.t,300)+pill(C,293,290,56,pc.h)+T(C,293,30,'Colour: '+ACC[s.acc].n,pc.s,400);
- if(g==='Night hours'){const a=t12(s.ns),b=t12(s.ne);h=chev(150,70,1,pc.s)+chev(316,70,1,pc.s)+chev(150,396,0,pc.s)+chev(316,396,0,pc.s)+T(150,104,26,'Starts',pc.h,400)+T(316,104,26,'Ends',pc.h,400)+T(C,145,30,g,pc.s,400)+T(150,222,100,a.h,pc.t,300)+T(316,222,100,b.h,pc.t,300)+T(150,285,30,a.ap,pc.s,400)+T(316,285,30,b.ap,pc.s,400)+T(C,320,28,'Face dims between these',pc.h,400)}
- if(g==='Night dimness')h+=stp()+T(C,215,100,s.nd,pc.t,300)+T(C,290,28,'1 dimmest · 5 brightest',pc.h,400);
- if(g==='Sunrise length')h+=stp()+T(C,215,64,s.sl+' min',pc.t,300)+T(C,290,28,'Before the alarm time',pc.h,400);
- if(g==='Alarm loudness')h+=stp()+T(C,215,64,s.ld+'%',pc.t,300)+T(C,290,28,'Never below 30%',pc.h,400);
- if(g==='Preview alarm')h+=T(C,215,40,'Hold to start',pc.t,300)+T(C,275,28,'A 60 second run-through',pc.h,400)+(s.hold>0?arc(222,0,360*s.hold,'#fff0dc',8):'');
- if(g==='Wi-Fi')h+=T(C,215,40,'Not connected',pc.t,300)+T(C,275,28,'Set up from your phone',pc.h,400);
- if(g==='About')h+=T(C,215,56,'v0.1',pc.t,300)+T(C,275,28,'Battery 82%',pc.h,400);
- if(g!=='Set time'&&g!=='Night hours')h+=T(C,426,26,foot,pc.h,400);
- else h+=T(C,426,26,foot,pc.h,400)}
-if(n==='zones'){const z='#6b4a2a';h+=`<circle cx="${C}" cy="${C}" r="232" fill="none" stroke="#3a2c1f" stroke-width="2"/><line x1="12" y1="120" x2="454" y2="120" stroke="${z}" stroke-width="2" stroke-dasharray="6 6"/><line x1="12" y1="346" x2="454" y2="346" stroke="${z}" stroke-width="2" stroke-dasharray="6 6"/><line x1="${C}" y1="14" x2="${C}" y2="120" stroke="${z}" stroke-width="2" stroke-dasharray="6 6"/><line x1="${C}" y1="346" x2="${C}" y2="452" stroke="${z}" stroke-width="2" stroke-dasharray="6 6"/>`+T(150,106,28,'+1 hour','#ffb869',500)+T(316,106,28,'+5 min','#ffb869',500)+T(C,206,30,'Tap: turn on','#ffb869',400)+T(C,252,30,'Hold: turn off','#ffb869',400)+T(150,360,28,'−1 hour','#ffb869',500)+T(316,360,28,'−5 min','#ffb869',500)+T(150,72,26,'Later','#a55f1a',400)+T(316,72,26,'Later','#a55f1a',400)+T(150,388,26,'Earlier','#a55f1a',400)+T(316,388,26,'Earlier','#a55f1a',400)}
+if(n==='sound'){let bars='';for(let i=0;i<10;i++){const bh=10+i*3.2,x=C-99+i*22;bars+=`<rect x="${x}" y="${176-bh}" width="14" height="${bh}" rx="4" fill="${i<s.vol/10?pc.t:'#2a211a'}"/>`}
+ h+=rimL(s.vol,0,pc)+chev(C,70,1,pc.s)+T(C,118,30,'Sound',pc.s,400)+bars+playIco(C,222,s.play,pc.t)+pill(C,293,250,56,pc.h)+ico('moon',C-62,293,pc.s)+T(C+28,293,30,TIMER[s.ti][0],pc.s,400)+chev(C,396,0,pc.s)}
+if(n==='light'){const l=s.lt.l[s.lt.m],m=s.lt.m,on=s.lt.on;
+ h+=rimL(l,5,pc)+chev(C,70,1,pc.s)+T(C,118,30,'Light',pc.s,400)+T(C,200,72,on?l+'%':'Off',on?pc.t:OFFC,300)
+  +`<rect x="${m?C:C-125}" y="265" width="125" height="56" rx="28" fill="${pc.h}" opacity=".5"/>`+pill(C,293,250,56,pc.h)+ico('moon',C-62,293,m?pc.h:pc.t)+ico('sun',C+62,293,m?pc.t:pc.h)+chev(C,396,0,pc.s)}
+if(n==='ring'){if(s.done)h+=T(C,233,56,'Good morning','#fff0dc',300);
+ else{h+=TM(C,185,112,420,'#fff0dc',300,30)+T(C,262,30,s.snz?'Tap to snooze':'No snoozes left','#e8cfae',400)+T(C,308,28,'Hold to stop','#a8927a',400);
+  for(let k=0;k<3;k++)h+=`<circle cx="${C-20+k*20}" cy="350" r="5" fill="${k<s.snz?'#fff0dc':'#4a3d32'}"/>`;if(s.hold>0)h+=arc(222,0,360*s.hold,'#fff0dc',8)}}
+if(n==='set'){const g=PG[s.pg];
+ const dots=PG.map((_,i)=>`<circle cx="${C+(i-(PG.length-1)/2)*16}" cy="428" r="${i==s.pg?4.5:3}" fill="${i==s.pg?pc.t:'#3a3129'}"/>`).join(''),stp=()=>chevs([C],70,396,pc.s);
+ if(g==='Time')h=picker(s,s.clk,pc,g,true,'',null);
+ if(g==='Date'){const mo=MON[s.dat.m],xs=[100,233,366];h=xs.map(x=>chev(x,100,1,pc.s)+chev(x,366,0,pc.s)).join('')+T(C,140,30,g,pc.s,400)+T(100,222,72,mo,pc.t,300)+T(233,222,72,s.dat.d,pc.t,300)+T(366,222,60,s.dat.y,pc.t,300)}
+ if(g==='Region')h=stp()+T(C,140,30,g,pc.s,400)+T(C,222,46,REG[s.rg][0],pc.t,300)+T(C,290,28,REG[s.rg][1],pc.h,400);
+ if(g==='Sleep hours'){const a=t12(s.ns),b=t12(s.ne);h=chevs([150,316],70,396,pc.s)+ico('moon',150,112,pc.s)+ico('sun',316,112,pc.s)+T(150,218,100,a.h,pc.t,300)+T(316,218,100,b.h,pc.t,300)+T(150,282,30,a.ap,pc.s,400)+T(316,282,30,b.ap,pc.s,400)}
+ if(g==='Brightness')h=rimL(s.dayB,10,pc)+stp()+T(C,140,30,g,pc.s,400)+T(C,222,72,s.dayB+'%',pc.t,300);
+ if(g==='Alarm volume')h=rimL(s.ld,30,pc)+stp()+T(C,140,30,g,pc.s,400)+T(C,222,72,s.ld+'%',pc.t,300);
+ if(g==='Preview alarm')h=T(C,140,30,g,pc.s,400)+T(C,222,56,'Hold',pc.t,300)+(s.hold>0?arc(222,0,360*s.hold,'#fff0dc',8):'');
+ if(g==='About')h=T(C,140,30,g,pc.s,400)+T(C,214,56,'v0.1',pc.t,300)+T(C,276,28,'Battery 82%',pc.h,400);
+ h+=dots}
+if(n==='zones'){const z='#6b4a2a';h+=`<circle cx="${C}" cy="${C}" r="212" fill="none" stroke="#ffb869" stroke-width="3" stroke-dasharray="2 10"/>`+`<circle cx="${C}" cy="${C}" r="232" fill="none" stroke="#3a2c1f" stroke-width="2"/><line x1="12" y1="120" x2="454" y2="120" stroke="${z}" stroke-width="2" stroke-dasharray="6 6"/><line x1="12" y1="346" x2="454" y2="346" stroke="${z}" stroke-width="2" stroke-dasharray="6 6"/><line x1="${C}" y1="14" x2="${C}" y2="120" stroke="${z}" stroke-width="2" stroke-dasharray="6 6"/><line x1="${C}" y1="346" x2="${C}" y2="452" stroke="${z}" stroke-width="2" stroke-dasharray="6 6"/>`+T(150,106,28,'+1 hour','#ffb869',500)+T(316,106,28,'+5 min','#ffb869',500)+T(C,206,30,'Tap: turn on','#ffb869',400)+T(C,252,30,'Hold: turn off','#ffb869',400)+T(C,298,30,'Turn the rim: set','#ffb869',400)+T(150,360,28,'−1 hour','#ffb869',500)+T(316,360,28,'−5 min','#ffb869',500)+T(150,72,26,'Later','#a55f1a',400)+T(316,72,26,'Later','#a55f1a',400)+T(150,388,26,'Earlier','#a55f1a',400)+T(316,388,26,'Earlier','#a55f1a',400)}
 return h}
 //</draw>
 
-const LG={clock:[['Tap','Wake the face and show the way'],['Swipe up','Tomorrow’s alarm'],['Swipe down','Weekly schedule'],['Swipe left','Sleep sound'],['Swipe right','Light'],['Hold 1.5 s','Settings']],
-tmr:[['Tap top / bottom','Later / earlier. Left is hours, right is minutes'],['Hold top / bottom','Keep going, faster the longer you hold'],['Hold centre','Skip tomorrow'],['Tap centre','Bring tomorrow back, if skipped'],['Swipe down','Back to the clock']],
+const LG={clock:[['Tap','Wake the face'],['Swipe up / down','Tomorrow / Week'],['Swipe left / right','Sound / Light'],['Hold 1.5 s','Settings']],
+tmr:[['Turn the rim','Set the time. Slow 1 min, fast 30 min'],['Tap top / bottom','Later / earlier. Left hours, right minutes'],['Hold top / bottom','Keep going'],['Hold centre','Skip tomorrow'],['Tap centre','Bring it back']],
 week:[['Tap a day','Open that day'],['Swipe up','Back to the clock']],
-day:[['Tap top / bottom','Later / earlier. Left is hours, right is minutes'],['Tap centre','Turn the day on'],['Hold centre','Turn the day off'],['Swipe sideways','Next or previous day, keeps the time'],['Swipe up','Back to the week']],
-sound:[['Tap top / bottom','Louder / quieter'],['Tap upper centre','Play or pause'],['Tap the pill','Sleep timer: 15, 30, 60, 90, all night'],['Swipe right','Back to the clock']],
-light:[['Tap top / bottom','Brighter / dimmer'],['Tap upper centre','On or off'],['Tap the pill','Night light or reading light'],['Swipe left','Back to the clock']],
-ring:[['Tap anywhere','Snooze for 9 minutes'],['Hold 2 seconds','Turn the alarm off']],
-set:[['Tap top / bottom','Change the value'],['Swipe sideways','Next or previous page'],['Swipe down','Back to the clock']]};
+day:[['Turn the rim','Set the time. Slow 1 min, fast 30 min'],['Tap top / bottom','Later / earlier'],['Tap centre','Turn the day on'],['Hold centre','Turn the day off'],['Swipe sideways','Next day, keeps the time']],
+sound:[['Turn the rim','Volume'],['Tap top / bottom','Louder / quieter'],['Tap the icon','Play or pause'],['Tap the pill','Sleep timer'],['Swipe right','Back to the clock']],
+light:[['Turn the rim','Brightness'],['Tap top / bottom','Brighter / dimmer'],['Tap the number','On or off'],['Tap the pill','Night light or reading light'],['Swipe left','Back to the clock']],
+ring:[['Tap anywhere','Snooze 9 minutes'],['Hold 2 seconds','Turn the alarm off']],
+set:[['Turn the rim','Change the value'],['Tap top / bottom','Change the value'],['Swipe sideways','Next page'],['Swipe down','Back to the clock']]};
 
 //<check>
 function states(){const L=[],add=(n,f)=>{const s=fresh();f&&f(s);L.push([n,s])};
- const msgs=['','Plug me in · 31%','Alarm 7:00 AM timed out','Alarms reset · swipe down','Set time','Battery 22%','Snoozed · rings 7:09 AM','Swipe down to add one'];
- for(const mode of ['night','day'])for(const aw of [false,true])for(const msg of msgs)add('clock',s=>{s.mode=mode;s.awake=aw;s.msg=msg});
- for(const now of [1394,608,779,671,1439,60])for(const mode of ['night','day'])add('clock',s=>{s.now=now;s.mode=mode;s.awake=true});
- add('clock',s=>{s.days.forEach(d=>d.on=false)});add('clock',s=>{s.skip=true;s.awake=true});add('clock',s=>{s.sun=.5});add('clock',s=>{s.sun=1;s.mode='day'});
+ const msgs=['','Plug me in · 31%','Alarm 7:00 AM timed out','Alarms reset','Set time','Battery 22%','Snoozed · rings 7:09 AM','Swipe down to add one'];
+ for(const now of [360,480,600,720,900,1080,1170,1230,1290,1350,1394,1439,120])for(const aw of [false,true])for(const msg of (now===1394||now===600)?msgs:[''])add('clock',s=>{s.now=now;s.awake=aw;s.msg=msg});
+ for(const now of [608,779,671,1439,60,1099,590])add('clock',s=>{s.now=now;s.awake=true});
+ add('clock',s=>{s.days.forEach(d=>d.on=false);s.awake=true});add('clock',s=>{s.skip=true;s.awake=true});add('clock',s=>{s.sunT=-10});add('clock',s=>{s.sunT=-29;s.now=390});
  for(const m of [0,425,1255,779,60,1439])for(const f of [s=>{},s=>{s.one=m},s=>{s.skip=true},s=>{s.days[2].on=false}])add('tmr',s=>{s.days[2].min=m;f(s)});
  add('tmr',s=>{s.one=500;s.days[2].on=false});
  add('week');add('week',s=>{s.days.forEach(d=>d.on=true);s.days.forEach((d,i)=>d.min=(i*140+1000)%1440)});add('week',s=>{s.days.forEach(d=>d.on=false)});add('week',s=>{s.days.forEach((d,i)=>{d.on=true;d.min=1439-i*61})});
@@ -308,27 +306,30 @@ function states(){const L=[],add=(n,f)=>{const s=fresh();f&&f(s);L.push([n,s])};
  for(let ti=0;ti<5;ti++)for(const pl of [true,false])for(const v of [0,100])add('sound',s=>{s.ti=ti;s.play=pl;s.vol=v});
  for(const m of [0,1])for(const on of [true,false])for(const l of [5,100])add('light',s=>{s.lt.m=m;s.lt.on=on;s.lt.l[m]=l});
  for(const z of [0,1,2,3])add('ring',s=>{s.snz=z});add('ring',s=>{s.done=true});add('ring',s=>{s.hold=.6});
- for(let p=0;p<PG.length;p++){add('set',s=>{s.pg=p});add('set',s=>{s.pg=p;s.tz=6;s.dayB=100;s.acc=2;s.ns=1380;s.ne=1000;s.nd=5;s.sl=60;s.ld=100;s.clk=779})}
+ for(let p=0;p<PG.length;p++)for(let r=0;r<REG.length;r++)add('set',s=>{s.pg=p;s.rg=r;s.dat={m:r%12,d:28,y:2099};s.dayB=100;s.ns=1380;s.ne=1000;s.ld=100;s.clk=779});
  add('zones');return L}
-function layoutCheck(){const g=$('chk'),svg=$('dev'),sr=svg.getBoundingClientRect(),k=588/sr.width,issues=[],seen={};let boxes=0;
- for(const[n,s]of states()){g.innerHTML=draw(n,s);const els=[...g.querySelectorAll('[data-k]')],R=[];
+function layoutCheck(){const g=$('chk'),svg=$('dev'),sr=svg.getBoundingClientRect(),k=588/sr.width,issues=[],seen={};let boxes=0,all=states();
+ for(const[n,s]of all){g.innerHTML=draw(n,s);const els=[...g.querySelectorAll('[data-k]')],R=[],ys=[];
   for(const e of els){const r=e.getBoundingClientRect();let x0=(r.left-sr.left)*k-61,x1=(r.right-sr.left)*k-61,y0=(r.top-sr.top)*k-61,y1=(r.bottom-sr.top)*k-61;
-   const tag=e.tagName.toLowerCase();if(tag==='text'){const cy=(y0+y1)/2,hh=(y1-y0)*.4;y0=cy-hh;y1=cy+hh;const fs=+e.getAttribute('font-size');if(fs<MINFONT)issues.push(n+': font '+fs+'px "'+e.textContent+'"')}
+   const tag=e.tagName.toLowerCase();if(tag==='text'){const cy=(y0+y1)/2,hh=(y1-y0)*.4;y0=cy-hh;y1=cy+hh;ys.push(cy);const fs=+e.getAttribute('font-size');if(fs<MINFONT)issues.push(n+': font '+fs+'px "'+e.textContent+'"')}
    R.push({x0,x1,y0,y1,t:(e.textContent||tag).trim().slice(0,22)});boxes++}
-  const lab=n+' '+JSON.stringify([s.mode,s.awake,s.msg,s.pg,s.sel,s.scr==='x'?0:s.now,s.skip,s.one,s.ti,s.hold,s.done]);
+  ys.sort((a,b)=>a-b);let lines=ys.length?1:0;for(let i=1;i<ys.length;i++)if(ys[i]-ys[i-1]>14)lines++;if(lines>MAXLINES&&n!=='week'&&n!=='zones'){const key=n+'|lines|'+lines;if(!seen[key]){seen[key]=1;issues.push(n+': '+lines+' text lines (max '+MAXLINES+') '+JSON.stringify([s.now,s.pg,s.msg]))}}
+  const lab=n+' '+JSON.stringify([s.now,s.awake,s.msg,s.pg,s.rg,s.sel,s.skip,s.one,s.ti,s.hold,s.done]);
   for(const r of R){for(const[x,y]of[[r.x0,r.y0],[r.x1,r.y0],[r.x0,r.y1],[r.x1,r.y1]])if(Math.hypot(x-C,y-C)>SAFE){const key=n+'|out|'+r.t;if(!seen[key]){seen[key]=1;issues.push(n+': outside safe circle "'+r.t+'" ('+Math.round(Math.hypot(x-C,y-C))+'px) '+lab)}break}}
   for(let i=0;i<R.length;i++)for(let j=i+1;j<R.length;j++){const a=R[i],b=R[j];if(a.x0<b.x1+3&&b.x0<a.x1+3&&a.y0<b.y1+3&&b.y0<a.y1+3){const key=n+'|ov|'+a.t+'|'+b.t;if(!seen[key]){seen[key]=1;issues.push(n+': overlap "'+a.t+'" with "'+b.t+'" '+lab)}}}}
- g.innerHTML='';return{states:states().length,boxes,issues}}
+ g.innerHTML='';return{states:all.length,boxes,issues}}
 //</check>
 
 let S=fresh();
 const cur=$('cur'),old=$('old'),fb=t=>$('fb').textContent=t,leds=$('leds');
 for(let i=0;i<24;i++){const a=i*15*Math.PI/180,c=document.createElementNS(NS,'circle');c.setAttribute('cx',C+266*Math.sin(a));c.setAttribute('cy',C-266*Math.cos(a));c.setAttribute('r',8);leds.appendChild(c)}
-const stops=[[0,[0,0,0]],[.12,[70,6,0]],[.36,[214,62,10]],[.6,[255,140,46]],[.82,[255,191,115]],[1,[255,234,203]]];
-function sun(t){for(let i=1;i<stops.length;i++)if(t<=stops[i][0]){const[a,ca]=stops[i-1],[b,cb]=stops[i],k=(t-a)/(b-a);return 'rgb('+ca.map((v,j)=>Math.round(v+(cb[j]-v)*k)).join(',')+')'}return 'rgb(255,234,203)'}
+const SK=[[-30,[0,0,0]],[-27,[34,0,0]],[-15,[150,8,0]],[-10,[236,66,8]],[-5,[255,140,44]],[0,[255,200,128]],[10,[255,236,208]]];
+function sunCol(t){t=clamp(t,-30,10);for(let i=1;i<SK.length;i++)if(t<=SK[i][0]){const[a,ca]=SK[i-1],[b,cb]=SK[i];return 'rgb('+mix(ca,cb,(t-a)/(b-a)).map(Math.round).join(',')+')'}return 'rgb(255,236,208)'}
+const sunK=t=>clamp(Math.pow((t+30)/40,1.6),0,1);
 function glow(col,k){[...leds.children].forEach(c=>{c.setAttribute('fill',k>0?col:'#26272a');c.setAttribute('opacity',k>0?.35+.65*k:1)});$('glow').style.background=col;$('glow').style.opacity=k>0?(.12+.5*k):0}
-function sync(){if(S.scr==='ring')glow('#ffe9cc',1);else if(S.sun!=null)glow(sun(S.sun),Math.pow(S.sun,1.3));else if(S.lt.on)glow(S.lt.m?'#ffb46a':'#ff5a1c',S.lt.l[S.lt.m]/100);else glow('#000',0)}
-function render(){cur.innerHTML=draw(S.scr,S);sync();$('lg').innerHTML=LG[S.scr].map(r=>`<div><b>${r[0]}</b><span>${r[1]}</span></div>`).join('')}
+function sync(){if(S.scr==='ring'&&S.sunT==null)glow('#ffe9cc',1);else if(S.sunT!=null)glow(sunCol(S.sunT),sunK(S.sunT));else if(S.lt.on)glow(S.lt.m?'#ffb46a':'#ff3a10',S.lt.l[S.lt.m]/100);else glow('#000',0)}
+function todLabel(){const ph=phase(S);$('todl').textContent=f12(S.now);return ph}
+function render(){cur.innerHTML=draw(S.scr,S);sync();$('lg').innerHTML=LG[S.scr].map(r=>`<div><b>${r[0]}</b><span>${r[1]}</span></div>`).join('');$('tod').value=S.now;todLabel()}
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;let anim=0,idleT,awT,busy=false;
 function nav(to,d,msg){old.innerHTML=cur.innerHTML;S.scr=to;if(msg)fb(msg);render();cancelAnimationFrame(anim);if(RM||!d){old.innerHTML='';cur.removeAttribute('transform');return}
  const t0=performance.now();(function st(t){const p=Math.min(1,(t-t0)/240),e=1-Math.pow(1-p,3);cur.setAttribute('transform',`translate(${d[0]*466*(1-e)} ${d[1]*466*(1-e)})`);old.setAttribute('transform',`translate(${-d[0]*466*e} ${-d[1]*466*e})`);old.setAttribute('opacity',1-e);if(p<1)anim=requestAnimationFrame(st);else{old.innerHTML='';old.removeAttribute('transform');old.removeAttribute('opacity');cur.removeAttribute('transform')}})(t0)}
@@ -336,39 +337,51 @@ function idle(){clearTimeout(idleT);if(S.scr!=='clock'&&S.scr!=='ring'&&!busy)id
 function wake(){S.awake=true;clearTimeout(awT);awT=setTimeout(()=>{S.awake=false;if(S.scr==='clock'&&!busy)render()},5000)}
 function ripple(x,y){const c=document.createElementNS(NS,'circle');c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('fill','#fff');$('fx').appendChild(c);const t0=performance.now();(function st(t){const p=Math.min(1,(t-t0)/380);c.setAttribute('r',12+30*p);c.setAttribute('opacity',.22*(1-p));p<1?requestAnimationFrame(st):c.remove()})(t0)}
 
-const STEPPER=['tmr','day','sound','light','set'];
-function stepScreen(){const s=S.scr;if(s==='set')return ['Time zone','Set time','Day look','Night hours','Night dimness','Sunrise length','Alarm loudness'].includes(PG[S.pg]);return STEPPER.includes(s)}
-function adj(dir,col,big){const s=S.scr;
- const tstep=col==='L'?60:(big?15:5);
+const STEP_PG=['Time','Date','Region','Sleep hours','Brightness','Alarm volume'];
+function stepScreen(){const s=S.scr;if(s==='set')return STEP_PG.includes(PG[S.pg]);return ['tmr','day','sound','light'].includes(s)}
+function colOf(x){const g=S.scr==='set'&&PG[S.pg]==='Date';if(g)return x<167?'A':x<300?'B':'C';return x<C?'L':'R'}
+function adj(dir,col,big){const s=S.scr,tstep=col==='L'?60:(big?15:5);
  if(s==='tmr'){const c=S.one??usual(S)??420,v=wrap(c+dir*tstep);S.one=v===usual(S)?null:v;S.skip=false;fb(f12(v))}
  else if(s==='day'){const d=S.days[S.sel];d.min=wrap(d.min+dir*tstep);d.on=true;fb(DF[S.sel]+' '+f12(d.min))}
  else if(s==='sound'){S.vol=clamp(S.vol+dir*10,0,100);fb('Volume '+S.vol+'%')}
  else if(s==='light'){S.lt.on=true;const m=S.lt.m;S.lt.l[m]=clamp(S.lt.l[m]+dir*10,5,100);fb('Brightness '+S.lt.l[m]+'%')}
  else if(s==='set'){const g=PG[S.pg];
-  if(g==='Time zone'){S.tz=(S.tz+(dir>0?6:1))%7;fb(TZ[S.tz][0])}
-  if(g==='Set time'){S.clk=wrap(S.clk+dir*tstep);fb(f12(S.clk))}
-  if(g==='Day look'){S.dayB=clamp(S.dayB+dir*10,10,100);fb('Day brightness '+S.dayB+'%')}
-  if(g==='Night hours'){if(col==='L')S.ns=wrap(S.ns+dir*60);else S.ne=wrap(S.ne+dir*60);fb('Night '+f12(S.ns)+' to '+f12(S.ne))}
-  if(g==='Night dimness'){S.nd=clamp(S.nd+dir,1,5);fb('Night dimness '+S.nd)}
-  if(g==='Sunrise length'){S.sl=clamp(S.sl+dir*5,10,60);fb('Sunrise '+S.sl+' min')}
-  if(g==='Alarm loudness'){S.ld=clamp(S.ld+dir*10,30,100);fb('Alarm loudness '+S.ld+'%')}}
+  if(g==='Time'){S.clk=wrap(S.clk+dir*tstep);S.now=S.clk;fb(f12(S.clk)+(col==='L'?' · daylight saving fix: one tap':''))}
+  if(g==='Date'){const d=S.dat;if(col==='A')d.m=(d.m+(dir>0?1:11))%12;else if(col==='B')d.d=((d.d-1+(dir>0?1:30))%31)+1;else d.y=clamp(d.y+dir,2024,2099);fb(MON[d.m]+' '+d.d+', '+d.y)}
+  if(g==='Region'){S.rg=(S.rg+(dir>0?1:REG.length-1))%REG.length;fb(REG[S.rg][0])}
+  if(g==='Sleep hours'){if(col==='L')S.ns=wrap(S.ns+dir*60);else S.ne=wrap(S.ne+dir*60);fb('Bed '+f12(S.ns)+' · wake '+f12(S.ne))}
+  if(g==='Brightness'){S.dayB=clamp(S.dayB+dir*10,10,100);fb('Daytime brightness '+S.dayB+'%')}
+  if(g==='Alarm volume'){S.ld=clamp(S.ld+dir*10,30,100);fb('Alarm volume '+S.ld+'%')}}
  render()}
-function tap(x,y){const r=Math.hypot(x-C,y-C),s=S.scr,z=y<120?'T':y>346?'B':'M',col=x<C?'L':'R';
+function dialScreen(){const s=S.scr;return s==='tmr'||s==='day'||s==='sound'||s==='light'||(s==='set'&&['Time','Brightness','Alarm volume'].includes(PG[S.pg]))}
+function adjTime(dm){const s=S.scr;
+ if(s==='tmr'){const c=S.one??usual(S)??420,v=wrap(c+dm);S.one=v===usual(S)?null:v;S.skip=false;fb(f12(v))}
+ else if(s==='day'){const d=S.days[S.sel];d.min=wrap(d.min+dm);d.on=true;fb(DF[S.sel]+' '+f12(d.min))}
+ else if(s==='set'){S.clk=wrap(S.clk+dm);S.now=S.clk;fb(f12(S.clk))}
+ render()}
+function adjLin(dir){const s=S.scr;
+ if(s==='sound'){S.vol=clamp(S.vol+dir,0,100);fb('Volume '+S.vol+'%')}
+ else if(s==='light'){S.lt.on=true;const m=S.lt.m;S.lt.l[m]=clamp(S.lt.l[m]+dir,5,100);fb('Brightness '+S.lt.l[m]+'%')}
+ else if(s==='set'){const g=PG[S.pg];if(g==='Brightness'){S.dayB=clamp(S.dayB+dir,10,100);fb('Daytime brightness '+S.dayB+'%')}if(g==='Alarm volume'){S.ld=clamp(S.ld+dir,30,100);fb('Alarm volume '+S.ld+'%')}}
+ render()}
+function dialStep(g,v){const s=S.scr,lin=s==='sound'||s==='light'||(s==='set'&&PG[S.pg]!=='Time'),unit=lin?3:6;
+ while(Math.abs(g.acc)>=unit){const dir=g.acc>0?1:-1;g.acc-=dir*unit;if(lin)adjLin(dir);else adjTime(dir*(v<30?1:v<120?5:v<300?15:30))}}
+function tap(x,y){const r=Math.hypot(x-C,y-C),s=S.scr,z=y<120?'T':y>346?'B':'M',col=colOf(x);
  if(s==='clock'){wake();S.msg='';fb('Tap: the face wakes and shows the way')}
  else if(s==='week'){if(r>98){let a=Math.atan2(x-C,C-y)*180/Math.PI;a=(a+360+180/7)%360;S.sel=Math.floor(a/(360/7));return nav('day',[0,-1],'Editing every '+DF[S.sel])}fb('Tap a day to edit it')}
- else if(s==='ring'){if(S.done)return;if(S.snz>0){S.snz--;S.msg='Snoozed · rings 7:09 AM';return nav('clock',null,'Snoozed for 9 minutes')}return fb('No snoozes left. Hold to turn off')}
+ else if(s==='ring'){if(S.done)return;if(S.snz>0){S.snz--;S.msg='Snoozed · rings 7:09 AM';return nav('clock',null,'Snoozed for 9 minutes')}return fb('No snoozes left. Hold to stop')}
  else if(z!=='M'&&stepScreen())adj(z==='T'?1:-1,col,false);
  else if(s==='tmr'){if(S.skip){S.skip=false;fb('Tomorrow’s alarm is back')}else if((S.one??usual(S))==null)fb('Tap above to set one');else fb('Hold to skip tomorrow')}
  else if(s==='day'){const d=S.days[S.sel];if(!d.on){d.on=true;fb(DF[S.sel]+' alarm on')}else fb('Hold to turn this day off')}
- else if(s==='sound'){if(y<240){S.play=!S.play;fb(S.play?'White noise playing':'Paused')}else{S.ti=(S.ti+1)%5;fb(TIMER[S.ti][0])}}
- else if(s==='light'){if(y<240){S.lt.on=!S.lt.on;fb(S.lt.on?'Light on':'Light off')}else{S.lt.m^=1;S.lt.on=true;fb(S.lt.m?'Reading light':'Night light')}}
- else if(s==='set'){const g=PG[S.pg];if(g==='Day look'){S.acc=(S.acc+1)%4;fb('Colour: '+ACC[S.acc].n)}else if(g==='Time zone'){S.tz=(S.tz+1)%7;fb(TZ[S.tz][0])}else fb('Swipe sideways for more settings')}
+ else if(s==='sound'){if(y<250){S.play=!S.play;fb(S.play?'White noise playing':'Paused')}else{S.ti=(S.ti+1)%5;fb('Sleep timer: '+TIMER[S.ti][0])}}
+ else if(s==='light'){if(y<250){S.lt.on=!S.lt.on;fb(S.lt.on?'Light on':'Light off')}else{S.lt.m^=1;S.lt.on=true;fb(S.lt.m?'Reading light':'Night light')}}
+ else if(s==='set'){const g=PG[S.pg];if(g==='Region'){S.rg=(S.rg+1)%REG.length;fb(REG[S.rg][0])}else fb('Swipe sideways for more settings')}
  render()}
 function swipe(d){const s=S.scr;
  if(s==='clock'){if(d==='up')return nav('tmr',[0,1],'Tomorrow’s alarm');if(d==='down')return nav('week',[0,-1],'Weekly schedule');if(d==='left')return nav('sound',[1,0],'Sleep sound');return nav('light',[-1,0],'Light')}
  if(s==='tmr'&&d==='down')return nav('clock',[0,-1],'Saved');
  if(s==='week'&&d==='up')return nav('clock',[0,1],'Back to the clock');
- if(s==='day'){if(d==='up')return nav('week',[0,1],'Saved');if(d==='left'||d==='right'){const t=S.days[S.sel].min;S.sel=(S.sel+(d==='left'?1:6))%7;if(!S.days[S.sel].on)S.days[S.sel].min=t;return nav('day',[d==='left'?1:-1,0],'Every '+DF[S.sel])}}
+ if(s==='day'){if(d==='up')return nav('week',[0,1],'Saved');if(d==='left'||d==='right'){const t=S.days[S.sel].min;S.sel=(S.sel+(d==='left'?1:6))%7;if(!S.days[S.sel].on)S.days[S.sel].min=t;return nav('day',[d==='left'?1:-1,0],DF[S.sel])}}
  if(s==='sound'&&d==='right')return nav('clock',[-1,0],'Back to the clock');
  if(s==='light'&&d==='left')return nav('clock',[1,0],'Back to the clock');
  if(s==='set'){if(d==='down')return nav('clock',[0,-1],'Settings closed');if(d==='left'||d==='right'){S.pg=(S.pg+(d==='left'?1:PG.length-1))%PG.length;return nav('set',[d==='left'?1:-1,0],PG[S.pg])}}
@@ -377,39 +390,44 @@ function onHold(){const s=S.scr;
  if(s==='ring'){S.hold=0;S.done=true;fb('Alarm off');render();setTimeout(()=>{S.done=false;S.snz=3;S.msg='';nav('clock',null,'Good morning')},1900)}
  else if(s==='tmr'){S.hold=0;S.skip=true;fb('Tomorrow’s alarm skipped');render()}
  else if(s==='day'){S.hold=0;S.days[S.sel].on=false;fb(DF[S.sel]+' alarm off');render()}
- else if(s==='clock'){S.hold=0;S.pg=0;nav('set',[0,1],'Settings')}
- else if(s==='set'&&PG[S.pg]==='Preview alarm'){S.hold=0;fb('Preview: 60 second run-through (shown here as the morning)');render();$('bMorn').click()}}
+ else if(s==='clock'){S.hold=0;S.pg=0;S.clk=S.now;nav('set',[0,1],'Settings: the time is first, so a daylight saving fix is one tap')}
+ else if(s==='set'&&PG[S.pg]==='Preview alarm'){S.hold=0;fb('Preview: a 60 second run-through, shown here as the morning');render();$('bMorn').click()}}
 
 const dev=$('dev');let G=null,rep=null;
 function pt(e){const b=dev.getBoundingClientRect();return[(e.clientX-b.left)*588/b.width-61,(e.clientY-b.top)*588/b.height-61]}
 function stopRep(){clearTimeout(rep&&rep.t);clearInterval(rep&&rep.i);rep=null}
 dev.addEventListener('pointerdown',e=>{if(busy)return;const[x,y]=pt(e),r=Math.hypot(x-C,y-C);if(r>C)return;dev.setPointerCapture(e.pointerId);ripple(x,y);idle();
- const z=y<120?'T':y>346?'B':'M',col=x<C?'L':'R',g=G={x,y,t:performance.now(),moved:false,held:false,rep:false};
+ const z=y<120?'T':y>346?'B':'M',col=colOf(x),g=G={x,y,t:performance.now(),moved:false,held:false,rep:false,rim:r>=130&&dialScreen(),dial:false,dialed:false,acc:0,ang:0,tt:0};
  let hm=0;const s=S.scr;
  if(s==='ring'&&!S.done)hm=2000;else if(s==='clock')hm=1500;
  else if(z==='M'&&((s==='tmr'&&!S.skip&&(S.one??usual(S))!=null)||(s==='day'&&S.days[S.sel].on)))hm=1000;
  else if(s==='set'&&PG[S.pg]==='Preview alarm')hm=1500;
  if(hm)(function lp(){if(G!==g||g.moved)return;const p=(performance.now()-g.t)/hm;if((s==='ring'||s==='tmr'||s==='day'||s==='clock'||s==='set')&&p>.12){S.hold=Math.min(1,(p-.12)/.88);render()}if(p>=1){g.held=true;return onHold()}requestAnimationFrame(lp)})();
  if(z!=='M'&&stepScreen()){stopRep();rep={t:setTimeout(()=>{if(G!==g||g.moved)return;g.rep=true;let n=0;rep.i=setInterval(()=>{if(G!==g){stopRep();return}n++;adj(z==='T'?1:-1,col,n>6)},230)},450)}}});
-dev.addEventListener('pointermove',e=>{if(!G)return;const[x,y]=pt(e);if(!G.moved&&Math.hypot(x-G.x,y-G.y)>16){G.moved=true;stopRep();if(S.hold){S.hold=0;render()}}});
+dev.addEventListener('pointermove',e=>{if(!G)return;const[x,y]=pt(e);
+ if(!G.moved&&Math.hypot(x-G.x,y-G.y)>16){G.moved=true;stopRep();if(S.hold){S.hold=0;render()}
+  if(G.rim){const r0=Math.hypot(G.x-C,G.y-C),ux=(G.x-C)/r0,uy=(G.y-C)/r0,mx=x-G.x,my=y-G.y,tang=Math.abs(-uy*mx+ux*my),rad=Math.abs(ux*mx+uy*my);if(tang>rad){G.dial=true;G.ang=Math.atan2(G.x-C,C-G.y)*180/Math.PI;G.tt=G.t}}}
+ if(G.dial){const a=Math.atan2(x-C,C-y)*180/Math.PI;let d=a-G.ang;if(d>180)d-=360;if(d<-180)d+=360;const nw=performance.now(),v=Math.abs(d)/Math.max(8,nw-G.tt)*1000;G.ang=a;G.tt=nw;G.acc+=d;G.dialed=true;dialStep(G,v)}});
 function up(e){stopRep();if(!G)return;const g=G;G=null;const[x,y]=pt(e);if(S.hold&&!g.held){S.hold=0;render();return fb('Let go too early. Keep holding')}
- if(g.held||g.rep){idle();return}const dx=x-g.x,dy=y-g.y,d=Math.hypot(dx,dy);
+ if(g.held||g.rep||g.dialed){idle();return}const dx=x-g.x,dy=y-g.y,d=Math.hypot(dx,dy);
  if(d>=56){swipe(Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up'));idle();return}
  if(d<16&&performance.now()-g.t<400)tap(x,y);idle()}
 dev.addEventListener('pointerup',up);dev.addEventListener('pointercancel',()=>{stopRep();G=null;if(S.hold){S.hold=0;render()}});
 
-$('bRing').onclick=()=>{if(busy)return;S.done=false;S.hold=0;S.sun=null;nav('ring',null,'7:00 AM. Tap to snooze, hold to turn off')};
-$('bReset').onclick=()=>{if(busy)return;const m=S.mode;S=fresh();S.mode=m;nav('clock',null,'Reset')};
-$('bLook').onclick=e=>{S.mode=S.mode==='night'?'day':'night';e.target.textContent='Look: '+S.mode;S.awake=false;fb(S.mode==='night'?'Night look: amber, very dim, moves a little each minute':'Day look: brighter, shows the date, your accent colour');render()};
-$('bMorn').onclick=()=>{if(busy)return;busy=true;S.awake=false;S.play=true;S.msg='';S.lt.on=false;S.sun=0;nav('clock',null,'6:30 AM. Sunrise begins');const t0=performance.now(),D=RM?1500:9000;
- (function st(t){const p=Math.min(1,(t-t0)/D);S.sun=p;const nz=Math.max(0,Math.round((1-p*8)*100));if(nz===0)S.play=false;render();fb(f12(Math.round(390+30*p))+' · light '+Math.round(Math.pow(p,1.3)*100)+'% · white noise '+nz+'%');
- if(p<1)requestAnimationFrame(st);else{S.sun=null;busy=false;S.snz=3;nav('ring',null,'7:00 AM. Tap to snooze, hold to turn off')}})(t0)};
+$('tod').oninput=e=>{if(busy)return;S.now=+e.target.value;S.clk=S.now;S.awake=false;const ph=phase(S);fb(ph.p==='day'?'Day: the face is bright and follows the sun':ph.p==='wind'?'Winding down: warmer, dimmer, no blue':'Night: dim amber, moves a little each minute');render()};
+$('bRing').onclick=()=>{if(busy)return;S.done=false;S.hold=0;S.sunT=null;nav('ring',null,'7:00 AM. Tap to snooze, hold to stop')};
+$('bReset').onclick=()=>{if(busy)return;S=fresh();nav('clock',null,'Reset')};
+function stage(t){return t<-15?'deep red':t<-5?'amber':t<0?'warm white':'daylight'}
+$('bMorn').onclick=()=>{if(busy)return;busy=true;S.awake=false;S.play=true;S.msg='';S.lt.on=false;S.now=390;S.sunT=-30;nav('clock',null,'6:30 AM. Dawn begins with deep red');const t0=performance.now(),D=RM?2000:12000;
+ (function st(t){const p=Math.min(1,(t-t0)/D),m=-30+40*p;S.sunT=m;const nz=Math.max(0,Math.round((1-(m+30)/2)*100));if(nz===0)S.play=false;
+  if(m>=0&&S.scr==='clock')nav('ring',null,null);else render();
+  fb(f12(420+Math.round(m))+' · '+stage(m)+' · light '+Math.round(sunK(m)*100)+'% · white noise '+nz+'%'+(m>=0?' · alarm sounding':''));
+  if(p<1)requestAnimationFrame(st);else{busy=false;S.sunT=null;S.snz=3;fb('+10 min: bright daylight hold, then the light fades. Tap to snooze, hold to stop');render()}})(t0)};
 let big=true;$('bSize').onclick=e=>{big=!big;dev.style.maxWidth=big?'440px':'232px';e.target.textContent=big?'Real size':'Enlarge';$('szl').textContent=big?'Shown enlarged.':'About real size on most screens: a 44 mm display.'};
 const demo=fresh();demo.awake=true;demo.play=true;demo.lt.on=true;
 document.querySelectorAll('[data-mini]').forEach(b=>{const n=b.dataset.mini,st=n==='clock'?fresh():demo;b.insertAdjacentHTML('afterbegin',`<svg viewBox="0 0 466 466" aria-hidden="true"><circle cx="233" cy="233" r="232" fill="#000" stroke="${n==='clock'?'#8a5e30':'#262a36'}" stroke-width="3"/>${draw(n,st)}</svg>`);
  b.onclick=()=>{if(busy)return;nav(n,null,b.querySelector('span').textContent);$('stage').scrollIntoView({behavior:RM?'auto':'smooth',block:'center'})}});
 $('zoneFig').innerHTML=draw('zones',fresh());
-{const nt=fresh(),dy=fresh();dy.mode='day';dy.acc=1;dy.awake=false;
- $('lookPair').innerHTML=[['Night, 11:14 PM',nt],['Day, 2:30 PM',dy]].map(([l,st],i)=>{st.now=i?870:1394;return `<figure><svg viewBox="0 0 466 466" aria-hidden="true"><circle cx="233" cy="233" r="232" fill="#000" stroke="#262a36" stroke-width="3"/>${draw('clock',st)}</svg>${l}</figure>`}).join('')}
+$('dayFour').innerHTML=[['Morning, 9 AM',540],['Afternoon, 2 PM',840],['Winding down, 9 PM',1260],['Night, 11:30 PM',1410]].map(([l,m])=>{const st=fresh();st.now=m;return `<figure><svg viewBox="0 0 466 466" aria-hidden="true"><circle cx="233" cy="233" r="232" fill="#000" stroke="#262a36" stroke-width="3"/>${draw('clock',st)}</svg>${l}</figure>`}).join('');
 render();
 </script>

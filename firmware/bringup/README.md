@@ -8,13 +8,14 @@ Tap the screen to step through:
 | Mode | You should see / hear |
 |------|-----------------------|
 | Idle | A running timer on the screen. Ring dark. Silent. |
-| Sunrise | The ring goes dark → red → amber → warm white over 20 s, then repeats. |
-| White light | The white LEDs on, dimmed to stay under the current cap. |
+| Dawn | The evidence-based dawn from docs/LIGHT.md, compressed to 54 s: deep red, then amber, then warm white at the alarm point, then a brighter, slightly cooler hold. The screen shows minutes from the alarm (T-30 to T+10). Repeats. |
+| Evening light | Warm and dim (20 %), the evening cap from LIGHT.md. |
+| Night light | Red only, about 3 %. |
 | White noise | Hiss from the speaker. |
 | Tone 440 Hz | A steady note from the speaker. |
 
 The screen also shows the ring's estimated current and the USB voltage the power chip reports.
-The ring is held to **300 mA** in this test because the quick wiring has no fuse.
+The ring is held to **300 mA** in this test because the quick wiring has no fuse, so the dawn's peak is scaled down to fit.
 
 ## Wiring for the quick test (3 wires)
 

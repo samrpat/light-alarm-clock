@@ -4,7 +4,7 @@
  *   screen + touch, the RGBW ring on GPIO17, the speaker, and the chips on the I2C bus.
  *
  * Tap the screen to step through the tests:
- *   Idle -> Sunrise (30 s loop) -> White light -> White noise -> Tone 440 Hz -> Idle
+ *   Idle -> Dawn (54 s loop of the 40-minute plan) -> Evening light -> Night light -> White noise -> Tone -> Idle
  *
  * Safety: the ring is held to RING_CAP_MA (300 mA) because this test rig has no fuse.
  */
@@ -32,8 +32,9 @@ static const char *TAG = "bringup";
 #define RING_IDLE_MA  25
 #define SAMPLE_RATE   22050
 
-enum { MODE_IDLE, MODE_SUNRISE, MODE_WHITE, MODE_NOISE, MODE_TONE, MODE_COUNT };
-static const char *MODE_NAME[MODE_COUNT] = {"Idle", "Sunrise", "White light", "White noise", "Tone 440 Hz"};
+enum { MODE_IDLE, MODE_SUNRISE, MODE_READING, MODE_NIGHT, MODE_NOISE, MODE_TONE, MODE_COUNT };
+static const char *MODE_NAME[MODE_COUNT] = {"Idle", "Dawn", "Evening light", "Night light", "White noise", "Tone 440 Hz"};
+static volatile int s_dawn_min;                           /* minutes from the alarm time, for the screen */
 static volatile int s_mode = MODE_IDLE;
 static volatile int64_t s_mode_t0;
 
@@ -83,17 +84,26 @@ static void ring_fill(rgbw_t c)
     led_strip_refresh(s_ring);
 }
 
-static float ramp(float p, float start, float end)       /* 0 before start, 1 after end, eased */
+/*
+ * The dawn plan from docs/LIGHT.md section 3. t is minutes from the alarm time, -30 to +10.
+ *   output fraction F: exponential, 0.2 % at T-30 rising to 100 % at T, then held
+ *   T-30..T-15  deep red only (passes closed eyelids, little effect on the body clock)
+ *   T-15..T-5   red, with green and a little white added (amber)
+ *   T-5..T      the white LED takes over (warm white), red and green fade to a tint
+ *   T..T+10     white stays full, red goes, a little blue is added (brighter, cooler, you are awake)
+ */
+static rgbw_t dawn_colour(float t)
 {
-    float x = (p - start) / (end - start);
-    x = x < 0 ? 0 : x > 1 ? 1 : x;
-    return powf(x, 2.2f);                                /* the eye sees brightness roughly this way */
-}
-
-/* p = 0..1 : dark -> deep red -> amber -> warm white (the W LED). Every curve starts from zero slope. */
-static rgbw_t sunrise_colour(float p)
-{
-    rgbw_t c = { .r = 255.0f * ramp(p, 0.0f, 0.55f), .g = 110.0f * ramp(p, 0.15f, 1.0f), .b = 0, .w = 255.0f * ramp(p, 0.30f, 1.0f) };
+    float x = (t + 30.0f) / 30.0f;
+    if (x < 0) x = 0;
+    if (x > 1) x = 1;
+    float F = powf(0.002f, 1.0f - x);
+    float R, G, W, B = 0;
+    if (t < -15.0f)      { R = 1;  G = 0;  W = 0; }
+    else if (t < -5.0f)  { float k = (t + 15.0f) / 10.0f; R = 1; G = 0.40f * k; W = 0.15f * k; }
+    else if (t < 0.0f)   { float k = (t + 5.0f) / 5.0f; R = 1 - 0.70f * k; G = 0.40f - 0.25f * k; W = 0.15f + 0.85f * k; }
+    else                 { float k = t / 10.0f; if (k > 1) k = 1; R = 0.30f * (1 - k); G = 0.15f - 0.05f * k; W = 1; B = 0.25f * k; }
+    rgbw_t c = { .r = 255.0f * F * R, .g = 255.0f * F * G, .b = 255.0f * F * B, .w = 255.0f * F * W };
     return c;
 }
 
@@ -102,12 +112,23 @@ static void ring_task(void *arg)
     while (1) {
         float t = (esp_timer_get_time() - s_mode_t0) / 1e6f;
         switch (s_mode) {
-        case MODE_SUNRISE: {                             /* 30 s up, hold 5 s, then repeat */
-            float u = fmodf(t, 35.0f);
-            ring_fill(sunrise_colour(u < 30.0f ? u / 30.0f : 1.0f));
+        case MODE_SUNRISE: {                             /* 40 virtual minutes in 48 s (1.2 s each), hold 6 s, repeat */
+            float u = fmodf(t, 54.0f);
+            float m = -30.0f + (u < 48.0f ? u : 48.0f) / 1.2f;
+            s_dawn_min = (int)floorf(m);
+            ring_fill(dawn_colour(m));
             break;
         }
-        case MODE_WHITE:   ring_fill((rgbw_t){0, 0, 0, 255}); break;
+        case MODE_READING: {                             /* evening light: warm, capped at 20 % (LIGHT.md section 4) */
+            rgbw_t c = { .r = 255.0f * 0.2f * 0.35f, .g = 255.0f * 0.2f * 0.25f, .b = 0, .w = 255.0f * 0.2f * 0.40f };
+            ring_fill(c);
+            break;
+        }
+        case MODE_NIGHT: {                               /* night light: red only, about 3 % */
+            rgbw_t c = { .r = 255.0f * 0.03f, .g = 0, .b = 0, .w = 0 };
+            ring_fill(c);
+            break;
+        }
         default:           ring_fill((rgbw_t){0, 0, 0, 0}); break;
         }
         vTaskDelay(pdMS_TO_TICKS(4));                    /* 250 frames a second */
@@ -198,7 +219,8 @@ static void ui_tick(lv_timer_t *t)
 {
     int s = esp_timer_get_time() / 1000000;
     lv_label_set_text_fmt(s_time_lbl, "%02d:%02d", s / 60 % 60, s % 60);
-    lv_label_set_text(s_mode_lbl, MODE_NAME[s_mode]);
+    if (s_mode == MODE_SUNRISE) lv_label_set_text_fmt(s_mode_lbl, "Dawn T%+d min", s_dawn_min);
+    else lv_label_set_text(s_mode_lbl, MODE_NAME[s_mode]);
     lv_label_set_text_fmt(s_info_lbl, "ring %d mA  USB %d mV\ntap to change", s_ring_ma, axp_read16(0x38));
 }
 

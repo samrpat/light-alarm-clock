@@ -20,14 +20,20 @@ Last reviewed: 2026-11-13 (Phase 2)
 
 | ID | Pri | Requirement | Phase | Test |
 |----|-----|-------------|-------|------|
-| R5 | M | `[ ]` Gesture-based UI on the 466×466 round touchscreen, usable half-asleep in the dark: three gestures only (tap, swipe, hold), tap zones ≥ 100 px, text ≥ 26 px, nothing depends on the rim, and a swipe can start anywhere (UX.md §2–3, D-026). | 2 | T-05 |
-| R6 | M | `[~]` Two looks on a schedule (UX.md §7, D-027). **Night:** amber only, blue under 15 %, dimmed through the panel, an always-on face that moves every minute (D-016), no white until the alarm rings. **Day:** brighter, date, accent colour. Night hours are settable (default 9 PM–7 AM). | 2, 3 | T-06 |
+| R5 | M | `[ ]` Four gestures only (swipe, tap, turn the rim, hold). Tap zones ≥ 100 px, a 10 mm dial band with tap zones as the backup, text ≥ 26 px, at most four text lines per screen, and a swipe can start anywhere (UX.md §2–3, D-034). | 2 | T-05 |
+| R6 | M | `[~]` The face follows the day (UX.md §7, D-032): colour and brightness change from wake, wind down over the 3 hours before bedtime, and end as the dim amber night face (blue under 15 %, dimmed through the panel, shifts every minute, no white until the alarm rings). Wake and bedtime are settable (default 7:00 AM and 10:30 PM). | 2, 3 | T-06 |
 | R7 | — | ~~IMU gestures (pick-up to wake, flip to snooze).~~ **Dropped** by D-011: the clock is stationary. | — | — |
 | R8 | N | `[ ]` Sound and Light remember their last volume, timer, brightness and colour mode, so starting either is 2 gestures. This replaces the scenes idea taken from Dreamie (D-024, D-023). | 2, 3 | T-08 |
 | R34 | M | `[ ]` Anything that can stop an alarm (turn a day off, skip tomorrow, dismiss, cancel a snooze or sunrise) needs a **hold**. Anything that only makes it ring (turn on, snooze, bring back) is a tap (D-024). | 2, 3 | T-34 |
 | R35 | M | `[ ]` Every sub-screen returns to the clock after 20 s without a touch (settings 30 s). Every change is saved the moment it is made (D-024). | 2, 3 | T-35 |
 | R36 | M | `[ ]` The firmware boots, keeps time and rings with no battery and with no ring fitted. Optional parts (battery, ring, protection parts, level shifter, light sensor) each have a defined behaviour when missing (D-025). | 3 | T-36 |
 | R37 | M | `[~]` No text overlaps, none under 26 px, all inside the safe circle, in Ubuntu. `layoutCheck()` reports zero issues for every screen state (D-028). Passes on the concept page; repeats on the firmware strings in Phase 3. | 2, 3 | T-37 |
+| R38 | M | `[ ]` The device never needs a network, server, account or phone at any time in its life (D-030, LONGEVITY.md §1). The radios are never switched on. | all | T-38 |
+| R39 | M | `[ ]` Dates are correct to 2099: 64-bit time, every leap day 2028–2056, the year 2038 (LONGEVITY.md §2). | 3 | T-39 |
+| R40 | M | `[ ]` The alarm still works if the screen, touch, speaker, ring or battery fails, or one copy of the program or settings is corrupt (LONGEVITY.md §6). | 3 | T-41, T-44 |
+| R41 | M | `[ ]` The firmware can be rebuilt and updated with no network: pinned toolchain, every library committed to the repository, a "30-year kit", and an SD-card update (LONGEVITY.md §5). | 7 | T-42 |
+| R42 | M | `[ ]` The battery is a replaceable consumable (a door, nothing glued), and the clock keeps working without it (LONGEVITY.md §4). | 4 | T-45 |
+| R43 | M | `[ ]` Nothing lights the sleeper: the ring is off from bedtime to the dawn, the screen is under 1 lux at the pillow, and the evening light is warm and capped (LIGHT.md §2, §4). | 3 | T-46 |
 
 ## 3. Sound
 
@@ -41,8 +47,8 @@ Last reviewed: 2026-11-13 (Phase 2)
 
 | ID | Pri | Requirement | Phase | Test |
 |----|-----|-------------|-------|------|
-| R12 | M | `[ ]` Sunrise ramp from the RGBW NeoPixel ring: dark → deep red → amber → warm white (white LED) → full daylight, ending at alarm time. Needs USB power (D-012); on battery the screen ramps to white instead. Duration configurable (10–60 min, default 30). Brightness follows a perceptual (gamma) curve so the start has no visible steps. | 3 | T-12 |
-| R13 | M | `[ ]` Reading light (warm, adjustable) and night light (very dim red/amber) modes. | 3 | T-13 |
+| R12 | M | `[ ]` Dawn: 30 minutes, fixed, exponential, deep red → amber → warm white at the alarm time → bright daylight hold for 10 minutes, then fade (LIGHT.md §3, D-033). Needs USB power; on battery the screen ramps instead. | 3 | T-12 |
+| R13 | M | `[ ]` Reading light and night light with caps by time of day, and both switching off with the sleep timer or after 20 minutes at night (LIGHT.md §4). | 3 | T-13 |
 | R14 | M | `[ ]` Firmware enforces a hard LED current cap (value set in [POWER.md](POWER.md)), whatever the colour or mode. | 1, 3 | T-14 |
 
 ## 5. Alarm reliability (the alarm must never be missed)
@@ -50,7 +56,7 @@ Last reviewed: 2026-11-13 (Phase 2)
 | ID | Pri | Requirement | Phase | Test |
 |----|-----|-------------|-------|------|
 | R15 | M | `[ ]` Time survives power loss: the PCF85063 RTC is the time source, and system time is restored from it at boot. Lost RTC integrity (oscillator-stop flag) is detected and shown as "Set time"; it never silently gives a wrong time. | 3 | T-15 |
-| R16 | M | `[ ]` Optional time sync (phone over BLE in Phase 6; Wi-Fi SNTP if D-010 is accepted). The RTC drift offset can be calibrated. | 3, 6 | T-16 |
+| R16 | M | `[ ]` No time source outside the device. Time is set by hand, and the clock learns its own drift and trims the RTC when you correct it (LONGEVITY.md §2). An optional GNSS receiver may be added later. | 3 | T-16 |
 | R17 | M | `[ ]` Schedule is stored in NVS as an A/B pair of records, each with schema version, sequence number and CRC32. A bad record falls back to the other copy. If both are bad, the schedule is empty and the clock shows a persistent warning and chimes (D-015). Never a silent "no alarm". A new clock has no alarms until the user adds one. | 3 | T-17 |
 | R18 | M | `[ ]` The alarm path does not depend on UI, touch, BLE or the I2C bus at the moment it fires. A UI crash or hang, or a BLE fault, cannot block or delay an alarm. | 3 | T-18 |
 | R19 | M | `[ ]` Watchdogs: task watchdog on every alarm-critical task, interrupt watchdog, a supervisor heartbeat for UI/BLE, and a boot-loop guard that enters an "alarm-only" safe mode. | 3 | T-19 |
@@ -62,14 +68,14 @@ Last reviewed: 2026-11-13 (Phase 2)
 | R25 | M | `[ ]` Battery reserve: as the battery nears the energy needed for the next alarm, shed load (white noise, then display, then sunrise brightness) so the alarm sound still fires. | 1, 3 | T-25 |
 | R26 | M | `[ ]` Self-test / **Preview alarm**: a compressed 60 s run of sunrise → sound escalation → snooze/dismiss, plus an LED, speaker and RTC check. | 3 | T-26 |
 | R27 | M | `[ ]` The PWR button cannot switch the clock off by accident (PMIC long-press power-off set to the longest delay or disabled; power-off only through a confirmed UI action). | 1, 3 | T-27 |
-| R28 | M | `[ ]` Correct local time across time zones and DST. An alarm in a skipped hour (spring forward) fires at the first valid minute after it. An alarm in a repeated hour (fall back) fires once. | 3 | T-28 |
+| R28 | M | `[ ]` Correct local time across regions and daylight saving with no network: rules stored in the clock for any year to 2099, a Manual region, and a `region.txt` SD-card file for other rules (LONGEVITY.md §3, D-031). A skipped hour rings at the next valid minute, a repeated hour rings once. Fixing the clock after a rule change takes 2 touches. | 3 | T-28, T-40 |
 
 ## 6. Power
 
 | ID | Pri | Requirement | Phase | Test |
 |----|-----|-------------|-------|------|
 | R29 | M | `[~]` USB-C is the main supply. A backup Li-ion cell charges while in use and takes over on unplug without a reset (designed in POWER.md; not yet tested). | 1 | T-29 |
-| R30 | M | `[~]` Backup battery covers one unplugged night: 8 h white noise + 10 min alarm sound, using ≤ 60 % of usable capacity (2000 mAh: 53 % by calculation; not yet measured). The ring is off on battery. | 1 | T-30 |
+| R30 | M | `[~]` The backup battery (about 1000 mAh, 5 mm thick, D-035) keeps the clock and the alarm sound running through a power cut: clock only about 15 h; a typical night with a 90-minute sleep timer uses about 75 % of its usable energy. A full 8 h of white noise on battery is not covered. The ring is dark on battery. By calculation only, not yet measured. | 1 | T-30 |
 | R31 | M | `[ ]` Safe shutdown at critical battery: state saved, LEDs off, clean power-down, and it recovers on next power-up. | 1, 3 | T-31 |
 | R32 | M | `[~]` 5 V NeoPixel supply and 3.3 V→5 V data path per [POWER.md](POWER.md) (bulk capacitor, series data resistor, level shifting). | 1 | T-32 |
 
@@ -83,10 +89,10 @@ Last reviewed: 2026-11-13 (Phase 2)
 
 | ID | Pri | Requirement | Phase | Test |
 |----|-----|-------------|-------|------|
-| N1 | N | `[ ]` BLE settings sync with a phone, **settings only**: schedule, overrides, volume, light, sound choice, time sync. No audio streaming. | 6 | T-40 |
-| N2 | N | `[ ]` Defined conflict rule when phone and clock settings disagree. | 6 | T-41 |
-| N3 | N | `[ ]` BLE pairing is secured (bonded, encrypted writes). | 6 | T-42 |
-| N4 | N | `[ ]` OTA firmware updates with automatic rollback if the new image fails its self-test. | 7 | T-43 |
+| N1 | N | `[–]` Dropped: the product has no radio (D-030). | 6 | T-40 |
+| N2 | N | `[–]` Dropped: the product has no radio (D-030). | 6 | T-41 |
+| N3 | N | `[–]` Dropped: the product has no radio (D-030). | 6 | T-42 |
+| N4 | N | `[ ]` Offline firmware update from an SD-card file or a USB cable, with automatic rollback if the new program fails its self-test (LONGEVITY.md §5). | 7 | T-42 |
 | N5 | N | `[ ]` The device works fully with no phone. Every setting can be changed on the device itself. *(Also a Dreamie principle.)* | 2, 3 | T-44 |
 
 ---
@@ -120,6 +126,8 @@ Last reviewed: 2026-11-13 (Phase 2)
 | K8 | Flash wear from frequent NVS writes. | NVS failure years later. | Write only on settings change and alarm state transitions. Use RTC slow memory for per-second state. |
 | K9 | RTC drift (crystal ±20 ppm ≈ ±1 min/month). | Alarm slowly drifts. | PCF85063 offset register calibration + phone/Wi-Fi sync (R16). |
 | K10 | DST and time zone mistakes. | Alarm fires an hour off twice a year. | RTC holds UTC, POSIX TZ string, host-tested `next_alarm()` (D-003). |
+| K11 | **Thirty years of ageing:** the battery, the screen's pixels, flash memory and electrolytic capacitors all wear. | A part fails and takes the alarm with it. | Replaceable battery, a screen-independent alarm path, two program copies, long-life capacitors (LONGEVITY.md §4, §6). |
+| K12 | **A daylight saving law changes.** | The alarm rings an hour off until corrected. | Manual region, `region.txt` on the SD card, a 2-touch fix (LONGEVITY.md §3). |
 
 ### Reference product: Dreamie (helloambient.com)
 

@@ -82,7 +82,7 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
 - **Decision:** `/docs` (this set), `/firmware` (ESP-IDF project, `components/` per module, `test/` host tests), `/enclosure` (parametric CAD). Docs are updated at the end of every phase. Recommend putting the folder under git (owner's choice).
 
 ## D-010 — Wi-Fi (SNTP + OTA)
-- **Date:** 2026-11-12 · **Status:** Accepted 2026-11-12, option (b). Wi-Fi is opportunistic: several networks can be saved; away from home the clock runs from the RTC and phone sync. See D-012 note on time.
+- **Date:** 2026-11-12 · **Status:** Superseded by D-030 (no network of any kind). Was: Accepted 2026-11-12, option (b). Wi-Fi is opportunistic: several networks can be saved; away from home the clock runs from the RTC and phone sync. See D-012 note on time.
 - **Options:** (a) **BLE only.** Time sync from the phone; OTA over USB or BLE (slow, ~1–2 MB at BLE speed takes minutes). (b) **Wi-Fi for SNTP + OTA only**, credentials entered via BLE. Wi-Fi is never needed for the alarm.
 - **Recommendation:** (b). Automatic accurate time and easy OTA. Wi-Fi stays off except a short daily sync (power and RF quietness at night).
 
@@ -182,7 +182,7 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
 - **Consequences:** The parts list drops to three small parts plus wires. The PCB files stay in `/pcb/halo-driver/` for later. Applies to firmware too: no feature is added without a stated need.
 
 ## D-024 — Interface rules from Phase 2
-- **Date:** 2026-11-13 · **Status:** Proposed (awaiting Phase 2 approval); items 5 and 6 superseded by D-026, item 7 by D-027 · **Reqs:** R2–R6, R8, R23, R34, R35 · amends D-011
+- **Date:** 2026-11-13 · **Status:** Proposed (awaiting Phase 2 approval); items 5 and 6 superseded by D-026 then D-034, item 7 by D-027 then D-032, item 3 (settings pages) by D-032 · **Reqs:** R2–R6, R8, R23, R34, R35 · amends D-011
 - **Decision** (full detail in [UX.md](UX.md)):
   1. **Off needs a hold, on needs a tap.** Day: tap turns on, hold 1 s turns off. Tomorrow: hold 1 s skips, tap brings it back. Replaces the tap-to-toggle in the first concept.
   2. **Always back:** the opposite swipe returns. Any sub-screen returns to the clock after 20 s idle (settings 30 s). Every change saves at once.
@@ -208,18 +208,56 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
 - **Consequences:** Phase 3 firmware has a small `hw_profile` header and a boot-time check. Test UX-15 covers it. D-019 and D-021 stay on hold (PCB later); D-014's level shifter is optional.
 
 ## D-026 — Values are changed by tap zones; no rim or dial gestures
-- **Date:** 2026-11-13 · **Status:** Proposed (owner: "there is no physical dial", "consider multiple ways and figure out the best one") · supersedes the "turn the edge" gesture of D-011 and D-024 items 5 and 6 · **Reqs:** R2, R5, R34
+- **Date:** 2026-11-13 · **Status:** Partly superseded by D-034 (the rim dial is restored; tap zones stay as the backup) · Was: Proposed (owner: "there is no physical dial", "consider multiple ways and figure out the best one") · supersedes the "turn the edge" gesture of D-011 and D-024 items 5 and 6 · **Reqs:** R2, R5, R34
 - **Decision:** Three gestures: tap, swipe, hold. The top of the screen raises a value, the bottom lowers it. On time pickers the left half moves hours (±1 h) and the right half moves minutes (±5 min, carrying into the hour). Holding a tap zone repeats and speeds up. Holding the centre is the guarded action.
 - **Options considered:** rim drag, drag-anywhere drum, one-value tap zones, arc slider (full table in UX.md §4.1; weighted scores A 50 · B 55 · C 84 · **D 88** · E 58, my judgement). Tap zones win on reliability, no new gesture type, no clash with swipes, and no dependence on the rim or the case.
 - **Consequences:** A 30-minute change is a hold of about 1.5 s. R2 is counted in touches with a hold as one. The two methods can be compared on the real panel in the bring-up app (UX-B2). The classifier is simpler: tap, swipe, hold only.
 
 ## D-027 — Day and night look on a schedule
-- **Date:** 2026-11-13 · **Status:** Proposed (owner: "want day and night schedule, some vibe for day and dim for night") · supersedes D-024 item 7 · **Reqs:** R6
+- **Date:** 2026-11-13 · **Status:** Superseded by D-032 (a face that changes continuously) · Was: Proposed (owner: "want day and night schedule, some vibe for day and dim for night") · supersedes D-024 item 7 · **Reqs:** R6
 - **Decision:** Night hours are settable, default 9 PM to 7 AM. Night: amber only, blue under 15 %, dimness 1–5 through the panel, the face shifts a step a minute (D-016). Day: brighter (10–100 %, default 50 %), an accent colour (Amber, Sky, Mint, Rose) and the date. If the time is untrusted, the night look is used. A tap lifts the night face for 5 s. The ring is not part of the look.
 - **Options considered:** schedule (chosen) · light sensor (not on the board; a possible optional part) · manual switch (a bright screen at 3 a.m. is the worst failure).
 - **Open:** what extra "vibe" the day look should have.
 
 ## D-028 — Ubuntu type and an automatic layout check
 - **Date:** 2026-11-13 · **Status:** Proposed (owner: "use Ubuntu font style", "no awkward overlaps between text") · **Reqs:** R5, R37
-- **Decision:** All device text is Ubuntu (Light, Regular, Medium), under the Ubuntu Font Licence 1.0 (text in `docs/licenses/`). Firmware uses bitmap fonts made from the TTFs with `lv_font_conv`. Text sits inside a safe circle of radius 209 px, never under 26 px, never overlapping. `layoutCheck()` in the concept page measures all 188 screen states in the real font. Result: 1,667 boxes, 0 issues.
+- **Decision:** All device text is Ubuntu (Light, Regular, Medium), under the Ubuntu Font Licence 1.0 (text in `docs/licenses/`). Firmware uses bitmap fonts made from the TTFs with `lv_font_conv`. Text sits inside a safe circle of radius 209 px, never under 26 px, never overlapping. `layoutCheck()` in the concept page measures all 257 screen states in the real font and limits every screen to four text lines. Result: 1,796 boxes, 0 issues.
 - **Consequences:** Phase 3 builds the fonts and repeats the check on the real strings, and the check is a gate for UI changes. The Ubuntu Font Licence should be re-read before any firmware binary is distributed.
+
+## D-029 — Enclosure: fold-out weighted foot, 30-year serviceable build
+- **Date:** 2026-11-13 · **Status:** Proposed, early draft before Phase 4 (owner: "foldable stand", "nicely fit all them", "last 30 years") · **Reqs:** R33, R27, R36
+- **Decision:** A round head (about 88 × 32 mm) holds every electronic part, so no wire crosses a hinge. A weighted foot plate hinges at the head's bottom-rear edge on a stainless pin in brass bushings, with detents at 0°, 12° and 24° and a hard stop. It folds flat against the back into a puck about 40 mm thick. For 30 years: screws into brass inserts only, no glue or snap-fits, ASA or PETG (no PLA), wear placed on cheap replaceable parts (USB-C panel socket, silicone feet, diffuser), and a board carrier so a future display only needs a new carrier. Full draft in ENCLOSURE.md.
+- **Options considered:** kickstand leg (2.5/5) · head in a U-shaped base (3.5) · **fold-out weighted foot (4.5)**, my judgement (ENCLOSURE.md §2).
+- **Open:** front halo or a rear wall-wash, colours, and the board measurements E1–E6.
+
+## D-030 — Standalone for 30 years: no network, ever
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "last 30 years, not dependent on any external software, Wi-Fi or servers, like a Nokia") · supersedes D-010 · **Reqs:** R16, R38, R41, N1–N4
+- **Decision:** The product never uses Wi-Fi, Bluetooth, a time server, a cloud, an account or a phone. The radios are never initialised. Time is set by hand. Updates come from an SD-card file or a USB cable. The build tools and every library are kept offline. Full plan in [LONGEVITY.md](LONGEVITY.md).
+- **Why:** Servers, certificates, apps and cloud accounts are what stop working first.
+- **Consequences:** The phone link (Phase 6) and over-the-air updates are dropped. Phase 6 becomes "offline update and the 30-year kit", Phase 7 polish.
+
+## D-031 — Daylight saving and time with no server
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "dst, figure out a way") · **Reqs:** R16, R28, R39, K12 · refines D-003
+- **Decision:** Four layers: rules stored in the clock as time-zone rule strings (any year to 2099), a **Manual** region, a `region.txt` file on the SD card for a rule the clock does not know, and alarms stored as wall-clock times. After a law change, fix the clock in two touches. The clock learns its own drift when corrected.
+- **Options considered:** NTP over Wi-Fi (needs a server), a GNSS receiver (not on this board), a radio time signal (one broadcaster, no receiver) · **rules inside + Manual + SD file (chosen)**.
+
+## D-032 — A face that follows the day; eight settings
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "a face which is dynamic till sleep", "settings concise", "don't need where the sun is") · supersedes D-027, D-024 item 3 · **Reqs:** R6
+- **Decision:** The face is a function of the time between wake and bedtime: gold in the morning, cool white at noon, warm in the afternoon, a 3-hour wind-down (blue drains out, brightness falls smoothly, the date fades) and a dim amber night face. No sun arc or marker. Settings are eight pages: Time, Date, Region, Sleep hours, Brightness, Alarm volume, Preview alarm, About. Removed: Wi-Fi, accent colour, night dimness, sunrise length, the day-look page. At most four text lines on any screen.
+- **Why:** Colour and brightness alone carry the day, with nothing static to burn in. The 3-hour wind-down follows the evening-light guidance in [LIGHT.md](LIGHT.md).
+
+## D-033 — The light plan follows the evidence
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "make the LED sequence most scientifically beneficial") · **Reqs:** R12, R13, R43
+- **Decision:** A fixed 30-minute exponential dawn (deep red, amber, warm white at the alarm, a bright daylight hold for 10 minutes), a ring that is off from bedtime to the dawn, a warm and capped evening light, and a night light that never stays on in sleep. The evidence is modest, and LIGHT.md says where I could not read the source. Calibration with a lux meter is needed (L1–L5).
+- **Options considered:** a shorter ramp, cool white while asleep, a sleep-stage trigger (needs a sensor), a length setting. All rejected (LIGHT.md §3).
+
+## D-034 — The touch rim dial is back, with tap zones as the backup
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "I actually like the idea of the dial with touch") · supersedes the "no rim" part of D-026 · **Reqs:** R2, R5
+- **Decision:** A finger run around the outer 10 mm sets a value (a marker follows; slow is 1 minute, fast is 30 minutes; 3° is 1 % for volume and brightness). The tap zones (top later, bottom earlier, left hours, right minutes, hold repeats) stay as the sure way if the case covers part of the rim. Four gestures: swipe, tap, turn, hold.
+- **Consequences:** The classifier tells a rim turn from an inward swipe by the direction of the first 16 px. A simulated drag test passes. Bench check UX-B2 compares both on the real panel.
+
+## D-035 — Battery: thin 503450-class cell, replaceable
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "give me the one to order that works, fits, and keeps the case thin and portable") · amends D-012 and the 2000 mAh figure in POWER.md · **Reqs:** R30, R42
+- **Decision:** Order a **3.7 V Li-polymer 503450 cell: 5 × 34 × 50 mm, about 1000 mAh, with a built-in protection board and a 1.25 mm 2-pin plug of the Molex PicoBlade type**, wires at least 50 mm. Half the thickness of the earlier 103450 draft. I could not confirm any single store listing or the polarity from Waveshare's documents, so the part is chosen by specification and must be checked on arrival (HARDWARE.md §1).
+- **Runtime (calculated):** about 3.0 Wh usable. Clock only about 15 h. A typical night with a 90-minute sleep timer uses about 75 %. A full 8 h of white noise on battery is not covered.
+- **Consequences:** ENCLOSURE.md assumes a 10 mm cell; the tray can drop to 5 mm plus swell room. It is a consumable (R42).
