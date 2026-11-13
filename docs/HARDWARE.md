@@ -156,7 +156,7 @@ Note for Phase 4: the ring's 52.2 mm opening is wider than the 44.5 mm screen, s
 | V5 | Board runs from USB with no battery, and from battery with no USB | Try both | Assumed, not stated by Waveshare. |
 | V6 | RTC keeps time across a USB unplug with the battery fitted | Unplug for 10 min, compare | R15. |
 | V7 | PWR-key long-press power-off can be disabled | Write the AXP2101 setting, hold PWR 15 s | R27. |
-| V8 | Ring colour order (owner has #2861, warm white) | Light W only; light R only | Sunrise colour curves depend on it. |
+| V8 | Ring colour order (owner has #2861, warm white) | ✅ GRBW confirmed by the bring-up test: sunrise and white modes showed the expected colours. | Sunrise colour curves depend on it. |
 | V9 | Which way the board's 8-pin header faces and whether pins are fitted | Look at the board | Decides how the halo driver PCB connects (§7). |
 | V10 | Board runs and charges when 5 V is fed into the header VBUS pin (nothing in its USB port) | Bench supply or USB breakout into VBUS/GND | Needed for PCB v2 (D-021). |
 

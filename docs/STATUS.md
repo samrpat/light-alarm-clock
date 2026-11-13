@@ -36,7 +36,8 @@ Last updated: 2026-11-12
 - ESP-IDF v5.5.6 installed on the Mac. `/firmware/bringup` compiles. 
 - Quick wiring: ring straight to VBUS / GND / GPIO17, no level shifter or fuse, ring capped at 300 mA.
 - **Flashed and running on the board (2026-11-12).** Startup log: display, touch (CST9217) and LVGL started; all 7 I2C chips answered; ring driver started on GPIO17; codec and speaker opened at 22 050 Hz.
-- Still to confirm by eye and ear: touch changes mode, ring lights with correct colours, speaker plays noise and tone.
+- **Owner confirmed 2026-11-12: all modes work** (touch, ring sunrise and white, white noise, tone). Ring ran on a direct 3.3 V data line with short wires and a 300 mA cap.
+- Not yet tested: battery, full 0.9 A ring current, level shifter, USB voltage under load.
 
 ## Waiting for owner
 1. **Approve Phase 1** (accepts D-012, D-014, D-019).
