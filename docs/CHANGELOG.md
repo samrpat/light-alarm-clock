@@ -29,3 +29,4 @@
 - Installed ESP-IDF v5.5.6 (`~/esp/esp-idf`), cmake and ninja on the development Mac.
 - Added `/firmware/bringup`: screen + touch, ring sunrise on GPIO17 (300 mA cap), white noise and tone. Compiles; not yet run on hardware.
 - D-022: toolchain pinned, Waveshare board package adopted (uses esp_lvgl_adapter). Bench check V1 settled from the package's pin definitions (MCLK = GPIO42).
+- Bring-up test flashed and booted on the real board: display, touch, all 7 I2C chips, ring driver and speaker codec initialised without errors. Visual and audio results still to be confirmed by the owner.

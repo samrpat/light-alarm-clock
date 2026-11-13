@@ -33,9 +33,10 @@ Last updated: 2026-11-12
 - Project under git, pushed to GitHub
 
 ## Bring-up test (ahead of Phase 2, at the owner's request)
-- ESP-IDF v5.5.6 installed on the Mac. `/firmware/bringup` compiles. **Not yet run on the board.**
+- ESP-IDF v5.5.6 installed on the Mac. `/firmware/bringup` compiles. 
 - Quick wiring: ring straight to VBUS / GND / GPIO17, no level shifter or fuse, ring capped at 300 mA.
-- Waiting for: owner to solder 3 wires to the ring, flash, and send back the monitor output.
+- **Flashed and running on the board (2026-11-12).** Startup log: display, touch (CST9217) and LVGL started; all 7 I2C chips answered; ring driver started on GPIO17; codec and speaker opened at 22 050 Hz.
+- Still to confirm by eye and ear: touch changes mode, ring lights with correct colours, speaker plays noise and tone.
 
 ## Waiting for owner
 1. **Approve Phase 1** (accepts D-012, D-014, D-019).
