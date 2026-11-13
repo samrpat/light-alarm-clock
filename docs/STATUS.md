@@ -34,7 +34,8 @@ Last updated: 2026-11-12
 
 ## Waiting for owner
 1. **Approve Phase 1** (accepts D-012, D-014, D-019).
-2. PCB layout accepted in principle; it is ordered only after the case design (D-020). First build is on a breadboard.
+2. PCB v2 direction (D-021): USB-C socket on the PCB at the rear, ring powered directly. Layout comes after the case design.
+3. PCB layout accepted in principle; it is ordered only after the case design (D-020). First build is on a breadboard.
 
 Answered 2026-11-12: battery yes (2000 mAh) · ring is #2861 warm white · speaker is Waveshare Speaker (B), 20 × 30 × 6.8 mm · charge to 4.1 V.
 

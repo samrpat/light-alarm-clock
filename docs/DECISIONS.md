@@ -150,3 +150,10 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
 - **Date:** 2026-11-12 · **Status:** Accepted (owner) · amends D-019
 - **Decision:** The first working build uses a solderless breadboard for the level shifter, with the ring's power path wired directly (HARDWARE.md §3a). The halo driver PCB is revised and ordered only after Phase 4, so it fits the case.
 - **Consequences:** The PCB files stay in `/pcb/halo-driver/` as v1. Its outline, holes and connector positions are expected to change.
+
+## D-021 — PCB v2 takes USB-C power itself and feeds the ring and the board
+- **Date:** 2026-11-12 · **Status:** Proposed (owner request) · **Reqs:** R14, R29, R32, R33 · amends D-012 and D-019 for the PCB build only
+- **Decision:** The PCB carries its own power-only USB-C socket at the rear of the case. From there: a current-limited switch feeds the ring directly, and an ideal diode feeds the Waveshare board through its header VBUS pin. The PCB reports the adapter's advertised current to the ESP32. Details in POWER.md §10.
+- **Why:** The cable leaves from the back instead of the side, and ring brightness is no longer held to 0.9 A by the unknown capacity of the Waveshare VBUS pin.
+- **Options considered:** keep the ring on the board's VBUS pin (simplest, but side cable and 0.9 A cap) · panel-mount USB-C extension cable to the board's port (rear cable, but cap stays) · USB-C PD at 9–12 V with a buck converter (more power than a 24-LED ring can use) · **USB-C 5 V on the PCB (chosen)**.
+- **Consequences:** Surface-mount parts, so factory assembly or fine soldering. Bench check V10 must pass. Firmware keeps a current ceiling, now set by the adapter and by heat. The first (breadboard) build is unchanged.

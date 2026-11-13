@@ -158,11 +158,14 @@ Note for Phase 4: the ring's 52.2 mm opening is wider than the 44.5 mm screen, s
 | V7 | PWR-key long-press power-off can be disabled | Write the AXP2101 setting, hold PWR 15 s | R27. |
 | V8 | Ring colour order (owner has #2861, warm white) | Light W only; light R only | Sunrise colour curves depend on it. |
 | V9 | Which way the board's 8-pin header faces and whether pins are fitted | Look at the board | Decides how the halo driver PCB connects (§7). |
+| V10 | Board runs and charges when 5 V is fed into the header VBUS pin (nothing in its USB port) | Bench supply or USB breakout into VBUS/GND | Needed for PCB v2 (D-021). |
 
 If V3 fails (VBUS sags or the pin gets warm), the fallback is a separate USB-C breakout in the case that feeds the ring directly, with the board plugged into the same supply.
 
 ## 7. Halo driver PCB (v1) — for later, not the first build
 
+> **PCB v2 will add its own rear USB-C socket and ring power switch** (D-021, POWER.md §10). The v1 files below do not have that yet.
+>
 > **The first build uses a breadboard (§3a).** The PCB is ordered only after the case is designed in Phase 4, so its shape and mounting can be fitted to the case (D-020).
 
 A small board that holds everything from §3: level shifter, fuse, capacitors and resistors. It replaces hand wiring on perfboard.

@@ -23,3 +23,4 @@
 - Owner answers: backup battery yes, ring #2861 warm white, speaker Waveshare Speaker (B) 20 × 30 × 6.8 mm, charge to 4.1 V.
 - D-019: halo driver PCB v1 (44 × 28 mm, through-hole). Added `/pcb/halo-driver/` with generator script, Gerbers, drill files, zip and preview. HARDWARE.md §7 describes it.
 - D-020: first build on a breadboard (HARDWARE.md §3a); PCB deferred until after the case design.
+- D-021: PCB v2 will take USB-C power at the rear, switch the ring directly and feed the board through VBUS (POWER.md §10). New bench check V10.

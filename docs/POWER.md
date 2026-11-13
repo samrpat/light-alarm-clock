@@ -141,3 +141,40 @@ Not built in the baseline. Add it only if you want the full sunrise when unplugg
 | M4 | Battery runtime with white noise | ≥ 12 h | R30, T-30 |
 | M5 | Which rail feeds the NS4150B amplifier | sets real max speaker power | HARDWARE §4 |
 | M6 | Temperature of ring and PTC after 30 min at the cap | < 60 °C | Phase 4 enclosure |
+
+## 10. Planned for PCB v2: USB-C power input on the PCB (D-021)
+
+Not built yet. The breadboard build and sections 1–7 above still describe the first run.
+
+```mermaid
+flowchart LR
+  PSU[USB-C adapter 5 V 3 A] --> J[USB-C socket on the PCB<br/>rear of the case]
+  J --> SW[Ring power switch<br/>2 A limit, on/off, fault flag]
+  SW --> CAP[1000 µF] --> RING[RGBW ring]
+  J --> D[Ideal diode] -- header VBUS pin --> BOARD[Waveshare board<br/>PMIC limit 1.0 A]
+  J -. CC voltage .-> ADC[GPIO16: how much the adapter offers]
+  GPIO18 --> SW
+  GPIO17 --> LS[Level shifter] --> RING
+  BOARD <--> BAT[Backup battery]
+```
+
+| Block | Part (candidate) | Job |
+|-------|------------------|-----|
+| USB-C socket, power only | GCT USB4125-GF-A (6-pin) with 5.1 kΩ on CC1 and CC2 | Cable leaves from the back of the case. The resistors make a USB-C supply turn on 5 V. |
+| Ring power switch | TI TPS25200 (adjustable limit, set to 2.0 A) | Turns the ring fully off when dark, limits current in hardware, reports faults. Replaces the PTC fuse. |
+| Board feed | Ideal diode, e.g. TI LM66100, into header VBUS | Powers the Waveshare board from the PCB. Blocks back-feed if a computer is also plugged into the board's own port for flashing. |
+| Adapter sensing | CC1/CC2 → resistor network → GPIO16 (ADC) | Reads what the adapter advertises: 3 A, 1.5 A or basic USB. |
+| Level shifter | 74AHCT1G125 (single gate, SOT-23-5) | Same job as today, smaller. |
+
+**What it changes**
+- The ring no longer draws through the Waveshare board, so the 0.9 A cap (set because the board's VBUS pin and trace are unknown) goes away.
+- New budget with a 3 A adapter: board ≤ 1.0 A + ring up to 1.75 A (all four colours at 100 %) = 2.75 A.
+- Firmware still sets a ceiling, chosen from what the adapter advertises: 3 A adapter → full ring; 1.5 A → about 0.4 A; basic USB → night light only, with a "use a 3 A charger" message. The VBUS sag guard stays as a second check.
+
+**Limits that remain**
+- Heat. A ring at 1.75 A is about 9 W inside a small printed case. The real ceiling is set by temperature test M6 in Phase 4, not by the electronics.
+- The useful sunrise colours (white plus warm tint) need about 1.0 A. Full 1.75 A adds red, green and blue on top, which is brighter but cooler in colour.
+- On battery the ring is still dark.
+- Flashing over USB still uses the Waveshare board's own port, so the case needs a small access hole for it, or updates go over Wi-Fi (Phase 7).
+
+**Check needed first (V10):** feed 5 V into the header VBUS pin with nothing in the board's USB port, and confirm the board runs and charges the battery. Waveshare's note on that pin says to "observe power-sharing and backfeed requirements" without giving details.
