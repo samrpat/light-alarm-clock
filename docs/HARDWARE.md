@@ -13,18 +13,19 @@ Prices are approximate (USD, late 2026) and not checked against a live listing.
 | # | Part | Part number / source | Qty | ~Cost | Status |
 |---|------|----------------------|-----|-------|--------|
 | 1 | Waveshare ESP32-S3-Touch-AMOLED-1.75 | Waveshare SKU 31261 | 1 | $30 | Have |
-| 2 | NeoPixel Ring 24× RGBW | Adafruit #2861 (3000 K), #2862 (4500 K) or #2863 (6000 K) | 1 | $20 | Have (which one?) |
-| 3 | Speaker, 8 Ω 2 W | owner's | 1 | — | Have (size unknown) |
+| 2 | NeoPixel Ring 24× RGBW, warm white ~3000 K | Adafruit #2861 | 1 | $20 | Have |
+| 3 | Speaker 8 Ω 2 W, 20 × 30 × 6.8 mm cavity type, 1.25 mm 2-pin plug, 120 mm lead | Waveshare "8Ω 2W Speaker (B)", SKU 27859 | 1 | $2 | Have |
 | 4 | Level shifter 74AHCT125, DIP-14 | Adafruit #1787, or TI SN74AHCT125N | 1 | $1.50 | Buy |
 | 5 | Resettable fuse, 1.1 A hold | Bourns MF-R110 | 1 | $0.50 | Buy |
-| 6 | Electrolytic capacitor 1000 µF, 10 V or higher | e.g. Panasonic EEU-FR1A102 | 1 | $0.60 | Buy |
+| 6 | Electrolytic capacitor 1000 µF, 10–16 V, radial, **10 mm diameter, 5 mm lead pitch** | e.g. Panasonic EEU-FR1C102 (check the pitch before ordering) | 1 | $0.60 | Buy |
 | 7 | Resistor 470 Ω, ¼ W | any | 1 | $0.05 | Buy |
 | 8 | Resistor 10 kΩ, ¼ W | any | 1 | $0.05 | Buy |
 | 9 | Ceramic capacitor 100 nF | any | 1 | $0.05 | Buy |
-| 10 | Li-polymer cell 3.7 V 2000 mAh, 103450, with protection, MX1.25 2-pin | generic; **check polarity** | 1 | $9 | Buy (recommended) |
+| 10 | Li-polymer cell 3.7 V 2000 mAh, 103450, with protection, MX1.25 2-pin | generic; **check polarity** | 1 | $9 | Buy (owner agreed) |
 | 11 | USB-C power adapter 5 V 3 A | e.g. Raspberry Pi 15 W USB-C supply | 1 | $8 | Buy if you have none |
-| 12 | MX1.25 2-pin pigtail (for the speaker) | generic 1.25 mm "PicoBlade-style" lead | 1 | $1 | Check the board's box first |
-| 13 | Small perfboard, ~30 × 40 mm | any | 1 | $1 | Buy |
+| 12 | ~~MX1.25 pigtail for the speaker~~ | Not needed: the speaker's own 1.25 mm plug fits the board | — | — | — |
+| 13 | Halo driver PCB, 44 × 28 mm, 2-layer (replaces perfboard) | `/pcb/halo-driver/halo-driver-gerbers.zip`, see §7 | 1 (min. order usually 5) | ~$5 + shipping | Order |
+| 13a | Pin header 1×8 and 1×3, 2.54 mm; DIP-14 socket (optional) | any | 1 each | $1 | Buy |
 | 14 | Wire: 22 AWG (ring power), 26–28 AWG (signals); 1×8 female header housing or Dupont leads | any | — | $3 | Buy |
 
 Baseline total to buy: about **$25**.
@@ -113,13 +114,14 @@ Build notes:
 
 - **Amplifier:** NS4150B, a 3 W-class mono class-D chip with a bridged output. Into 8 Ω it can deliver about 1.4 W from a 5 V rail, or about 0.8 W from a battery-level rail. ⚠ Which rail feeds it is not stated by Waveshare (bench check M5).
 - **Safety:** either way the amplifier cannot reach the speaker's 2 W rating, so it cannot burn out the speaker.
-- **Wiring:** two wires from the board's MX1.25 speaker connector to the speaker. **Neither wire is ground.** Do not connect either speaker terminal to GND or to anything else. Polarity does not matter with a single speaker.
+- **Speaker:** Waveshare 8 Ω 2 W Speaker (B), a sealed 20 × 30 × 6.8 mm cavity unit, so it needs no tuned chamber in the case, only a grille.
+- **Wiring:** plug the speaker's own 2-pin 1.25 mm lead into the board's speaker connector. **Neither wire is ground.** Do not connect either speaker terminal to GND or to anything else. Polarity does not matter with a single speaker.
 - **Volume limits in firmware (D-008):**
   - Codec gain fixed at boot at the highest setting that does not clip at full-scale input (set by ear and with a scope or phone spectrum app during bring-up).
   - Alarm: up to 100 % of that. Floor at 30 % so it can never be set silent.
   - White noise and sleep sounds: capped at about 25 % (−12 dB).
   - A 150 Hz high-pass filter on everything. A small speaker cannot reproduce lower notes; sending them only wastes power and makes it rattle.
-- **Still needed for the enclosure (Phase 4):** the speaker's diameter and depth. A ruler measurement is enough.
+- Waveshare gives no sensitivity or resonance figure, so loudness is confirmed by ear at bring-up.
 
 ## 5. Enclosure-relevant dimensions known so far
 
@@ -143,6 +145,44 @@ Note for Phase 4: the ring's 52.2 mm opening is wider than the 44.5 mm screen, s
 | V5 | Board runs from USB with no battery, and from battery with no USB | Try both | Assumed, not stated by Waveshare. |
 | V6 | RTC keeps time across a USB unplug with the battery fitted | Unplug for 10 min, compare | R15. |
 | V7 | PWR-key long-press power-off can be disabled | Write the AXP2101 setting, hold PWR 15 s | R27. |
-| V8 | Which ring you have (#2861 / #2862 / #2863) and its colour order | Light W only; light R only | Sunrise colour curves depend on it. |
+| V8 | Ring colour order (owner has #2861, warm white) | Light W only; light R only | Sunrise colour curves depend on it. |
+| V9 | Which way the board's 8-pin header faces and whether pins are fitted | Look at the board | Decides how the halo driver PCB connects (§7). |
 
 If V3 fails (VBUS sags or the pin gets warm), the fallback is a separate USB-C breakout in the case that feeds the ring directly, with the board plugged into the same supply.
+
+## 7. Halo driver PCB (v1)
+
+A small board that holds everything from §3: level shifter, fuse, capacitors and resistors. It replaces hand wiring on perfboard.
+
+![Halo driver PCB preview](../pcb/halo-driver/preview.png)
+
+| Property | Value |
+|----------|-------|
+| Size | 44 × 28 mm, 2 layers, 1.6 mm FR-4, 1 oz copper |
+| Parts | All through-hole, hand-solderable |
+| Mounting | 3 × M2 holes (2.2 mm) at (3, 25.3), (41, 25), (41, 3) mm from the top-left corner |
+| Tracks | Power 1.0 mm, logic 0.4–0.6 mm, minimum gap 0.3 mm |
+| Files | `/pcb/halo-driver/gerbers/` and `halo-driver-gerbers.zip` (upload the zip to JLCPCB, PCBWay or OSH Park) |
+| Source | `/pcb/halo-driver/gen_pcb.py` regenerates every file and re-runs the checks |
+
+**Connectors**
+- **J1** (left edge, 8 pins): same order as the Waveshare header. Top to bottom: VBUS, GND, 3V3, 44, 43, 17, 18, 16. Only VBUS, GND and 17 are used; the rest are spare pads. Pin names are printed on the back.
+- **J2** (bottom right, 3 pins): to the ring. Left to right: GND, DIN, 5V.
+
+**Where each part goes**
+
+| Ref | Part | Note |
+|-----|------|------|
+| U1 | 74AHCT125 | Notch toward the top edge. A socket is fine. |
+| R1 | 470 Ω | The right-hand resistor (next to the "470" mark). |
+| R2 | 10 kΩ | The left-hand resistor (above the "10K" mark). |
+| C1 | 1000 µF | **Positive lead to the pad beside the "+" mark** (right-hand pad). Can be bent flat if height is tight. |
+| C2 | 100 nF | Either way round. |
+| F1 | MF-R110 fuse | Either way round. |
+
+**How it was checked, and what was not**
+- The generator's own checks pass: the copper matches the netlist, every net is fully joined, and all gaps are at least 0.3 mm.
+- It has **not** been through KiCad or any other CAD tool's design-rule check, and no board has been made yet.
+- Before paying, open the zip in the manufacturer's online Gerber viewer and compare it with the preview above.
+- Footprints are drawn from typical datasheet dimensions (capacitor 5.08 mm pitch, fuse 5.08 mm pitch). Check them against the parts you actually buy.
+- How J1 meets the Waveshare header (plug-on or short jumper wires) depends on check V9 and on the case design in Phase 4. If the case needs a different shape, the script makes a v2 quickly.

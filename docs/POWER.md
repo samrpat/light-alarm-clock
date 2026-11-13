@@ -82,7 +82,7 @@ Board-side detail used above (at 3.3 V): ESP32-S3 ~40 mA average with radios idl
 |---------|-------|--------|
 | VBUS input current limit | 1000 mA | Leaves the rest of the adapter for the ring. |
 | Battery charge current | 400 mA (0.2 C for 2000 mAh) | Gentle on the cell, low heat in a closed case. |
-| Charge target voltage | 4.2 V | Standard Li-ion. If the clock lives on USB permanently, 4.1 V roughly doubles cell life (owner choice). |
+| Charge target voltage | **4.1 V** (owner choice) | The clock lives on USB, and 4.1 V gives much longer cell life. Costs about 10 % of capacity; the runtime table below already has that margin. |
 | PWR-key long-press power-off | Disabled (or 10 s if it can't be disabled) | R27: no accidental power-off. |
 | IRQs enabled | VBUS insert/remove, battery low, charge done, PWR key | Read through TCA9554 P5; also polled every 1 s. |
 | Fuel gauge | Enabled | Battery % for R24/R25. |

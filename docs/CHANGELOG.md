@@ -18,3 +18,7 @@
 - D-012 (USB main supply, ring on VBUS, battery as backup, no boost), D-013 (RGBW ring), D-014 (GPIO17 + 74AHCT125), D-015 (no default alarm; 30 min auto-stop; snooze 9 min × 3), D-016 (always-on dim shifting night face), D-017 (US Eastern default), D-018 (git).
 - Requirements R12, R17, R29, R30 reworded; assumptions A1–A6 confirmed; risk K1 resolved.
 - Project put under git and pushed to github.com/samrpat/light-alarm-clock.
+
+## 2026-11-12 — Phase 1 additions
+- Owner answers: backup battery yes, ring #2861 warm white, speaker Waveshare Speaker (B) 20 × 30 × 6.8 mm, charge to 4.1 V.
+- D-019: halo driver PCB v1 (44 × 28 mm, through-hole). Added `/pcb/halo-driver/` with generator script, Gerbers, drill files, zip and preview. HARDWARE.md §7 describes it.

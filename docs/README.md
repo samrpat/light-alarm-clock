@@ -32,7 +32,7 @@ Reference product for feel and features: Dreamie by Hello Ambient (helloambient.
 | TEST_PLAN.md | Test cases T-xx ↔ requirements | Phase 3 |
 | ENCLOSURE.md | Enclosure design, print and assembly | Phase 4 |
 
-Interface concept: `/mockups/ux-concept.html` (open in a browser). Code: `/firmware` (ESP-IDF project, from Phase 3) · CAD: `/enclosure` (from Phase 4).
+Interface concept: `/mockups/ux-concept.html` (open in a browser). PCB: `/pcb/halo-driver`. Code: `/firmware` (ESP-IDF project, from Phase 3) · CAD: `/enclosure` (from Phase 4).
 
 ## Build & flash
 Not yet available (firmware starts in Phase 3). The planned toolchain is ESP-IDF v5.x:

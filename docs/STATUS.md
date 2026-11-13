@@ -27,16 +27,16 @@ Last updated: 2026-11-12
 ## Done in Phase 1
 - Board pins, chips and header verified from Waveshare's hardware reference (schematic PDF not yet read)
 - Power design: USB-C main supply, ring on VBUS with fuse, backup battery, PMIC settings ([POWER.md](POWER.md))
-- BOM, pin table, wiring diagram, speaker hookup, bench checks V1–V8 ([HARDWARE.md](HARDWARE.md))
+- BOM, pin table, wiring diagram, speaker hookup, bench checks V1–V9 ([HARDWARE.md](HARDWARE.md))
+- Halo driver PCB v1: fabrication files in `/pcb/halo-driver/` (script-checked, not yet CAD-checked or built)
 - Owner answers recorded as D-010, D-013, D-015…D-018. Proposed: D-012, D-014.
 - Project under git, pushed to GitHub
 
 ## Waiting for owner
-1. **Approve Phase 1** (accepts D-012 and D-014).
-2. **Battery:** OK to add the 2000 mAh backup cell? Without it the clock stops and loses the time on any unplug.
-3. **Which RGBW ring:** warm 3000 K (#2861), natural 4500 K (#2862) or cool 6000 K (#2863)?
-4. **Speaker size:** diameter and depth (needed for Phase 4).
-5. **Charge voltage:** 4.2 V (full capacity) or 4.1 V (longer battery life, if it stays plugged in)?
+1. **Approve Phase 1** (accepts D-012, D-014, D-019).
+2. **Look at the halo driver PCB** (HARDWARE.md §7) before ordering it.
+
+Answered 2026-11-12: battery yes (2000 mAh) · ring is #2861 warm white · speaker is Waveshare Speaker (B), 20 × 30 × 6.8 mm · charge to 4.1 V.
 
 ## Blockers
 - None for Phase 2. Phase 3 needs bench checks V1–V8 on the real hardware.
