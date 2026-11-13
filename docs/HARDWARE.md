@@ -24,7 +24,8 @@ Prices are approximate (USD, late 2026) and not checked against a live listing.
 | 10 | Li-polymer cell 3.7 V 2000 mAh, 103450, with protection, MX1.25 2-pin | generic; **check polarity** | 1 | $9 | Buy (owner agreed) |
 | 11 | USB-C power adapter 5 V 3 A | e.g. Raspberry Pi 15 W USB-C supply | 1 | $8 | Buy if you have none |
 | 12 | ~~MX1.25 pigtail for the speaker~~ | Not needed: the speaker's own 1.25 mm plug fits the board | — | — | — |
-| 13 | Halo driver PCB, 44 × 28 mm, 2-layer (replaces perfboard) | `/pcb/halo-driver/halo-driver-gerbers.zip`, see §7 | 1 (min. order usually 5) | ~$5 + shipping | Order |
+| 13 | *Later:* Halo driver PCB, 44 × 28 mm, 2-layer | `/pcb/halo-driver/halo-driver-gerbers.zip`, see §7 | 1 (min. order usually 5) | ~$5 + shipping | After Phase 4 |
+| 13b | **First build:** half-size solderless breadboard + male-to-male and male-to-female jumper wires | any | 1 | $6 | Buy |
 | 13a | Pin header 1×8 and 1×3, 2.54 mm; DIP-14 socket (optional) | any | 1 each | $1 | Buy |
 | 14 | Wire: 22 AWG (ring power), 26–28 AWG (signals); 1×8 female header housing or Dupont leads | any | — | $3 | Buy |
 
@@ -110,6 +111,16 @@ Build notes:
 - Wire to the ring's **Data In** pad. Data Out stays unconnected.
 - The ring's ground and the board's ground must be joined (they are, through header pin 2).
 
+## 3a. First build on a breadboard
+
+Same circuit as above, no PCB.
+
+1. **Chip and resistors on the breadboard.** Push the 74AHCT125 across the centre gap. Wire its pins as in the diagram: 14 to 5 V, 7 to GND, 1 to GND, 2 to GPIO17 (with the 10 kΩ from pin 2 to GND), 3 through the 470 Ω to the ring's Data In. Tie pins 4, 10, 13 to 5 V and pins 5, 9, 12 to GND. Put the 100 nF across pins 14 and 7.
+2. **Keep the ring's power off the breadboard.** Breadboard contacts are only good for about half an amp. Solder (or join with a lever connector) VBUS → fuse → ring 5 V directly, and ring GND → header GND directly. Solder the 1000 µF across the ring's 5 V and GND pads, stripe to GND.
+3. **Take 5 V and GND for the chip** from those same joints with thin jumper wires.
+4. **From the Waveshare board you need three connections:** VBUS, GND and GPIO17 (see §2 for where they are on the 8-pin header).
+5. For the first power-up, set the firmware current cap to 0.3 A, check nothing gets warm, then raise it to 0.9 A.
+
 ## 4. Speaker (8 Ω, 2 W)
 
 - **Amplifier:** NS4150B, a 3 W-class mono class-D chip with a bridged output. Into 8 Ω it can deliver about 1.4 W from a 5 V rail, or about 0.8 W from a battery-level rail. ⚠ Which rail feeds it is not stated by Waveshare (bench check M5).
@@ -150,7 +161,9 @@ Note for Phase 4: the ring's 52.2 mm opening is wider than the 44.5 mm screen, s
 
 If V3 fails (VBUS sags or the pin gets warm), the fallback is a separate USB-C breakout in the case that feeds the ring directly, with the board plugged into the same supply.
 
-## 7. Halo driver PCB (v1)
+## 7. Halo driver PCB (v1) — for later, not the first build
+
+> **The first build uses a breadboard (§3a).** The PCB is ordered only after the case is designed in Phase 4, so its shape and mounting can be fitted to the case (D-020).
 
 A small board that holds everything from §3: level shifter, fuse, capacitors and resistors. It replaces hand wiring on perfboard.
 

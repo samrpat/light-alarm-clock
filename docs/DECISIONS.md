@@ -145,3 +145,8 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
 - **Consequences:** No CAD design-rule check yet; view the Gerbers in the manufacturer's viewer before ordering. Board shape may change in Phase 4 to fit the case.
 
 **Owner answers recorded 2026-11-12:** battery yes, 2000 mAh (D-012) · ring is Adafruit #2861, warm white 3000 K (D-013) · charge voltage 4.1 V (POWER.md §5) · speaker is Waveshare 8 Ω 2 W Speaker (B).
+
+## D-020 — First build on a breadboard; PCB after the case design
+- **Date:** 2026-11-12 · **Status:** Accepted (owner) · amends D-019
+- **Decision:** The first working build uses a solderless breadboard for the level shifter, with the ring's power path wired directly (HARDWARE.md §3a). The halo driver PCB is revised and ordered only after Phase 4, so it fits the case.
+- **Consequences:** The PCB files stay in `/pcb/halo-driver/` as v1. Its outline, holes and connector positions are expected to change.
