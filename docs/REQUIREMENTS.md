@@ -12,7 +12,7 @@ Last reviewed: 2026-11-13 (Phase 2)
 | ID | Pri | Requirement | Phase | Test |
 |----|-----|-------------|-------|------|
 | R1 | M | `[ ]` Weekly schedule: for each of the 7 weekdays, a wake time (HH:MM, 1-minute resolution) and an on/off flag, set independently. | 3 | T-01 |
-| R2 | M | `[~]` Changing one weekday's time takes **≤ 3 gestures** (swipe down, tap the day, turn the edge) and **≤ 10 s** from the clock face. Designed in UX.md §6; not yet built. | 2, 3 | T-02 |
+| R2 | M | `[~]` Changing one weekday's time takes **≤ 3 touches** (swipe down, tap the day, tap the hour zone; a hold counts as one touch) and **≤ 10 s** from the clock face. Designed in UX.md §8; not yet built. | 2, 3 | T-02 |
 | R3 | M | `[ ]` One-off overrides: **Skip next alarm** and **Tomorrow only at HH:MM**. An override is used once, then cleared automatically. It can be cancelled before it fires. | 3 | T-03 |
 | R4 | M | `[ ]` The clock face always shows the next alarm that will actually fire, overrides included (for example "Skipping Tue → next Wed 06:45"), or "No alarm set". | 2, 3 | T-04 |
 
@@ -20,12 +20,14 @@ Last reviewed: 2026-11-13 (Phase 2)
 
 | ID | Pri | Requirement | Phase | Test |
 |----|-----|-------------|-------|------|
-| R5 | M | `[ ]` Gesture-based UI on the 466×466 round touchscreen, usable half-asleep in the dark: tap zones ≥ 100 px, a rim band of 80 px, text ≥ 26 px, no precision taps, and a swipe can start anywhere (UX.md §2–3). | 2 | T-05 |
-| R6 | M | `[~]` Night theme protects sleep (UX.md §9): amber only with blue under 15 %, dimmed through the panel's brightness setting, an always-on face that moves every minute (D-016), no white until the alarm rings. | 2, 3 | T-06 |
+| R5 | M | `[ ]` Gesture-based UI on the 466×466 round touchscreen, usable half-asleep in the dark: three gestures only (tap, swipe, hold), tap zones ≥ 100 px, text ≥ 26 px, nothing depends on the rim, and a swipe can start anywhere (UX.md §2–3, D-026). | 2 | T-05 |
+| R6 | M | `[~]` Two looks on a schedule (UX.md §7, D-027). **Night:** amber only, blue under 15 %, dimmed through the panel, an always-on face that moves every minute (D-016), no white until the alarm rings. **Day:** brighter, date, accent colour. Night hours are settable (default 9 PM–7 AM). | 2, 3 | T-06 |
 | R7 | — | ~~IMU gestures (pick-up to wake, flip to snooze).~~ **Dropped** by D-011: the clock is stationary. | — | — |
 | R8 | N | `[ ]` Sound and Light remember their last volume, timer, brightness and colour mode, so starting either is 2 gestures. This replaces the scenes idea taken from Dreamie (D-024, D-023). | 2, 3 | T-08 |
 | R34 | M | `[ ]` Anything that can stop an alarm (turn a day off, skip tomorrow, dismiss, cancel a snooze or sunrise) needs a **hold**. Anything that only makes it ring (turn on, snooze, bring back) is a tap (D-024). | 2, 3 | T-34 |
 | R35 | M | `[ ]` Every sub-screen returns to the clock after 20 s without a touch (settings 30 s). Every change is saved the moment it is made (D-024). | 2, 3 | T-35 |
+| R36 | M | `[ ]` The firmware boots, keeps time and rings with no battery and with no ring fitted. Optional parts (battery, ring, protection parts, level shifter, light sensor) each have a defined behaviour when missing (D-025). | 3 | T-36 |
+| R37 | M | `[~]` No text overlaps, none under 26 px, all inside the safe circle, in Ubuntu. `layoutCheck()` reports zero issues for every screen state (D-028). Passes on the concept page; repeats on the firmware strings in Phase 3. | 2, 3 | T-37 |
 
 ## 3. Sound
 

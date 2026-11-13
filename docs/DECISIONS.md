@@ -87,7 +87,7 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
 - **Recommendation:** (b). Automatic accurate time and easy OTA. Wi-Fi stays off except a short daily sync (power and RF quietness at night).
 
 ## D-011 — No motion gestures; four-gesture touch vocabulary
-- **Date:** 2026-11-12 · **Status:** Accepted (owner decision); the tap-to-turn-off in the first concept is replaced by hold (D-024) · **Reqs:** R2, R5, R7, R23
+- **Date:** 2026-11-12 · **Status:** Accepted (owner decision); the tap-to-turn-off in the first concept is replaced by hold (D-024), and "turn the edge" by tap zones (D-026) · **Reqs:** R2, R5, R7, R23
 - **Decision:** The clock stays in one place on the nightstand, so **no IMU gestures** (no flip-to-snooze, no pick-up to wake). The IMU is unused for now.
   The touch UI uses four gestures only: **swipe** (go to a screen), **turn the edge** (change a value), **tap** (on/off), **hold** (guarded actions). No double-tap, so taps respond at once.
   Screens form a cross around the clock, each one swipe away: up = Tomorrow's alarm (one-off change or skip), down = Week (tap a day, then turn), left = Sound, right = Light.
@@ -165,7 +165,7 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
 - **Consequences:** Phase 3 must check that the board package's LVGL task and I2C handling can live on core 0 without touching the alarm path. If not, the package is used only as a pin and driver reference.
 
 ## D-023 — Fewest parts: a part stays only if it adds function or protection
-- **Date:** 2026-11-13 · **Status:** Proposed (owner guidance: "as little components as possible unless it adds functionality") · amends D-014, D-019, D-020, D-021
+- **Date:** 2026-11-13 · **Status:** Superseded by D-025 (the owner is fine with these parts and wants them optional) · was: amends D-014, D-019, D-020, D-021
 - **Decision:** Every part must either add a function or protect something. Applied to the Phase 1 design:
 
 | Part | Verdict | Reason |
@@ -182,7 +182,7 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
 - **Consequences:** The parts list drops to three small parts plus wires. The PCB files stay in `/pcb/halo-driver/` for later. Applies to firmware too: no feature is added without a stated need.
 
 ## D-024 — Interface rules from Phase 2
-- **Date:** 2026-11-13 · **Status:** Proposed (awaiting Phase 2 approval) · **Reqs:** R2–R6, R8, R23, R34, R35 · amends D-011
+- **Date:** 2026-11-13 · **Status:** Proposed (awaiting Phase 2 approval); items 5 and 6 superseded by D-026, item 7 by D-027 · **Reqs:** R2–R6, R8, R23, R34, R35 · amends D-011
 - **Decision** (full detail in [UX.md](UX.md)):
   1. **Off needs a hold, on needs a tap.** Day: tap turns on, hold 1 s turns off. Tomorrow: hold 1 s skips, tap brings it back. Replaces the tap-to-toggle in the first concept.
   2. **Always back:** the opposite swipe returns. Any sub-screen returns to the clock after 20 s idle (settings 30 s). Every change saves at once.
@@ -195,3 +195,31 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
   9. **One status line** at a time, in a fixed priority order (UX.md §8).
 - **Options considered:** tap-to-toggle everything (a sleepy tap can silence tomorrow) · confirm dialogs (more touches) · double-tap (needs a wait before every tap; ruled out in D-011) · scene presets (an extra screen for little gain).
 - **Consequences:** Phase 3 builds a large-digit font (150 px, digits and colon), a touch classifier with host tests, and the auto-return timer. The concept page is updated to the hold rule. Settings, first run, warnings and the sunrise screen are wireframes only.
+
+## D-025 — Hardware extras are optional; firmware runs without them
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "I am okay with those components, I just want them optional so I can develop while they come") · supersedes D-023
+- **Decision:** The level shifter, fuse, capacitor, resistor, custom PCB and backup battery all stay in the design, but none is needed to build and run the firmware. Each has a defined behaviour when it is missing:
+  - **Battery:** detected through the battery chip. When absent, battery text and "Plug me in" never show, and About reads "Battery: none".
+  - **Ring:** a build flag. When absent the Light screen says "No ring fitted" and the sunrise uses the screen.
+  - **Protection parts:** a build flag `RING_CAP_MA`, **0.3 A** until the fuse, capacitor and resistor are fitted, then **0.9 A**.
+  - **Level shifter, PCB, future light sensor:** no firmware difference.
+  - A missing part must never block the alarm path (D-002).
+- **Parts are labelled** Required, Recommended or Optional in HARDWARE.md. The fuse, capacitor and resistor are "needed before the ring goes above 0.3 A".
+- **Consequences:** Phase 3 firmware has a small `hw_profile` header and a boot-time check. Test UX-15 covers it. D-019 and D-021 stay on hold (PCB later); D-014's level shifter is optional.
+
+## D-026 — Values are changed by tap zones; no rim or dial gestures
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "there is no physical dial", "consider multiple ways and figure out the best one") · supersedes the "turn the edge" gesture of D-011 and D-024 items 5 and 6 · **Reqs:** R2, R5, R34
+- **Decision:** Three gestures: tap, swipe, hold. The top of the screen raises a value, the bottom lowers it. On time pickers the left half moves hours (±1 h) and the right half moves minutes (±5 min, carrying into the hour). Holding a tap zone repeats and speeds up. Holding the centre is the guarded action.
+- **Options considered:** rim drag, drag-anywhere drum, one-value tap zones, arc slider (full table in UX.md §4.1; weighted scores A 50 · B 55 · C 84 · **D 88** · E 58, my judgement). Tap zones win on reliability, no new gesture type, no clash with swipes, and no dependence on the rim or the case.
+- **Consequences:** A 30-minute change is a hold of about 1.5 s. R2 is counted in touches with a hold as one. The two methods can be compared on the real panel in the bring-up app (UX-B2). The classifier is simpler: tap, swipe, hold only.
+
+## D-027 — Day and night look on a schedule
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "want day and night schedule, some vibe for day and dim for night") · supersedes D-024 item 7 · **Reqs:** R6
+- **Decision:** Night hours are settable, default 9 PM to 7 AM. Night: amber only, blue under 15 %, dimness 1–5 through the panel, the face shifts a step a minute (D-016). Day: brighter (10–100 %, default 50 %), an accent colour (Amber, Sky, Mint, Rose) and the date. If the time is untrusted, the night look is used. A tap lifts the night face for 5 s. The ring is not part of the look.
+- **Options considered:** schedule (chosen) · light sensor (not on the board; a possible optional part) · manual switch (a bright screen at 3 a.m. is the worst failure).
+- **Open:** what extra "vibe" the day look should have.
+
+## D-028 — Ubuntu type and an automatic layout check
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "use Ubuntu font style", "no awkward overlaps between text") · **Reqs:** R5, R37
+- **Decision:** All device text is Ubuntu (Light, Regular, Medium), under the Ubuntu Font Licence 1.0 (text in `docs/licenses/`). Firmware uses bitmap fonts made from the TTFs with `lv_font_conv`. Text sits inside a safe circle of radius 209 px, never under 26 px, never overlapping. `layoutCheck()` in the concept page measures all 188 screen states in the real font. Result: 1,667 boxes, 0 issues.
+- **Consequences:** Phase 3 builds the fonts and repeats the check on the real strings, and the check is a gate for UI changes. The Ubuntu Font Licence should be re-read before any firmware binary is distributed.

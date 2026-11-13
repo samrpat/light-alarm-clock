@@ -15,23 +15,23 @@ Prices are approximate (USD, late 2026) and not checked against a live listing.
 | 1 | Waveshare ESP32-S3-Touch-AMOLED-1.75 | Waveshare SKU 31261 | 1 | $30 | Have |
 | 2 | NeoPixel Ring 24× RGBW, warm white ~3000 K | Adafruit #2861 | 1 | $20 | Have |
 | 3 | Speaker 8 Ω 2 W, 20 × 30 × 6.8 mm cavity type, 1.25 mm 2-pin plug, 120 mm lead | Waveshare "8Ω 2W Speaker (B)", SKU 27859 | 1 | $2 | Have |
-| 4 | Level shifter 74AHCT125, DIP-14 | Adafruit #1787, or TI SN74AHCT125N | 1 | $1.50 | Buy |
-| 5 | Resettable fuse, 1.1 A hold | Bourns MF-R110 | 1 | $0.50 | Buy |
-| 6 | Electrolytic capacitor 1000 µF, 10–16 V, radial, **10 mm diameter, 5 mm lead pitch** | e.g. Panasonic EEU-FR1C102 (check the pitch before ordering) | 1 | $0.60 | Buy |
-| 7 | Resistor 470 Ω, ¼ W | any | 1 | $0.05 | Buy |
-| 8 | Resistor 10 kΩ, ¼ W | any | 1 | $0.05 | Buy |
-| 9 | Ceramic capacitor 100 nF | any | 1 | $0.05 | Buy |
-| 10 | Li-polymer cell 3.7 V 2000 mAh, 103450, with protection, MX1.25 2-pin | generic; **check polarity** | 1 | $9 | Buy (owner agreed) |
+| 4 | Level shifter 74AHCT125, DIP-14 | Adafruit #1787, or TI SN74AHCT125N | 1 | $1.50 | **Optional** (add if the ring flickers) |
+| 5 | Resettable fuse, 1.1 A hold | Bourns MF-R110 | 1 | $0.50 | Buy (needed before the ring goes above 0.3 A) |
+| 6 | Electrolytic capacitor 1000 µF, 10–16 V, radial, **10 mm diameter, 5 mm lead pitch** | e.g. Panasonic EEU-FR1C102 (check the pitch before ordering) | 1 | $0.60 | Buy (needed before the ring goes above 0.3 A) |
+| 7 | Resistor 470 Ω, ¼ W | any | 1 | $0.05 | Buy (needed before the ring goes above 0.3 A) |
+| 8 | Resistor 10 kΩ, ¼ W | any | 1 | $0.05 | **Optional** (only with the level shifter) |
+| 9 | Ceramic capacitor 100 nF | any | 1 | $0.05 | **Optional** (only with the level shifter) |
+| 10 | Li-polymer cell 3.7 V 2000 mAh, 103450, with protection, MX1.25 2-pin | generic; **check polarity** | 1 | $9 | Recommended (owner agreed). The firmware runs without it. |
 | 11 | USB-C power adapter 5 V 3 A | e.g. Raspberry Pi 15 W USB-C supply | 1 | $8 | Buy if you have none |
 | 12 | ~~MX1.25 pigtail for the speaker~~ | Not needed: the speaker's own 1.25 mm plug fits the board | — | — | — |
 | 13 | *Later:* Halo driver PCB, 44 × 28 mm, 2-layer | `/pcb/halo-driver/halo-driver-gerbers.zip`, see §7 | 1 (min. order usually 5) | ~$5 + shipping | After Phase 4 |
-| 13b | **First build:** half-size solderless breadboard + male-to-male and male-to-female jumper wires | any | 1 | $6 | Buy |
-| 13a | Pin header 1×8 and 1×3, 2.54 mm; DIP-14 socket (optional) | any | 1 each | $1 | Buy |
+| 13b | **First build:** half-size solderless breadboard + male-to-male and male-to-female jumper wires | any | 1 | $6 | **Optional** |
+| 13a | Pin header 1×8 and 1×3, 2.54 mm; DIP-14 socket (optional) | any | 1 each | $1 | **Optional** |
 | 14 | Wire: 22 AWG (ring power), 26–28 AWG (signals); 1×8 female header housing or Dupont leads | any | — | $3 | Buy |
 
 Baseline total to buy: about **$25**.
 
-> **Minimal build (D-023, proposed).** Rows 4, 8, 9, 13, 13a and 13b are **not needed for the first build**. What is needed: rows 5, 6 and 7 (fuse, capacitor, resistor, about $1.15), the battery, an adapter and wire. The three small parts are soldered inline (§3b). Rows 4, 8 and 9 (level shifter) are added only if the ring flickers at full current.
+> **Optional parts (D-025).** You can build and run the firmware with only the board, ring and speaker. **Required:** rows 1–3, the adapter and wire. **Needed before the ring goes above 0.3 A:** the fuse, capacitor and 470 Ω resistor (rows 5–7, about $1.15, soldered inline, §3b). **Optional:** the level shifter and its two small parts (rows 4, 8, 9), the PCB, the breadboard and headers. **Recommended:** the battery. Each missing part has a defined firmware behaviour (UX.md §10).
 
 ## 2. Pin table
 
@@ -113,7 +113,7 @@ Build notes:
 - Wire to the ring's **Data In** pad. Data Out stays unconnected.
 - The ring's ground and the board's ground must be joined (they are, through header pin 2).
 
-## 3b. Minimal build (D-023): no breadboard, no PCB
+## 3b. Inline build (D-025): no breadboard, no PCB
 
 Three small parts soldered inline between the board header and the ring:
 
@@ -134,7 +134,7 @@ Three small parts soldered inline between the board header and the ring:
 - The bring-up test already ran this way (without the fuse, capacitor and resistor) at 0.3 A.
 - **Before raising the cap from 0.3 A to 0.9 A:** fit these three parts, then watch for flicker for 30 min. If it flickers, add the level shifter (§3).
 
-## 3a. First build on a breadboard (superseded by §3b if D-023 is accepted)
+## 3a. Breadboard build (optional; the inline build in §3b needs no breadboard)
 
 Same circuit as above, no PCB.
 

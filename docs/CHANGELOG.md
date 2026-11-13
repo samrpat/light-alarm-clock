@@ -42,3 +42,11 @@
 - D-024: off needs a hold, on needs a tap; auto-return; carry-over; velocity steps; panel dimming; scenes replaced by memory.
 - Requirements R2, R5, R6, R8, R23 reworded; R34 and R35 added.
 - Concept page updated for hold-to-turn-off and carry-over.
+
+## 2026-11-13 — Phase 2 revision after owner feedback
+- "No physical dial": the rim-turn gesture is gone. Values change by tap zones (top more, bottom less; left hours, right minutes; hold repeats). Five methods compared in UX.md §4.1 (D-026). Three gestures only.
+- Ubuntu font everywhere; Ubuntu Font Licence saved in `docs/licenses/` (D-028).
+- Automatic text check `layoutCheck()` added to the concept page: 188 screen states, 1,667 boxes, 0 issues after fixing 12 edge cases found on the first run.
+- Day and night look on a schedule (D-027). Time shows in 12-hour AM/PM.
+- Optional hardware (D-025) replaces the fewest-parts verdicts of D-023. Firmware must run with no battery and no ring (R36).
+- UX.md rewritten. R2, R5, R6 reworded; R36, R37 added. Concept page rebuilt and republished.

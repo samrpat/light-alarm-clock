@@ -27,7 +27,8 @@ Reference product for feel and features: Dreamie by Hello Ambient (helloambient.
 | [CHANGELOG.md](CHANGELOG.md) | Dated change history | Phase 0 |
 | [HARDWARE.md](HARDWARE.md) | BOM, pin table, wiring, speaker, bench checks | Phase 1 |
 | [POWER.md](POWER.md) | Power design, current budget, runtime math | Phase 1 |
-| [UX.md](UX.md) | Screen map, gestures, wireframes, night theme, acceptance checks | Phase 2 |
+| [UX.md](UX.md) | Gestures, options compared, screen map, day/night look, type and layout rules, acceptance checks | Phase 2 |
+| `licenses/` | Third-party licence texts (Ubuntu Font Licence) | Phase 2 |
 | RELIABILITY.md | FMEA, watchdog design | Phase 3 |
 | TEST_PLAN.md | Test cases T-xx ↔ requirements | Phase 3 |
 | ENCLOSURE.md | Enclosure design, print and assembly | Phase 4 |
