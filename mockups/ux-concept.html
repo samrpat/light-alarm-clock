@@ -81,7 +81,7 @@ section{display:flex;flex-direction:column;gap:28px}
     <div class="hero-copy">
       <p class="eyebrow">Interface concept · 44 mm round touchscreen · touch only</p>
       <h1>A clock that follows <em>your day</em> until you sleep.</h1>
-      <p class="lede">Few words. Swipe, tap, hold, and turn the rim. The face changes colour and brightness through the day, winds down toward bedtime, and ends as a dim amber clock. Drag the time slider below the device to watch it.</p>
+      <p class="lede">Few words, and each gesture has one job: swipe to go, tap to do, drag the dot to change, hold to stop. The face changes colour and brightness through the day, winds down toward bedtime, and ends as a dim amber clock. Drag the time slider below the device to watch it.</p>
       <div class="btns">
         <button class="go" id="bMorn">Play a morning</button>
         <button id="bRing">Ring the alarm</button>
@@ -113,11 +113,11 @@ section{display:flex;flex-direction:column;gap:28px}
 
   <section>
     <p class="eyebrow">The whole vocabulary</p>
-    <h2>Four gestures. No menus, no double-taps.</h2>
+    <h2>Four gestures, four jobs. Nothing overlaps.</h2>
     <div class="verbs">
-      <div class="verb"><span>Swipe</span><p>Go somewhere. Every screen is one swipe from the clock, and the opposite swipe brings you back.</p></div>
-      <div class="verb"><span>Tap</span><p>Start something, or nudge a value. The top of the screen means more and the bottom means less.</p></div>
-      <div class="verb"><span>Turn</span><p>Run a finger around the rim to set a value. Slow is one minute at a time, fast is half an hour. The marker shows where you are.</p></div>
+      <div class="verb"><span>Swipe</span><p>Go to a neighbour. Up and down for waking, left and right for the next screen, day or page. The opposite swipe comes back.</p></div>
+      <div class="verb"><span>Tap</span><p>Do something: play, turn on, snooze, open. The whole face is the button.</p></div>
+      <div class="verb"><span>Drag</span><p>The only way to change a value. Grab a dot on the rim and slide it around, like the hands of a clock.</p></div>
       <div class="verb"><span>Hold</span><p>For anything that could stop an alarm: turning a day off, skipping tomorrow, dismissing. The rim fills while you hold.</p></div>
     </div>
   </section>
@@ -126,10 +126,10 @@ section{display:flex;flex-direction:column;gap:28px}
     <div class="two">
       <div class="col">
         <p class="eyebrow">Changing a time</p>
-        <h2>Turn the rim, or tap above and below.</h2>
-        <p class="lede">The fast way is to run a finger around the rim: clockwise is later, and the faster you go the bigger the step. The sure way is to tap: above is later, below is earlier, the left half moves the hour and the right half the minutes. If the case ever covers part of the rim, the taps still work.</p>
+        <h2>Two dots, like the hands of a clock.</h2>
+        <p class="lede">The outer dot is the minute hand: slide it around for five minutes a step, and the hour moves on by itself as it passes the top. The inner dot is the hour hand: one step is one hour. Only a dot responds, so a swipe anywhere else is always a swipe. In 877 random test swipes, none was mistaken for a turn. There are no buttons to find: dragging a dot is the one way to change a time.</p>
       </div>
-      <svg id="zoneFig" viewBox="0 0 466 466" style="width:100%;max-width:420px;justify-self:center;font-family:var(--ui)" role="img" aria-label="Tap zones: top is later, bottom is earlier, left is hours, right is minutes"></svg>
+      <svg id="zoneFig" viewBox="0 0 466 466" style="width:100%;max-width:420px;justify-self:center;font-family:var(--ui)" role="img" aria-label="Two dots on two rings: the outer dot is minutes, the inner dot is hours"></svg>
     </div>
   </section>
 
@@ -138,7 +138,7 @@ section{display:flex;flex-direction:column;gap:28px}
       <div class="col">
         <p class="eyebrow">The map</p>
         <h2>Up and down for waking. Left and right for sleeping.</h2>
-        <p class="lede">Alarms live on the vertical line: the week above, tomorrow below. Sleep lives on the horizontal line: light on the left, sound on the right. Settings open with a hold on the clock. Tap any screen to open it in the device.</p>
+        <p class="lede">Alarms live on the vertical line: the week above, tomorrow below. Sleep lives on the horizontal line: light on the left, sound on the right. Sideways always means the next neighbour: light, clock, sound; the days of the week; the settings pages. Settings open with a hold on the clock. Tap any screen to open it in the device.</p>
       </div>
       <div class="map">
         <span></span><button class="mini" data-mini="week"><small>swipe down</small><span>Week</span></button><span></span>
@@ -158,12 +158,12 @@ section{display:flex;flex-direction:column;gap:28px}
         <p class="lede">Counted from the clock face, half asleep, in the dark.</p>
       </div>
       <div class="counts">
-        <div><p>Wake an hour earlier tomorrow<small>swipe up, tap the lower left</small></p><strong>2</strong></div>
+        <div><p>Wake an hour earlier tomorrow<small>swipe up, drag the inner dot one step</small></p><strong>2</strong></div>
         <div><p>Skip tomorrow's alarm<small>swipe up, hold</small></p><strong>2</strong></div>
         <div><p>Start white noise<small>swipe left, tap</small></p><strong>2</strong></div>
         <div><p>Night light on<small>swipe right, tap</small></p><strong>2</strong></div>
-        <div><p>Move every Wednesday an hour earlier<small>swipe down, tap Wed, tap the lower left</small></p><strong>3</strong></div>
-        <div><p>Fix the clock after a daylight saving change<small>hold the clock, tap the hour zone</small></p><strong>2</strong></div>
+        <div><p>Move every Wednesday an hour earlier<small>swipe down, tap Wed, drag the inner dot</small></p><strong>3</strong></div>
+        <div><p>Fix the clock after a daylight saving change<small>hold the clock, drag the inner dot one step</small></p><strong>2</strong></div>
         <div><p>Snooze<small>tap anywhere</small></p><strong>1</strong></div>
         <div><p>Turn the alarm off<small>hold for two seconds</small></p><strong>1</strong></div>
       </div>
@@ -175,6 +175,13 @@ section{display:flex;flex-direction:column;gap:28px}
     <h2>Bright and cool by day. Warm and fading toward bed.</h2>
     <div class="four" id="dayFour"></div>
     <p class="lede">After you wake the colour moves from gold through cool white at noon to amber. Three hours before bedtime the face winds down: the blue drains out, the brightness falls on a smooth curve, the date fades, and at bedtime it is the dim amber night clock. Two settings drive it: when you go to bed and when you wake.</p>
+  </section>
+
+  <section>
+    <p class="eyebrow">Settings</p>
+    <h2>Each setting looks like the thing it sets.</h2>
+    <div class="four" id="setGrid"></div>
+    <p class="lede">Sleep is a band of night on the clock ring, with the three-hour wind-down fading in before it: drag the moon and the sun. Brightness is an orb that grows as you drag. Volume is sound waves. The date is a calendar page. Preview is a tiny sunrise you hold. Every page shows the real value, in at most four lines.</p>
   </section>
 
   <section>
@@ -194,7 +201,7 @@ section{display:flex;flex-direction:column;gap:28px}
     <h2>No Wi-Fi, no servers, no updates needed.</h2>
     <div class="prin">
       <div><h3>It never calls out</h3><p>The time is set by hand once. Daylight saving is a rule stored inside the clock, with a one-tap fix if the law ever changes.</p></div>
-      <div><h3>Few settings</h3><p>Eight pages, and four of them you touch once: time, date, region and sleep hours.</p></div>
+      <div><h3>Few settings</h3><p>Eight pages, and four of them you touch once: time, date, region and sleep.</p></div>
       <div><h3>The alarm outlives the screen</h3><p>If the display ever fails, the light and sound still run, and a button on the back still turns the alarm off.</p></div>
       <div><h3>Repairable</h3><p>The battery is a swappable part, and the firmware and tools are kept offline so it can be rebuilt decades from now.</p></div>
     </div>
@@ -209,15 +216,15 @@ const C=233,SAFE=209,MINFONT=26,MAXLINES=4;
 const DN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],DF=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const TIMER=[['15 min',15],['30 min',30],['1 hour',60],['90 min',90],['All night',0]];
-const REG=[['US Eastern','Daylight saving on'],['US Central','Daylight saving on'],['US Mountain','Daylight saving on'],['US Pacific','Daylight saving on'],['US Alaska','Daylight saving on'],['US Hawaii','No daylight saving'],['UK','Daylight saving on'],['Central Europe','Daylight saving on'],['Manual','You change the clock']];
-const PG=['Time','Date','Region','Sleep hours','Brightness','Alarm volume','Preview alarm','About'];
+const REG=[['US Eastern','Daylight saving on','UTC−5'],['US Central','Daylight saving on','UTC−6'],['US Mountain','Daylight saving on','UTC−7'],['US Pacific','Daylight saving on','UTC−8'],['US Alaska','Daylight saving on','UTC−9'],['US Hawaii','No daylight saving','UTC−10'],['UK','Daylight saving on','UTC±0'],['Central Europe','Daylight saving on','UTC+1'],['Manual','You change the clock','—']];
+const PG=['Time','Date','Region','Sleep','Brightness','Alarm volume','Preview alarm','About'];
 const WARN='#E5703E',OK='#5FC9A8',OFFC='#5a4c40';
 
 //<draw>
 const wrap=m=>((m%1440)+1440)%1440,clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 function t12(m){m=wrap(m);const h=Math.floor(m/60);return{h:((h+11)%12)+1,mm:String(m%60).padStart(2,'0'),ap:h<12?'AM':'PM'}}
 const f12=m=>{const t=t12(m);return t.h+':'+t.mm+' '+t.ap};
-function fresh(){return{scr:'clock',now:1394,awake:false,days:[0,1,2,3,4,5,6].map(i=>({on:i<5,min:i<5?405:510})),sel:2,skip:false,one:null,vol:40,play:false,ti:1,lt:{on:false,m:0,l:[20,60]},snz:3,hold:0,done:false,sunT:null,msg:'',pg:0,clk:1394,dat:{m:10,d:12,y:2026},rg:0,dayB:60,ns:1350,ne:420,ld:70}}
+function fresh(){return{scr:'clock',now:1394,awake:false,days:[0,1,2,3,4,5,6].map(i=>({on:i<5,min:i<5?405:510})),sel:2,skip:false,one:null,vol:40,play:false,ti:1,lt:{on:false,m:0,l:[20,60]},snz:3,hold:0,done:false,sunT:null,msg:'',pg:0,df:0,clk:1394,dat:{m:10,d:12,y:2026},rg:0,dayB:60,ns:1350,ne:420,ld:70}}
 const mix=(a,b,k)=>a.map((v,i)=>v+(b[i]-v)*k);
 const hex=c=>'#'+c.map(v=>clamp(Math.round(v),0,255).toString(16).padStart(2,'0')).join('');
 const KF=[[360,[255,193,120]],[480,[255,224,178]],[600,[255,238,214]],[720,[228,238,255]],[900,[255,238,218]],[1080,[255,208,150]]],NA=[224,128,28];
@@ -235,14 +242,19 @@ function chev(x,y,up,col){return `<path data-k="1" d="M${x-20} ${y+(up?8:-8)}L${
 const chevs=(xs,y1,y2,col)=>xs.map(x=>chev(x,y1,1,col)+chev(x,y2,0,col)).join('');
 function ico(n,x,y,col){const p={cal:'<rect x="-15" y="-13" width="30" height="28" rx="4"/><path d="M-15 -3H15M-7 -18V-9M7 -18V-9"/>',bell:'<path d="M0 -15C-9 -15 -11 -5 -11 2L-15 9H15L11 2C11 -5 9 -15 0 -15ZM-5 13A5 5 0 0 0 5 13"/>',sun:'<circle r="6"/><path d="M0 -17V-11M0 11V17M-17 0H-11M11 0H17M-12 -12L-8 -8M8 8L12 12M-12 12L-8 8M8 -8L12 -12"/>',spk:'<path d="M-15 -6H-8L2 -14V14L-8 6H-15Z"/><path d="M8 -7A10 10 0 0 1 8 7M13 -12A17 17 0 0 1 13 12"/>',moon:'<path d="M6 -15A15 15 0 1 0 15 7A12 12 0 0 1 6 -15Z"/>',gear:'<circle r="5"/><path d="M0 -16V-11M0 11V16M-16 0H-11M11 0H16M-11 -11L-8 -8M8 8L11 11M-11 11L-8 8M8 -8L11 -11"/>'}[n];return `<g data-k="1" transform="translate(${x} ${y})" fill="none" stroke="${col}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${p}</g>`}
 function playIco(x,y,on,col){return on?`<g data-k="1" transform="translate(${x} ${y})" fill="${col}"><rect x="-14" y="-18" width="9" height="36" rx="2"/><rect x="5" y="-18" width="9" height="36" rx="2"/></g>`:`<path data-k="1" transform="translate(${x} ${y})" d="M-12 -19L19 0L-12 19Z" fill="${col}"/>`}
-function rimT(m,pc,on){const a=(wrap(m)%720)/720*360,[x,y]=P(a,212);return `<circle cx="${C}" cy="${C}" r="212" fill="none" stroke="${pc.h}" stroke-width="3" opacity=".6"/>`+(on?arc(212,0,a,pc.s,3,.9):'')+`<circle cx="${x}" cy="${y}" r="9" fill="${on?pc.t:OFFC}"/>`}
-function rimL(v,lo,pc){const a=-135+270*(v-lo)/(100-lo),[x,y]=P(a,212);return arc(212,-135,135,pc.h,3,.5)+arc(212,-135,a,pc.s,3,.9)+`<circle cx="${x}" cy="${y}" r="9" fill="${pc.t}"/>`}
+var DRAG='';const RR=188,RH=148;
+function rimT(m,pc,on,fine){m=wrap(m);const am=(m%60)*6,ah=(Math.floor(m/60)%12)*30+(m%60)*.5,[x,y]=P(am,RR),[hx,hy]=P(ah,RH);let d='';for(let i=0;i<12;i++){const[px,py]=P(i*30,RR),[qx,qy]=P(i*30,RH);d+=`<circle cx="${px}" cy="${py}" r="${i===0?4.5:3}" fill="${pc.h}"/><circle cx="${qx}" cy="${qy}" r="${i===0?3.5:2.5}" fill="${pc.h}"/>`}
+ if(fine)for(let i=0;i<60;i++){if(i%5===0)continue;const[x0,y0]=P(i*6,RR-8),[x1,y1]=P(i*6,RR-3);d+=`<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="${pc.h}" stroke-width="1.5" opacity=".7"/>`}
+ const rm=DRAG==='min'?27:21,rh=DRAG==='hr'?21:16;
+ return `<circle cx="${C}" cy="${C}" r="${RR}" fill="none" stroke="${pc.h}" stroke-width="2" opacity=".5"/><circle cx="${C}" cy="${C}" r="${RH}" fill="none" stroke="${pc.h}" stroke-width="2" opacity=".35"/>${d}<circle cx="${hx}" cy="${hy}" r="${rh}" fill="${on?pc.s:OFFC}" stroke="#000" stroke-width="3"/><circle cx="${x}" cy="${y}" r="${rm}" fill="${on?pc.t:OFFC}" stroke="#000" stroke-width="3"/>`}
+function rimL(v,lo,hi,pc){const a=-135+270*(v-lo)/(hi-lo),[x,y]=P(a,RR);return arc(RR,-135,135,pc.h,2,.5)+arc(RR,-135,a,pc.s,4,.9)+`<circle cx="${x}" cy="${y}" r="${DRAG==="lin"?27:21}" fill="${pc.t}" stroke="#000" stroke-width="3"/>`}
+function rimS(v,pc){const[x,y]=P((v%12)*30,RR);let d='';for(let i=0;i<12;i++){const[px,py]=P(i*30,RR);d+=`<circle cx="${px}" cy="${py}" r="3" fill="${pc.h}"/>`}return `<circle cx="${C}" cy="${C}" r="${RR}" fill="none" stroke="${pc.h}" stroke-width="2" opacity=".5"/>${d}<circle cx="${x}" cy="${y}" r="${DRAG==="step"?27:21}" fill="${pc.t}" stroke="#000" stroke-width="3"/>`}
 function pill(x,y,w,h,col){return `<rect x="${x-w/2}" y="${y-h/2}" width="${w}" height="${h}" rx="${h/2}" fill="none" stroke="${col}" stroke-width="2"/>`}
 const usual=s=>s.days[2].on?s.days[2].min:null;
 function next(s){const t=s.one??usual(s);if(t!=null&&!s.skip)return{i:2,min:t};for(let k=2;k<=7;k++){const i=(1+k)%7;if(s.days[i].on)return{i,min:s.days[i].min,sk:t!=null&&s.skip}}return{none:1,sk:t!=null&&s.skip}}
-function picker(s,m,pc,title,on,sub,subCol){const a=t12(m);let h=rimT(m,pc,on)+chevs([150,316],70,396,pc.s)+T(C,140,30,title,pc.s,400);
- h+=T(150,218,100,a.h,on?pc.t:OFFC,300)+T(C,214,80,':',on?pc.s:OFFC,300)+T(316,218,100,a.mm,on?pc.t:OFFC,300)+T(C,282,30,a.ap,on?pc.s:OFFC,400);
- if(sub)h+=T(C,324,28,sub,subCol||pc.h,400);return h}
+function picker(s,m,pc,title,on,sub,subCol,fine){const a=t12(m);let h=rimT(m,pc,on,fine)+T(C,140,30,title,pc.s,400);
+  h+=T(152,218,92,a.h,on?pc.t:OFFC,300)+T(C,214,76,':',on?pc.s:OFFC,300)+T(314,218,92,a.mm,on?pc.t:OFFC,300)+T(C,282,30,a.ap,on?pc.s:OFFC,400);
+  if(sub)h+=T(C,324,28,sub,subCol||pc.h,400);return h}
 
 function draw(n,s){let h='';const pc=face(s,true);
 if(n==='clock'){const f=face(s,s.awake),ph=f.ph,nx=next(s),dimOff=0;
@@ -254,44 +266,51 @@ if(n==='clock'){const f=face(s,s.awake),ph=f.ph,nx=next(s),dimOff=0;
  if(st)h+=T(C,336,28,st,WARN,400);else if(s.awake&&s.sunT==null)h+=ico('gear',C,340,f.h);
  if(s.awake&&s.sunT==null)h+=ico('cal',C,52,f.h)+ico('bell',C,414,f.h)+ico('sun',44,C,f.h)+ico('spk',422,C,f.h)}
 if(n==='tmr'){const u=usual(s),t=s.one??u;
- if(t==null)h+=chevs([150,316],70,396,pc.s)+T(C,140,30,'Tomorrow',pc.s,400)+T(C,222,64,'No alarm',OFFC,300)+T(C,324,28,'Tap above to set one',pc.h,400);
+ if(t==null)h+=picker(s,420,pc,'Tomorrow',false,'Drag a dot to set one',pc.h);
  else{const sub=s.skip?'Skipped':s.one!=null?'Once only':'';h+=picker(s,t,pc,'Tomorrow',!s.skip,sub,s.skip?WARN:OK);if(s.skip)h+=`<line x1="90" y1="218" x2="376" y2="218" stroke="${WARN}" stroke-width="5" stroke-linecap="round"/>`}}
 if(n==='week'){const nx=next(s);for(let i=0;i<7;i++){const a0=i*360/7-180/7+1,a1=a0+360/7-2,d=s.days[i],[x,y]=P((a0+a1)/2,148);
   h+=wedge(a0,a1,98,222,d.on?'#1f150b':'#0d0c0b',d.on?'#3d2815':'#1b1917')+T(x,y-15,28,DN[i],d.on?pc.t:OFFC,500)+T(x,y+16,26,d.on?f12(d.min).replace(' ',''):'off',d.on?pc.s:'#6a5a4a',400)}
  h+=`<circle cx="${C}" cy="${C}" r="92" fill="#0b0b0b" stroke="#2a2420"/>`+(nx.none?T(C,233,34,'None',pc.t,500):T(C,214,34,DN[nx.i],pc.t,500)+T(C,254,30,f12(nx.min),pc.s,400))}
-if(n==='day'){const d=s.days[s.sel];h+=picker(s,d.min,pc,DF[s.sel],d.on,d.on?'':'Off',pc.h);
-  for(let i=0;i<7;i++)h+=`<circle cx="${185+i*16}" cy="428" r="${i==s.sel?4.5:3}" fill="${i==s.sel?pc.t:'#3a3129'}"/>`}
+if(n==='day'){const d=s.days[s.sel];h+=picker(s,d.min,pc,DF[s.sel],d.on,d.on?'':'Off',pc.h)}
 if(n==='sound'){let bars='';for(let i=0;i<10;i++){const bh=10+i*3.2,x=C-99+i*22;bars+=`<rect x="${x}" y="${176-bh}" width="14" height="${bh}" rx="4" fill="${i<s.vol/10?pc.t:'#2a211a'}"/>`}
- h+=rimL(s.vol,0,pc)+chev(C,70,1,pc.s)+T(C,118,30,'Sound',pc.s,400)+bars+playIco(C,222,s.play,pc.t)+pill(C,293,250,56,pc.h)+ico('moon',C-62,293,pc.s)+T(C+28,293,30,TIMER[s.ti][0],pc.s,400)+chev(C,396,0,pc.s)}
+ h+=rimL(s.vol,0,100,pc)+T(C,118,30,'Sound',pc.s,400)+bars+playIco(C,222,s.play,pc.t)+pill(C,293,250,56,pc.h)+ico('moon',C-62,293,pc.s)+T(C+28,293,30,TIMER[s.ti][0],pc.s,400)}
 if(n==='light'){const l=s.lt.l[s.lt.m],m=s.lt.m,on=s.lt.on;
- h+=rimL(l,5,pc)+chev(C,70,1,pc.s)+T(C,118,30,'Light',pc.s,400)+T(C,200,72,on?l+'%':'Off',on?pc.t:OFFC,300)
-  +`<rect x="${m?C:C-125}" y="265" width="125" height="56" rx="28" fill="${pc.h}" opacity=".5"/>`+pill(C,293,250,56,pc.h)+ico('moon',C-62,293,m?pc.h:pc.t)+ico('sun',C+62,293,m?pc.t:pc.h)+chev(C,396,0,pc.s)}
+ h+=rimL(l,5,100,pc)+T(C,118,30,'Light',pc.s,400)+T(C,200,72,on?l+'%':'Off',on?pc.t:OFFC,300)
+  +`<rect x="${m?C:C-125}" y="265" width="125" height="56" rx="28" fill="${pc.h}" opacity=".5"/>`+pill(C,293,250,56,pc.h)+ico('moon',C-62,293,m?pc.h:pc.t)+ico('sun',C+62,293,m?pc.t:pc.h)}
 if(n==='ring'){if(s.done)h+=T(C,233,56,'Good morning','#fff0dc',300);
  else{h+=TM(C,185,112,420,'#fff0dc',300,30)+T(C,262,30,s.snz?'Tap to snooze':'No snoozes left','#e8cfae',400)+T(C,308,28,'Hold to stop','#a8927a',400);
   for(let k=0;k<3;k++)h+=`<circle cx="${C-20+k*20}" cy="350" r="5" fill="${k<s.snz?'#fff0dc':'#4a3d32'}"/>`;if(s.hold>0)h+=arc(222,0,360*s.hold,'#fff0dc',8)}}
 if(n==='set'){const g=PG[s.pg];
- const dots=PG.map((_,i)=>`<circle cx="${C+(i-(PG.length-1)/2)*16}" cy="428" r="${i==s.pg?4.5:3}" fill="${i==s.pg?pc.t:'#3a3129'}"/>`).join(''),stp=()=>chevs([C],70,396,pc.s);
- if(g==='Time')h=picker(s,s.clk,pc,g,true,'',null);
- if(g==='Date'){const mo=MON[s.dat.m],xs=[100,233,366];h=xs.map(x=>chev(x,100,1,pc.s)+chev(x,366,0,pc.s)).join('')+T(C,140,30,g,pc.s,400)+T(100,222,72,mo,pc.t,300)+T(233,222,72,s.dat.d,pc.t,300)+T(366,222,60,s.dat.y,pc.t,300)}
- if(g==='Region')h=stp()+T(C,140,30,g,pc.s,400)+T(C,222,46,REG[s.rg][0],pc.t,300)+T(C,290,28,REG[s.rg][1],pc.h,400);
- if(g==='Sleep hours'){const a=t12(s.ns),b=t12(s.ne);h=chevs([150,316],70,396,pc.s)+ico('moon',150,112,pc.s)+ico('sun',316,112,pc.s)+T(150,218,100,a.h,pc.t,300)+T(316,218,100,b.h,pc.t,300)+T(150,282,30,a.ap,pc.s,400)+T(316,282,30,b.ap,pc.s,400)}
- if(g==='Brightness')h=rimL(s.dayB,10,pc)+stp()+T(C,140,30,g,pc.s,400)+T(C,222,72,s.dayB+'%',pc.t,300);
- if(g==='Alarm volume')h=rimL(s.ld,30,pc)+stp()+T(C,140,30,g,pc.s,400)+T(C,222,72,s.ld+'%',pc.t,300);
- if(g==='Preview alarm')h=T(C,140,30,g,pc.s,400)+T(C,222,56,'Hold',pc.t,300)+(s.hold>0?arc(222,0,360*s.hold,'#fff0dc',8):'');
- if(g==='About')h=T(C,140,30,g,pc.s,400)+T(C,214,56,'v0.1',pc.t,300)+T(C,276,28,'Battery 82%',pc.h,400);
- h+=dots}
-if(n==='zones'){const z='#6b4a2a';h+=`<circle cx="${C}" cy="${C}" r="212" fill="none" stroke="#ffb869" stroke-width="3" stroke-dasharray="2 10"/>`+`<circle cx="${C}" cy="${C}" r="232" fill="none" stroke="#3a2c1f" stroke-width="2"/><line x1="12" y1="120" x2="454" y2="120" stroke="${z}" stroke-width="2" stroke-dasharray="6 6"/><line x1="12" y1="346" x2="454" y2="346" stroke="${z}" stroke-width="2" stroke-dasharray="6 6"/><line x1="${C}" y1="14" x2="${C}" y2="120" stroke="${z}" stroke-width="2" stroke-dasharray="6 6"/><line x1="${C}" y1="346" x2="${C}" y2="452" stroke="${z}" stroke-width="2" stroke-dasharray="6 6"/>`+T(150,106,28,'+1 hour','#ffb869',500)+T(316,106,28,'+5 min','#ffb869',500)+T(C,206,30,'Tap: turn on','#ffb869',400)+T(C,252,30,'Hold: turn off','#ffb869',400)+T(C,298,30,'Turn the rim: set','#ffb869',400)+T(150,360,28,'−1 hour','#ffb869',500)+T(316,360,28,'−5 min','#ffb869',500)+T(150,72,26,'Later','#a55f1a',400)+T(316,72,26,'Later','#a55f1a',400)+T(150,388,26,'Earlier','#a55f1a',400)+T(316,388,26,'Earlier','#a55f1a',400)}
+  const dots=PG.map((_,i)=>{const cx=C+(i-(PG.length-1)/2)*16,w=i==s.pg?14:6;return `<rect x="${cx-w/2}" y="401" width="${w}" height="6" rx="3" fill="${i==s.pg?pc.t:'#3a3129'}"/>`}).join('');
+  if(g==='Time')h=picker(s,s.clk,pc,g,true,'',null,true);
+  if(g==='Date'){const d=s.dat,cc=i=>s.df===i?pc.t:pc.s,ul=[[C-44,C+44,180],[C-66,C+66,296],[C-56,C+56,352]][s.df];
+   h=rimS(s.df===0?d.m:s.df===1?d.d:d.y,pc)+T(C,150,44,MON[d.m],cc(0),400)+T(C,236,110,d.d,cc(1),300)+T(C,326,44,d.y,cc(2),300)+`<line x1="${ul[0]}" y1="${ul[2]}" x2="${ul[1]}" y2="${ul[2]}" stroke="${pc.t}" stroke-width="3" stroke-linecap="round"/>`}
+  if(g==='Region')h=rimS(s.rg,pc)+T(C,128,30,g,pc.s,400)+T(C,206,46,REG[s.rg][0],pc.t,300)+T(C,262,38,REG[s.rg][2],pc.s,300)+T(C,318,28,REG[s.rg][1],pc.h,400);
+  if(g==='Sleep'){const bed=wrap(s.ns),wk=wrap(s.ne),ang=m=>(Math.floor(m/60)%12)*30+(m%60)*.5,ab=ang(bed),aw=ang(wk),dur=wrap(wk-bed),span=Math.min(359,dur*.5);let band='';
+    for(let i=0;i<18;i++)band+=arc(RR,ab-90+i*5,ab-90+i*5+5.6,pc.s,10,(i+1)/18*.5);
+    band+=arc(RR,ab,ab+span,pc.h,10,.9);
+    const[bx,by]=P(ab,RR),[wx,wy]=P(aw,RR),dk='#1a1008',rb=DRAG==='bed'?27:21,rw=DRAG==='wake'?27:21;
+    const hrs=Math.floor(dur/60)+' h'+(dur%60?' '+String(dur%60).padStart(2,'0')+' min':'');
+    h=band+`<circle cx="${bx}" cy="${by}" r="${rb}" fill="${pc.t}" stroke="#000" stroke-width="3"/>`+ico('moon',bx,by,dk).replace('data-k="1" ','')+`<circle cx="${wx}" cy="${wy}" r="${rw}" fill="${pc.t}" stroke="#000" stroke-width="3"/>`+ico('sun',wx,wy,dk).replace('data-k="1" ','')
+     +T(C,118,30,g,pc.s,400)+ico('moon',C-110,176,pc.s)+T(C+24,176,40,f12(bed),pc.t,300)+ico('sun',C-110,236,pc.s)+T(C+24,236,40,f12(wk),pc.t,300)+T(C,296,28,hrs,pc.h,400)}
+  if(g==='Brightness'){const v=(s.dayB-10)/90,r=30+42*v;h=rimL(s.dayB,10,100,pc)+`<circle cx="${C}" cy="215" r="${r+18}" fill="${pc.t}" opacity="${.08+.12*v}"/><circle cx="${C}" cy="215" r="${r+9}" fill="${pc.t}" opacity="${.14+.16*v}"/><circle cx="${C}" cy="215" r="${r}" fill="${pc.t}" opacity="${.35+.6*v}"/>`+T(C,104,30,g,pc.s,400)+T(C,338,46,s.dayB+'%',pc.t,300)}
+  if(g==='Alarm volume'){const n=Math.round(1+(s.ld-30)/70*4);let w='';for(let i=1;i<=5;i++){const r=34+i*24,a0=90-38,a1=90+38,[x0,y0]=[C-34+r*Math.sin(a0*Math.PI/180),215-r*Math.cos(a0*Math.PI/180)],[x1,y1]=[C-34+r*Math.sin(a1*Math.PI/180),215-r*Math.cos(a1*Math.PI/180)];w+=`<path d="M${x0} ${y0}A${r} ${r} 0 0 1 ${x1} ${y1}" fill="none" stroke="${i<=n?pc.t:'#2a211a'}" stroke-width="7" stroke-linecap="round"/>`}
+    h=rimL(s.ld,30,100,pc)+w+`<g transform="translate(${C-58} 215) scale(2.3)" fill="none" stroke="${pc.t}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M-15 -6H-8L2 -14V14L-8 6H-15Z"/></g>`+T(C,104,30,g,pc.s,400)+T(C,338,46,s.ld+'%',pc.t,300)}
+  if(g==='Preview alarm'){h=`<defs><linearGradient id="dg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ffeedd"/><stop offset=".3" stop-color="#ff9a3c"/><stop offset=".65" stop-color="#8a1a05"/><stop offset="1" stop-color="#1a0500"/></linearGradient></defs><circle cx="${C}" cy="212" r="88" fill="url(#dg)" opacity=".92"/><circle cx="${C}" cy="212" r="88" fill="none" stroke="${pc.h}" stroke-width="2"/>`+T(C,104,30,g,pc.s,400)+T(C,336,46,'Hold',pc.t,300)+(s.hold>0?arc(222,0,360*s.hold,'#fff0dc',8):'')}
+  if(g==='About'){h=arc(122,-135,135,pc.h,4,.5)+arc(122,-135,-135+270*.82,pc.t,4,1)+T(C,100,30,g,pc.s,400)+T(C,206,64,'v0.1',pc.t,300)+T(C,274,28,'Battery 82%',pc.h,400)}
+  h+=dots}
+if(n==='dialfig'){h+=rimT(405,pc,true)+T(C,176,28,'Outer dot: minutes',pc.s,400)+T(C,220,28,'Inner dot: hours',pc.s,400)+T(C,264,28,'Clockwise: later',pc.s,400)}
 return h}
 //</draw>
 
 const LG={clock:[['Tap','Wake the face'],['Swipe up / down','Tomorrow / Week'],['Swipe left / right','Sound / Light'],['Hold 1.5 s','Settings']],
-tmr:[['Turn the rim','Set the time. Slow 1 min, fast 30 min'],['Tap top / bottom','Later / earlier. Left hours, right minutes'],['Hold top / bottom','Keep going'],['Hold centre','Skip tomorrow'],['Tap centre','Bring it back']],
+tmr:[['Drag a dot','Outer dot minutes, inner dot hours'],['Hold centre','Skip tomorrow'],['Tap centre','Bring it back'],['Swipe down','Back to the clock']],
 week:[['Tap a day','Open that day'],['Swipe up','Back to the clock']],
-day:[['Turn the rim','Set the time. Slow 1 min, fast 30 min'],['Tap top / bottom','Later / earlier'],['Tap centre','Turn the day on'],['Hold centre','Turn the day off'],['Swipe sideways','Next day, keeps the time']],
-sound:[['Turn the rim','Volume'],['Tap top / bottom','Louder / quieter'],['Tap the icon','Play or pause'],['Tap the pill','Sleep timer'],['Swipe right','Back to the clock']],
-light:[['Turn the rim','Brightness'],['Tap top / bottom','Brighter / dimmer'],['Tap the number','On or off'],['Tap the pill','Night light or reading light'],['Swipe left','Back to the clock']],
+day:[['Drag a dot','Outer dot minutes, inner dot hours'],['Tap centre','Turn the day on'],['Hold centre','Turn the day off'],['Swipe sideways','Next or previous day'],['Swipe up','Back to the week']],
+sound:[['Drag the dot','Volume'],['Tap the icon','Play or pause'],['Tap the pill','Sleep timer'],['Swipe right','Back to the clock']],
+light:[['Drag the dot','Brightness'],['Tap the number','On or off'],['Tap the pill','Night light or reading light'],['Swipe left','Back to the clock']],
 ring:[['Tap anywhere','Snooze 9 minutes'],['Hold 2 seconds','Turn the alarm off']],
-set:[['Turn the rim','Change the value'],['Tap top / bottom','Change the value'],['Swipe sideways','Next page'],['Swipe down','Back to the clock']]};
+set:[['Drag the dot','Change the value'],['Tap a number','Pick which (date)'],['Swipe sideways','Next page'],['Swipe down','Back to the clock']]};
 
 //<check>
 function states(){const L=[],add=(n,f)=>{const s=fresh();f&&f(s);L.push([n,s])};
@@ -307,13 +326,13 @@ function states(){const L=[],add=(n,f)=>{const s=fresh();f&&f(s);L.push([n,s])};
  for(const m of [0,1])for(const on of [true,false])for(const l of [5,100])add('light',s=>{s.lt.m=m;s.lt.on=on;s.lt.l[m]=l});
  for(const z of [0,1,2,3])add('ring',s=>{s.snz=z});add('ring',s=>{s.done=true});add('ring',s=>{s.hold=.6});
  for(let p=0;p<PG.length;p++)for(let r=0;r<REG.length;r++)add('set',s=>{s.pg=p;s.rg=r;s.dat={m:r%12,d:28,y:2099};s.dayB=100;s.ns=1380;s.ne=1000;s.ld=100;s.clk=779});
- add('zones');return L}
+ for(const df of [0,1,2])add('set',s=>{s.pg=1;s.df=df;s.dat={m:df*5+1,d:df===1?28:7,y:2099}});for(const ns of [1350,1230,180,1439,1260])for(const ne of [420,100,720,1000,540,480]){const d=wrap(ne-ns);if(d>=240&&d<=720)add('set',s=>{s.pg=3;s.ns=ns;s.ne=ne})}for(const v of [30,65,100])add('set',s=>{s.pg=5;s.ld=v});for(const v of [10,55,100])add('set',s=>{s.pg=4;s.dayB=v});add('dialfig');return L}
 function layoutCheck(){const g=$('chk'),svg=$('dev'),sr=svg.getBoundingClientRect(),k=588/sr.width,issues=[],seen={};let boxes=0,all=states();
  for(const[n,s]of all){g.innerHTML=draw(n,s);const els=[...g.querySelectorAll('[data-k]')],R=[],ys=[];
   for(const e of els){const r=e.getBoundingClientRect();let x0=(r.left-sr.left)*k-61,x1=(r.right-sr.left)*k-61,y0=(r.top-sr.top)*k-61,y1=(r.bottom-sr.top)*k-61;
    const tag=e.tagName.toLowerCase();if(tag==='text'){const cy=(y0+y1)/2,hh=(y1-y0)*.4;y0=cy-hh;y1=cy+hh;ys.push(cy);const fs=+e.getAttribute('font-size');if(fs<MINFONT)issues.push(n+': font '+fs+'px "'+e.textContent+'"')}
    R.push({x0,x1,y0,y1,t:(e.textContent||tag).trim().slice(0,22)});boxes++}
-  ys.sort((a,b)=>a-b);let lines=ys.length?1:0;for(let i=1;i<ys.length;i++)if(ys[i]-ys[i-1]>14)lines++;if(lines>MAXLINES&&n!=='week'&&n!=='zones'){const key=n+'|lines|'+lines;if(!seen[key]){seen[key]=1;issues.push(n+': '+lines+' text lines (max '+MAXLINES+') '+JSON.stringify([s.now,s.pg,s.msg]))}}
+  ys.sort((a,b)=>a-b);let lines=ys.length?1:0;for(let i=1;i<ys.length;i++)if(ys[i]-ys[i-1]>14)lines++;if(lines>MAXLINES&&n!=='week'&&n!=='dialfig'){const key=n+'|lines|'+lines;if(!seen[key]){seen[key]=1;issues.push(n+': '+lines+' text lines (max '+MAXLINES+') '+JSON.stringify([s.now,s.pg,s.msg]))}}
   const lab=n+' '+JSON.stringify([s.now,s.awake,s.msg,s.pg,s.rg,s.sel,s.skip,s.one,s.ti,s.hold,s.done]);
   for(const r of R){for(const[x,y]of[[r.x0,r.y0],[r.x1,r.y0],[r.x0,r.y1],[r.x1,r.y1]])if(Math.hypot(x-C,y-C)>SAFE){const key=n+'|out|'+r.t;if(!seen[key]){seen[key]=1;issues.push(n+': outside safe circle "'+r.t+'" ('+Math.round(Math.hypot(x-C,y-C))+'px) '+lab)}break}}
   for(let i=0;i<R.length;i++)for(let j=i+1;j<R.length;j++){const a=R[i],b=R[j];if(a.x0<b.x1+3&&b.x0<a.x1+3&&a.y0<b.y1+3&&b.y0<a.y1+3){const key=n+'|ov|'+a.t+'|'+b.t;if(!seen[key]){seen[key]=1;issues.push(n+': overlap "'+a.t+'" with "'+b.t+'" '+lab)}}}}
@@ -337,45 +356,41 @@ function idle(){clearTimeout(idleT);if(S.scr!=='clock'&&S.scr!=='ring'&&!busy)id
 function wake(){S.awake=true;clearTimeout(awT);awT=setTimeout(()=>{S.awake=false;if(S.scr==='clock'&&!busy)render()},5000)}
 function ripple(x,y){const c=document.createElementNS(NS,'circle');c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('fill','#fff');$('fx').appendChild(c);const t0=performance.now();(function st(t){const p=Math.min(1,(t-t0)/380);c.setAttribute('r',12+30*p);c.setAttribute('opacity',.22*(1-p));p<1?requestAnimationFrame(st):c.remove()})(t0)}
 
-const STEP_PG=['Time','Date','Region','Sleep hours','Brightness','Alarm volume'];
-function stepScreen(){const s=S.scr;if(s==='set')return STEP_PG.includes(PG[S.pg]);return ['tmr','day','sound','light'].includes(s)}
-function colOf(x){const g=S.scr==='set'&&PG[S.pg]==='Date';if(g)return x<167?'A':x<300?'B':'C';return x<C?'L':'R'}
-function adj(dir,col,big){const s=S.scr,tstep=col==='L'?60:(big?15:5);
- if(s==='tmr'){const c=S.one??usual(S)??420,v=wrap(c+dir*tstep);S.one=v===usual(S)?null:v;S.skip=false;fb(f12(v))}
- else if(s==='day'){const d=S.days[S.sel];d.min=wrap(d.min+dir*tstep);d.on=true;fb(DF[S.sel]+' '+f12(d.min))}
- else if(s==='sound'){S.vol=clamp(S.vol+dir*10,0,100);fb('Volume '+S.vol+'%')}
- else if(s==='light'){S.lt.on=true;const m=S.lt.m;S.lt.l[m]=clamp(S.lt.l[m]+dir*10,5,100);fb('Brightness '+S.lt.l[m]+'%')}
- else if(s==='set'){const g=PG[S.pg];
-  if(g==='Time'){S.clk=wrap(S.clk+dir*tstep);S.now=S.clk;fb(f12(S.clk)+(col==='L'?' · daylight saving fix: one tap':''))}
-  if(g==='Date'){const d=S.dat;if(col==='A')d.m=(d.m+(dir>0?1:11))%12;else if(col==='B')d.d=((d.d-1+(dir>0?1:30))%31)+1;else d.y=clamp(d.y+dir,2024,2099);fb(MON[d.m]+' '+d.d+', '+d.y)}
-  if(g==='Region'){S.rg=(S.rg+(dir>0?1:REG.length-1))%REG.length;fb(REG[S.rg][0])}
-  if(g==='Sleep hours'){if(col==='L')S.ns=wrap(S.ns+dir*60);else S.ne=wrap(S.ne+dir*60);fb('Bed '+f12(S.ns)+' · wake '+f12(S.ne))}
-  if(g==='Brightness'){S.dayB=clamp(S.dayB+dir*10,10,100);fb('Daytime brightness '+S.dayB+'%')}
-  if(g==='Alarm volume'){S.ld=clamp(S.ld+dir*10,30,100);fb('Alarm volume '+S.ld+'%')}}
- render()}
-function dialScreen(){const s=S.scr;return s==='tmr'||s==='day'||s==='sound'||s==='light'||(s==='set'&&['Time','Brightness','Alarm volume'].includes(PG[S.pg]))}
 function adjTime(dm){const s=S.scr;
  if(s==='tmr'){const c=S.one??usual(S)??420,v=wrap(c+dm);S.one=v===usual(S)?null:v;S.skip=false;fb(f12(v))}
  else if(s==='day'){const d=S.days[S.sel];d.min=wrap(d.min+dm);d.on=true;fb(DF[S.sel]+' '+f12(d.min))}
- else if(s==='set'){S.clk=wrap(S.clk+dm);S.now=S.clk;fb(f12(S.clk))}
+ else if(s==='set'){const g=PG[S.pg];if(g==='Time'){S.clk=wrap(S.clk+dm);S.now=S.clk;fb(f12(S.clk))}}
  render()}
-function adjLin(dir){const s=S.scr;
- if(s==='sound'){S.vol=clamp(S.vol+dir,0,100);fb('Volume '+S.vol+'%')}
- else if(s==='light'){S.lt.on=true;const m=S.lt.m;S.lt.l[m]=clamp(S.lt.l[m]+dir,5,100);fb('Brightness '+S.lt.l[m]+'%')}
- else if(s==='set'){const g=PG[S.pg];if(g==='Brightness'){S.dayB=clamp(S.dayB+dir,10,100);fb('Daytime brightness '+S.dayB+'%')}if(g==='Alarm volume'){S.ld=clamp(S.ld+dir,30,100);fb('Alarm volume '+S.ld+'%')}}
+function stepVal(dir){const g=PG[S.pg];
+ if(g==='Date'){const d=S.dat;if(S.df===0)d.m=(d.m+(dir>0?1:11))%12;else if(S.df===1)d.d=((d.d-1+(dir>0?1:30))%31)+1;else d.y=clamp(d.y+dir,2024,2099);fb(MON[d.m]+' '+d.d+', '+d.y)}
+ else if(g==='Region'){S.rg=(S.rg+(dir>0?1:REG.length-1))%REG.length;fb(REG[S.rg][0])}
  render()}
-function dialStep(g,v){const s=S.scr,lin=s==='sound'||s==='light'||(s==='set'&&PG[S.pg]!=='Time'),unit=lin?3:6;
- while(Math.abs(g.acc)>=unit){const dir=g.acc>0?1:-1;g.acc-=dir*unit;if(lin)adjLin(dir);else adjTime(dir*(v<30?1:v<120?5:v<300?15:30))}}
-function tap(x,y){const r=Math.hypot(x-C,y-C),s=S.scr,z=y<120?'T':y>346?'B':'M',col=colOf(x);
+function linInfo(){const s=S.scr;
+ if(s==='sound')return{lo:0,hi:100,get:()=>S.vol,set:v=>{S.vol=v;fb('Volume '+v+'%')}};
+ if(s==='light')return{lo:5,hi:100,get:()=>S.lt.l[S.lt.m],set:v=>{S.lt.on=true;S.lt.l[S.lt.m]=v;fb('Brightness '+v+'%')}};
+ if(s==='set'&&PG[S.pg]==='Brightness')return{lo:10,hi:100,get:()=>S.dayB,set:v=>{S.dayB=v;fb('Daytime brightness '+v+'%')}};
+ if(s==='set'&&PG[S.pg]==='Alarm volume')return{lo:30,hi:100,get:()=>S.ld,set:v=>{S.ld=v;fb('Alarm volume '+v+'%')}};
+ return null}
+function knobs(){const s=S.scr;let m=null;
+ if(s==='tmr')m=S.one??usual(S)??420;else if(s==='day')m=S.days[S.sel].min;
+ else if(s==='set'){const g=PG[S.pg];if(g==='Time')m=S.clk}
+ if(m!=null){m=wrap(m);return[{t:'min',a:(m%60)*6,r:RR},{t:'hr',a:(Math.floor(m/60)%12)*30+(m%60)*.5,r:RH}]}
+ if(s==='set'&&PG[S.pg]==='Sleep'){const ang=q=>(Math.floor(wrap(q)/60)%12)*30+(wrap(q)%60)*.5;return[{t:'bed',a:ang(S.ns),r:RR},{t:'wake',a:ang(S.ne),r:RR}]}
+ const li=linInfo();if(li)return[{t:'lin',a:-135+270*(li.get()-li.lo)/(li.hi-li.lo),r:RR}];
+ if(s==='set'){const g=PG[S.pg];if(g==='Date')return[{t:'step',a:((S.df===0?S.dat.m:S.df===1?S.dat.d:S.dat.y)%12)*30,r:RR}];if(g==='Region')return[{t:'step',a:(S.rg%12)*30,r:RR}]}
+ return null}
+function dialMove(g){
+ if(g.kt==='lin'){const li=linInfo(),v=clamp(Math.round((g.v0+g.acc*(li.hi-li.lo)/270)/5)*5,li.lo,li.hi);if(v!==li.get()){li.set(v);render()}}
+ else{const unit=(g.kt==='bed'||g.kt==='wake')?7.5:30,st=Math.round(g.acc/unit);if(st!==g.applied){const n=st-g.applied;g.applied=st;if(g.kt==='bed'){S.ns=wrap(S.ns+n*15);const d=wrap(S.ne-S.ns);if(d<240)S.ns=wrap(S.ne-240);else if(d>720)S.ns=wrap(S.ne-720);fb('Bedtime '+f12(S.ns));render()}else if(g.kt==='wake'){S.ne=wrap(S.ne+n*15);const d=wrap(S.ne-S.ns);if(d<240)S.ne=wrap(S.ns+240);else if(d>720)S.ne=wrap(S.ns+720);fb('Wake '+f12(S.ne));render()}else if(g.kt==='min')adjTime(n*5);else if(g.kt==='hr')adjTime(n*60);else for(let i=0;i<Math.abs(n);i++)stepVal(n>0?1:-1)}}}
+function tap(x,y){const r=Math.hypot(x-C,y-C),s=S.scr;
  if(s==='clock'){wake();S.msg='';fb('Tap: the face wakes and shows the way')}
  else if(s==='week'){if(r>98){let a=Math.atan2(x-C,C-y)*180/Math.PI;a=(a+360+180/7)%360;S.sel=Math.floor(a/(360/7));return nav('day',[0,-1],'Editing every '+DF[S.sel])}fb('Tap a day to edit it')}
  else if(s==='ring'){if(S.done)return;if(S.snz>0){S.snz--;S.msg='Snoozed · rings 7:09 AM';return nav('clock',null,'Snoozed for 9 minutes')}return fb('No snoozes left. Hold to stop')}
- else if(z!=='M'&&stepScreen())adj(z==='T'?1:-1,col,false);
- else if(s==='tmr'){if(S.skip){S.skip=false;fb('Tomorrow’s alarm is back')}else if((S.one??usual(S))==null)fb('Tap above to set one');else fb('Hold to skip tomorrow')}
+ else if(s==='tmr'){if(S.skip){S.skip=false;fb('Tomorrow’s alarm is back')}else if((S.one??usual(S))==null)fb('Drag a dot to set one');else fb('Hold to skip tomorrow')}
  else if(s==='day'){const d=S.days[S.sel];if(!d.on){d.on=true;fb(DF[S.sel]+' alarm on')}else fb('Hold to turn this day off')}
  else if(s==='sound'){if(y<250){S.play=!S.play;fb(S.play?'White noise playing':'Paused')}else{S.ti=(S.ti+1)%5;fb('Sleep timer: '+TIMER[S.ti][0])}}
  else if(s==='light'){if(y<250){S.lt.on=!S.lt.on;fb(S.lt.on?'Light on':'Light off')}else{S.lt.m^=1;S.lt.on=true;fb(S.lt.m?'Reading light':'Night light')}}
- else if(s==='set'){const g=PG[S.pg];if(g==='Region'){S.rg=(S.rg+1)%REG.length;fb(REG[S.rg][0])}else fb('Swipe sideways for more settings')}
+ else if(s==='set'){const g=PG[S.pg];if(g==='Date'){S.df=y<200?0:y<290?1:2;fb(['Month','Day','Year'][S.df])}else fb('Swipe sideways for more settings')}
  render()}
 function swipe(d){const s=S.scr;
  if(s==='clock'){if(d==='up')return nav('tmr',[0,1],'Tomorrow’s alarm');if(d==='down')return nav('week',[0,-1],'Weekly schedule');if(d==='left')return nav('sound',[1,0],'Sleep sound');return nav('light',[-1,0],'Light')}
@@ -395,24 +410,25 @@ function onHold(){const s=S.scr;
 
 const dev=$('dev');let G=null,rep=null;
 function pt(e){const b=dev.getBoundingClientRect();return[(e.clientX-b.left)*588/b.width-61,(e.clientY-b.top)*588/b.height-61]}
-function stopRep(){clearTimeout(rep&&rep.t);clearInterval(rep&&rep.i);rep=null}
+function stopRep(){}
 dev.addEventListener('pointerdown',e=>{if(busy)return;const[x,y]=pt(e),r=Math.hypot(x-C,y-C);if(r>C)return;dev.setPointerCapture(e.pointerId);ripple(x,y);idle();
- const z=y<120?'T':y>346?'B':'M',col=colOf(x),g=G={x,y,t:performance.now(),moved:false,held:false,rep:false,rim:r>=130&&dialScreen(),dial:false,dialed:false,acc:0,ang:0,tt:0};
+ const g=G={x,y,t:performance.now(),moved:false,held:false,grab:false,kt:'',dial:false,dialed:false,acc:0,ang:0,applied:0,v0:0};
+ const ks=knobs();if(ks){let best=null,bd=57;for(const k of ks){const[kx,ky]=P(k.a,k.r),dd=Math.hypot(x-kx,y-ky);if(dd<bd){bd=dd;best=k}}if(best){g.grab=true;g.kt=best.t;g.v0=best.t==='lin'?linInfo().get():0}}
  let hm=0;const s=S.scr;
  if(s==='ring'&&!S.done)hm=2000;else if(s==='clock')hm=1500;
- else if(z==='M'&&((s==='tmr'&&!S.skip&&(S.one??usual(S))!=null)||(s==='day'&&S.days[S.sel].on)))hm=1000;
+ else if(((s==='tmr'&&!S.skip&&(S.one??usual(S))!=null)||(s==='day'&&S.days[S.sel].on))&&!g.grab&&r<150)hm=1000;
  else if(s==='set'&&PG[S.pg]==='Preview alarm')hm=1500;
- if(hm)(function lp(){if(G!==g||g.moved)return;const p=(performance.now()-g.t)/hm;if((s==='ring'||s==='tmr'||s==='day'||s==='clock'||s==='set')&&p>.12){S.hold=Math.min(1,(p-.12)/.88);render()}if(p>=1){g.held=true;return onHold()}requestAnimationFrame(lp)})();
- if(z!=='M'&&stepScreen()){stopRep();rep={t:setTimeout(()=>{if(G!==g||g.moved)return;g.rep=true;let n=0;rep.i=setInterval(()=>{if(G!==g){stopRep();return}n++;adj(z==='T'?1:-1,col,n>6)},230)},450)}}});
+ if(hm)(function lp(){if(G!==g||g.moved)return;const p=(performance.now()-g.t)/hm;if((s==='ring'||s==='tmr'||s==='day'||s==='clock'||s==='set')&&p>.12){S.hold=Math.min(1,(p-.12)/.88);render()}if(p>=1){g.held=true;return onHold()}requestAnimationFrame(lp)})()});
 dev.addEventListener('pointermove',e=>{if(!G)return;const[x,y]=pt(e);
  if(!G.moved&&Math.hypot(x-G.x,y-G.y)>16){G.moved=true;stopRep();if(S.hold){S.hold=0;render()}
-  if(G.rim){const r0=Math.hypot(G.x-C,G.y-C),ux=(G.x-C)/r0,uy=(G.y-C)/r0,mx=x-G.x,my=y-G.y,tang=Math.abs(-uy*mx+ux*my),rad=Math.abs(ux*mx+uy*my);if(tang>rad){G.dial=true;G.ang=Math.atan2(G.x-C,C-G.y)*180/Math.PI;G.tt=G.t}}}
- if(G.dial){const a=Math.atan2(x-C,C-y)*180/Math.PI;let d=a-G.ang;if(d>180)d-=360;if(d<-180)d+=360;const nw=performance.now(),v=Math.abs(d)/Math.max(8,nw-G.tt)*1000;G.ang=a;G.tt=nw;G.acc+=d;G.dialed=true;dialStep(G,v)}});
-function up(e){stopRep();if(!G)return;const g=G;G=null;const[x,y]=pt(e);if(S.hold&&!g.held){S.hold=0;render();return fb('Let go too early. Keep holding')}
- if(g.held||g.rep||g.dialed){idle();return}const dx=x-g.x,dy=y-g.y,d=Math.hypot(dx,dy);
+  if(G.grab&&performance.now()-G.t<90)G.grab=false;
+  if(G.grab){const r0=Math.hypot(G.x-C,G.y-C)||1,ux=(G.x-C)/r0,uy=(G.y-C)/r0,mx=x-G.x,my=y-G.y,tang=Math.abs(-uy*mx+ux*my),rad=Math.abs(ux*mx+uy*my);if(tang>rad){G.dial=true;DRAG=G.kt;render();G.ang=Math.atan2(G.x-C,C-G.y)*180/Math.PI;G.acc=0}else G.grab=false}}
+ if(G.dial){const a=Math.atan2(x-C,C-y)*180/Math.PI;let d=a-G.ang;if(d>180)d-=360;if(d<-180)d+=360;G.ang=a;G.acc+=d;G.dialed=true;dialMove(G)}});
+function up(e){stopRep();if(!G)return;const g=G;G=null;if(DRAG){DRAG='';render()}const[x,y]=pt(e);if(S.hold&&!g.held){S.hold=0;render();return fb('Let go too early. Keep holding')}
+ if(g.held||g.dialed){idle();return}const dx=x-g.x,dy=y-g.y,d=Math.hypot(dx,dy);
  if(d>=56){swipe(Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up'));idle();return}
  if(d<16&&performance.now()-g.t<400)tap(x,y);idle()}
-dev.addEventListener('pointerup',up);dev.addEventListener('pointercancel',()=>{stopRep();G=null;if(S.hold){S.hold=0;render()}});
+dev.addEventListener('pointerup',up);dev.addEventListener('pointercancel',()=>{stopRep();G=null;if(DRAG){DRAG='';render()};if(S.hold){S.hold=0;render()}});
 
 $('tod').oninput=e=>{if(busy)return;S.now=+e.target.value;S.clk=S.now;S.awake=false;const ph=phase(S);fb(ph.p==='day'?'Day: the face is bright and follows the sun':ph.p==='wind'?'Winding down: warmer, dimmer, no blue':'Night: dim amber, moves a little each minute');render()};
 $('bRing').onclick=()=>{if(busy)return;S.done=false;S.hold=0;S.sunT=null;nav('ring',null,'7:00 AM. Tap to snooze, hold to stop')};
@@ -427,7 +443,8 @@ let big=true;$('bSize').onclick=e=>{big=!big;dev.style.maxWidth=big?'440px':'232
 const demo=fresh();demo.awake=true;demo.play=true;demo.lt.on=true;
 document.querySelectorAll('[data-mini]').forEach(b=>{const n=b.dataset.mini,st=n==='clock'?fresh():demo;b.insertAdjacentHTML('afterbegin',`<svg viewBox="0 0 466 466" aria-hidden="true"><circle cx="233" cy="233" r="232" fill="#000" stroke="${n==='clock'?'#8a5e30':'#262a36'}" stroke-width="3"/>${draw(n,st)}</svg>`);
  b.onclick=()=>{if(busy)return;nav(n,null,b.querySelector('span').textContent);$('stage').scrollIntoView({behavior:RM?'auto':'smooth',block:'center'})}});
-$('zoneFig').innerHTML=draw('zones',fresh());
+$('zoneFig').innerHTML=draw('dialfig',fresh());
 $('dayFour').innerHTML=[['Morning, 9 AM',540],['Afternoon, 2 PM',840],['Winding down, 9 PM',1260],['Night, 11:30 PM',1410]].map(([l,m])=>{const st=fresh();st.now=m;return `<figure><svg viewBox="0 0 466 466" aria-hidden="true"><circle cx="233" cy="233" r="232" fill="#000" stroke="#262a36" stroke-width="3"/>${draw('clock',st)}</svg>${l}</figure>`}).join('');
+$('setGrid').innerHTML=PG.map((nm,i)=>{const st=fresh();st.pg=i;st.awake=true;return `<figure><svg viewBox="0 0 466 466" aria-hidden="true"><circle cx="233" cy="233" r="232" fill="#000" stroke="#262a36" stroke-width="3"/>${draw('set',st)}</svg>${nm}</figure>`}).join('');
 render();
 </script>

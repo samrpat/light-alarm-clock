@@ -12,7 +12,7 @@ Last reviewed: 2026-11-13 (Phase 2)
 | ID | Pri | Requirement | Phase | Test |
 |----|-----|-------------|-------|------|
 | R1 | M | `[ ]` Weekly schedule: for each of the 7 weekdays, a wake time (HH:MM, 1-minute resolution) and an on/off flag, set independently. | 3 | T-01 |
-| R2 | M | `[~]` Changing one weekday's time takes **≤ 3 touches** (swipe down, tap the day, tap the hour zone; a hold counts as one touch) and **≤ 10 s** from the clock face. Designed in UX.md §8; not yet built. | 2, 3 | T-02 |
+| R2 | M | `[~]` Changing one weekday's time takes **≤ 3 touches** (swipe down, tap the day, drag the inner dot; a hold counts as one touch) and **≤ 10 s** from the clock face. Designed in UX.md §8; not yet built. | 2, 3 | T-02 |
 | R3 | M | `[ ]` One-off overrides: **Skip next alarm** and **Tomorrow only at HH:MM**. An override is used once, then cleared automatically. It can be cancelled before it fires. | 3 | T-03 |
 | R4 | M | `[ ]` The clock face always shows the next alarm that will actually fire, overrides included (for example "Skipping Tue → next Wed 06:45"), or "No alarm set". | 2, 3 | T-04 |
 
@@ -20,7 +20,7 @@ Last reviewed: 2026-11-13 (Phase 2)
 
 | ID | Pri | Requirement | Phase | Test |
 |----|-----|-------------|-------|------|
-| R5 | M | `[ ]` Four gestures only (swipe, tap, turn the rim, hold). Tap zones ≥ 100 px, a 10 mm dial band with tap zones as the backup, text ≥ 26 px, at most four text lines per screen, and a swipe can start anywhere (UX.md §2–3, D-034). | 2 | T-05 |
+| R5 | M | `[ ]` Four gestures, four jobs (swipe goes, tap does, drag a dot changes, hold stops). No buttons. Values change only by dragging a dot. Text ≥ 26 px, at most four text lines per screen, and a swipe can start anywhere (UX.md §1–3, D-036). | 2 | T-05 |
 | R6 | M | `[~]` The face follows the day (UX.md §7, D-032): colour and brightness change from wake, wind down over the 3 hours before bedtime, and end as the dim amber night face (blue under 15 %, dimmed through the panel, shifts every minute, no white until the alarm rings). Wake and bedtime are settable (default 7:00 AM and 10:30 PM). | 2, 3 | T-06 |
 | R7 | — | ~~IMU gestures (pick-up to wake, flip to snooze).~~ **Dropped** by D-011: the clock is stationary. | — | — |
 | R8 | N | `[ ]` Sound and Light remember their last volume, timer, brightness and colour mode, so starting either is 2 gestures. This replaces the scenes idea taken from Dreamie (D-024, D-023). | 2, 3 | T-08 |
@@ -31,9 +31,10 @@ Last reviewed: 2026-11-13 (Phase 2)
 | R38 | M | `[ ]` The device never needs a network, server, account or phone at any time in its life (D-030, LONGEVITY.md §1). The radios are never switched on. | all | T-38 |
 | R39 | M | `[ ]` Dates are correct to 2099: 64-bit time, every leap day 2028–2056, the year 2038 (LONGEVITY.md §2). | 3 | T-39 |
 | R40 | M | `[ ]` The alarm still works if the screen, touch, speaker, ring or battery fails, or one copy of the program or settings is corrupt (LONGEVITY.md §6). | 3 | T-41, T-44 |
-| R41 | M | `[ ]` The firmware can be rebuilt and updated with no network: pinned toolchain, every library committed to the repository, a "30-year kit", and an SD-card update (LONGEVITY.md §5). | 7 | T-42 |
+| R41 | M | `[ ]` The firmware can be rebuilt and updated with no network: pinned toolchain, every library committed to the repository, a "long-life kit", and an SD-card update (LONGEVITY.md §5). | 7 | T-42 |
 | R42 | M | `[ ]` The battery is a replaceable consumable (a door, nothing glued), and the clock keeps working without it (LONGEVITY.md §4). | 4 | T-45 |
 | R43 | M | `[ ]` Nothing lights the sleeper: the ring is off from bedtime to the dawn, the screen is under 1 lux at the pillow, and the evening light is warm and capped (LIGHT.md §2, §4). | 3 | T-46 |
+| R44 | M | `[~]` A swipe starting anywhere, including right next to a dot, is never mistaken for a dial turn, and a deliberate grab always turns it (D-036). Host test: 1,249 random swipes, 0 mistaken. Still to do on the real panel with `/firmware/dialtest` (UX-B2). | 2, 3 | T-47 |
 
 ## 3. Sound
 
@@ -126,7 +127,7 @@ Last reviewed: 2026-11-13 (Phase 2)
 | K8 | Flash wear from frequent NVS writes. | NVS failure years later. | Write only on settings change and alarm state transitions. Use RTC slow memory for per-second state. |
 | K9 | RTC drift (crystal ±20 ppm ≈ ±1 min/month). | Alarm slowly drifts. | PCF85063 offset register calibration + phone/Wi-Fi sync (R16). |
 | K10 | DST and time zone mistakes. | Alarm fires an hour off twice a year. | RTC holds UTC, POSIX TZ string, host-tested `next_alarm()` (D-003). |
-| K11 | **Thirty years of ageing:** the battery, the screen's pixels, flash memory and electrolytic capacitors all wear. | A part fails and takes the alarm with it. | Replaceable battery, a screen-independent alarm path, two program copies, long-life capacitors (LONGEVITY.md §4, §6). |
+| K11 | **Long-term ageing (a 30-year yardstick, not a promise):** the battery, the screen's pixels, flash memory and electrolytic capacitors all wear. | A part fails and takes the alarm with it. | Replaceable battery, a screen-independent alarm path, two program copies, long-life capacitors (LONGEVITY.md §4, §6). |
 | K12 | **A daylight saving law changes.** | The alarm rings an hour off until corrected. | Manual region, `region.txt` on the SD card, a 2-touch fix (LONGEVITY.md §3). |
 
 ### Reference product: Dreamie (helloambient.com)

@@ -224,40 +224,25 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
 - **Decision:** All device text is Ubuntu (Light, Regular, Medium), under the Ubuntu Font Licence 1.0 (text in `docs/licenses/`). Firmware uses bitmap fonts made from the TTFs with `lv_font_conv`. Text sits inside a safe circle of radius 209 px, never under 26 px, never overlapping. `layoutCheck()` in the concept page measures all 257 screen states in the real font and limits every screen to four text lines. Result: 1,796 boxes, 0 issues.
 - **Consequences:** Phase 3 builds the fonts and repeats the check on the real strings, and the check is a gate for UI changes. The Ubuntu Font Licence should be re-read before any firmware binary is distributed.
 
-## D-029 — Enclosure: fold-out weighted foot, 30-year serviceable build
-- **Date:** 2026-11-13 · **Status:** Proposed, early draft before Phase 4 (owner: "foldable stand", "nicely fit all them", "last 30 years") · **Reqs:** R33, R27, R36
-- **Decision:** A round head (about 88 × 32 mm) holds every electronic part, so no wire crosses a hinge. A weighted foot plate hinges at the head's bottom-rear edge on a stainless pin in brass bushings, with detents at 0°, 12° and 24° and a hard stop. It folds flat against the back into a puck about 40 mm thick. For 30 years: screws into brass inserts only, no glue or snap-fits, ASA or PETG (no PLA), wear placed on cheap replaceable parts (USB-C panel socket, silicone feet, diffuser), and a board carrier so a future display only needs a new carrier. Full draft in ENCLOSURE.md.
-- **Options considered:** kickstand leg (2.5/5) · head in a U-shaped base (3.5) · **fold-out weighted foot (4.5)**, my judgement (ENCLOSURE.md §2).
-- **Open:** front halo or a rear wall-wash, colours, and the board measurements E1–E6.
+## D-029 — Enclosure: pop-out back-panel stand, 30-year serviceable build
+- **Date:** 2026-11-13 · **Status:** Stand choice (option D) accepted by the owner 2026-11-13; the rest is an early draft before Phase 4; revised the same day (owner: "foldable or pop out stand", "lean" back, "just have printer and access to a laser cutter", small metal parts OK) · **Reqs:** R33, R27, R36
+- **Decision:** A round head (about 88 × 38 mm) holds every electronic part, so no wire crosses a hinge. The lower half of the back is a 5 mm panel that swings out on an M3 stainless pin in brass tube and lands on a screwed stop block, propping the head at 15° back. Folded, it sits flush, held by a magnet. About 100 g of steel washers sit low in the head. Made with a 3D printer (ASA or PETG) and a laser cutter (opal acrylic diffuser, silicone gasket and pads). For 30 years: screws into brass inserts only, no glue or snap-fits, wear on cheap replaceable parts, and a board carrier so a future display only needs a new carrier. Full draft in ENCLOSURE.md.
+- **Options considered:** thin kickstand leg (2.5/5) · head in a U-shaped base (3) · weighted foot plate under the head, the first draft (4) · **pop-out back panel (4.5)**, my judgement (ENCLOSURE.md §2).
+- **Risk:** calculated tip force is about 1.5 N at the top of the screen; to be tested (C1).
+- **Open:** front halo or a rear wall-wash, colours, laser cutter materials, and the board measurements E1–E6.
 
-## D-030 — Standalone for 30 years: no network, ever
-- **Date:** 2026-11-13 · **Status:** Proposed (owner: "last 30 years, not dependent on any external software, Wi-Fi or servers, like a Nokia") · supersedes D-010 · **Reqs:** R16, R38, R41, N1–N4
-- **Decision:** The product never uses Wi-Fi, Bluetooth, a time server, a cloud, an account or a phone. The radios are never initialised. Time is set by hand. Updates come from an SD-card file or a USB cable. The build tools and every library are kept offline. Full plan in [LONGEVITY.md](LONGEVITY.md).
-- **Why:** Servers, certificates, apps and cloud accounts are what stop working first.
-- **Consequences:** The phone link (Phase 6) and over-the-air updates are dropped. Phase 6 becomes "offline update and the 30-year kit", Phase 7 polish.
+## D-036 — One way to edit: drag a dot. No buttons. Sideways means the next neighbour.
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "seems weird to have dial and buttons and left and right swipe, optimize"; "really pressing that it works well, don't mess up left and right swipe") · supersedes D-034 and the tap zones of D-026 · **Reqs:** R2, R5, R44
+- **Measured first:** with a dial that could start anywhere in an outer band, 108 of 179 sideways swipes that began there (60 %) were mistaken for dial turns.
+- **Decision:**
+  1. **Four gestures, four jobs:** swipe = go to a neighbour, tap = do, drag a dot = change a value, hold = stop.
+  2. **The dial lives on visible dots, like the hands of a clock.** The outer dot is minutes (5 min per 30°), the inner dot is hours (1 h per 30°). Volume and brightness are one dot on an arc. A dial turn starts only within 56 px of a dot, after a 90 ms pause, moving along the ring. Anything else is a swipe, a tap or ignored.
+  3. **No buttons:** no arrows, no plus and minus, no tap zones, no hold-to-repeat.
+  4. **Sideways always means the next neighbour:** Light | Clock | Sound, the days of the week, the settings pages. Up and down move between the waking screens.
+- **Result:** 1,249 random swipes (651 starting within 56 px of a dot) on 10 screens, 0 mistaken for a dial turn. Bench test UX-B2 repeats it on the real panel with `/firmware/dialtest`.
+- **Options considered:** the rim band (rejected by measurement), drag-anywhere, buttons beside the dial (removed: three overlapping controls), an explicit edit mode (an extra touch).
 
-## D-031 — Daylight saving and time with no server
-- **Date:** 2026-11-13 · **Status:** Proposed (owner: "dst, figure out a way") · **Reqs:** R16, R28, R39, K12 · refines D-003
-- **Decision:** Four layers: rules stored in the clock as time-zone rule strings (any year to 2099), a **Manual** region, a `region.txt` file on the SD card for a rule the clock does not know, and alarms stored as wall-clock times. After a law change, fix the clock in two touches. The clock learns its own drift when corrected.
-- **Options considered:** NTP over Wi-Fi (needs a server), a GNSS receiver (not on this board), a radio time signal (one broadcaster, no receiver) · **rules inside + Manual + SD file (chosen)**.
-
-## D-032 — A face that follows the day; eight settings
-- **Date:** 2026-11-13 · **Status:** Proposed (owner: "a face which is dynamic till sleep", "settings concise", "don't need where the sun is") · supersedes D-027, D-024 item 3 · **Reqs:** R6
-- **Decision:** The face is a function of the time between wake and bedtime: gold in the morning, cool white at noon, warm in the afternoon, a 3-hour wind-down (blue drains out, brightness falls smoothly, the date fades) and a dim amber night face. No sun arc or marker. Settings are eight pages: Time, Date, Region, Sleep hours, Brightness, Alarm volume, Preview alarm, About. Removed: Wi-Fi, accent colour, night dimness, sunrise length, the day-look page. At most four text lines on any screen.
-- **Why:** Colour and brightness alone carry the day, with nothing static to burn in. The 3-hour wind-down follows the evening-light guidance in [LIGHT.md](LIGHT.md).
-
-## D-033 — The light plan follows the evidence
-- **Date:** 2026-11-13 · **Status:** Proposed (owner: "make the LED sequence most scientifically beneficial") · **Reqs:** R12, R13, R43
-- **Decision:** A fixed 30-minute exponential dawn (deep red, amber, warm white at the alarm, a bright daylight hold for 10 minutes), a ring that is off from bedtime to the dawn, a warm and capped evening light, and a night light that never stays on in sleep. The evidence is modest, and LIGHT.md says where I could not read the source. Calibration with a lux meter is needed (L1–L5).
-- **Options considered:** a shorter ramp, cool white while asleep, a sleep-stage trigger (needs a sensor), a length setting. All rejected (LIGHT.md §3).
-
-## D-034 — The touch rim dial is back, with tap zones as the backup
-- **Date:** 2026-11-13 · **Status:** Proposed (owner: "I actually like the idea of the dial with touch") · supersedes the "no rim" part of D-026 · **Reqs:** R2, R5
-- **Decision:** A finger run around the outer 10 mm sets a value (a marker follows; slow is 1 minute, fast is 30 minutes; 3° is 1 % for volume and brightness). The tap zones (top later, bottom earlier, left hours, right minutes, hold repeats) stay as the sure way if the case covers part of the rim. Four gestures: swipe, tap, turn, hold.
-- **Consequences:** The classifier tells a rim turn from an inward swipe by the direction of the first 16 px. A simulated drag test passes. Bench check UX-B2 compares both on the real panel.
-
-## D-035 — Battery: thin 503450-class cell, replaceable
-- **Date:** 2026-11-13 · **Status:** Proposed (owner: "give me the one to order that works, fits, and keeps the case thin and portable") · amends D-012 and the 2000 mAh figure in POWER.md · **Reqs:** R30, R42
-- **Decision:** Order a **3.7 V Li-polymer 503450 cell: 5 × 34 × 50 mm, about 1000 mAh, with a built-in protection board and a 1.25 mm 2-pin plug of the Molex PicoBlade type**, wires at least 50 mm. Half the thickness of the earlier 103450 draft. I could not confirm any single store listing or the polarity from Waveshare's documents, so the part is chosen by specification and must be checked on arrival (HARDWARE.md §1).
-- **Runtime (calculated):** about 3.0 Wh usable. Clock only about 15 h. A typical night with a 90-minute sleep timer uses about 75 %. A full 8 h of white noise on battery is not covered.
-- **Consequences:** ENCLOSURE.md assumes a 10 mm cell; the tray can drop to 5 mm plus swell room. It is a consumable (R42).
+## D-037 — Settings: each page is a picture of what it sets
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "make the settings more polished and design-award worthy, be creative") · supersedes the page list of D-032 · **Reqs:** R5, R37
+- **Decision:** Eight pages, each shaped like its subject: a watch face for Time, a calendar page for Date, the region and its UTC offset, a **band of night on the clock ring** for Sleep (moon to sun, with the wind-down fading in), a glowing orb for Brightness, sound waves for Alarm volume, a tiny sunrise for Preview, a battery ring for About. Bedtime and Wake merge into Sleep (4 to 12 hours). The real value is always shown, at most four lines of text, dots grow while held.
+- **Why:** The picture is the control, so a page needs no explanation and no second control.

@@ -25,76 +25,92 @@ How this draft gets there:
 | Metal at every moving or wearing point | Stainless steel hinge pin turning in brass bushings. Printed plastic never rubs on printed plastic. |
 | Wear lands on cheap parts | The USB-C cable plugs into a $3 screw-mounted panel socket, never into the board's own port (§5). |
 | Heat-resistant plastic | ASA or PETG, never PLA. PLA softens at about 55 °C and creeps under steady load. The ring and fuse may reach 60 °C (POWER.md M6). |
-| Parts fail independently | The diffuser, foot, back cover and board carrier are separate prints. A yellowed diffuser or a cracked foot is one reprint. |
+| Parts fail independently | The diffuser, stand, stop block, back cover and board carrier are separate parts. A scratched diffuser or a cracked stand is one remake. |
 | Next display, same case | The board sits on a printed **board carrier**. If Waveshare stops making this board, only the carrier is redrawn for the replacement. |
 | Files that still open in 30 years | Parametric source in plain-text OpenSCAD, plus STEP and STL exports, in `/enclosure`. The print settings and the full screw list are written down in this file. |
-| Spares | Print a second diffuser and foot, and keep 10 spare screws and 4 spare inserts in a bag with the clock. |
+| Spares | Make a second diffuser and stand, and keep 10 spare screws and 4 spare inserts in a bag with the clock. |
 
-## 2. Stand options compared
+## 2. Stand options compared (revised 2026-11-13)
 
-All three options keep every electronic part in the head, so no wire crosses a hinge and nothing flexes over the years.
+Owner's brief for the revision: tools are a **3D printer and a laser cutter**; small bought metal parts are fine; the stand **folds or pops out**; the clock **leans back** (top away from the sleeper, screen facing slightly up) for a nightstand below eye level.
 
-| | A. Kickstand leg | B. Head in a U-shaped base (yoke) | **C. Fold-out weighted foot** |
-|---|---|---|---|
-| How it works | A thin leg hinged on the back, like a picture frame | The head turns on two side pins inside a U-shaped base | A flat plate hinged at the head's bottom-rear edge swings out behind the head |
-| Steady when you tap or hold the screen | Fair. Light, and the leg can slide | Good | **Good.** The weight sits low and behind, and the hinge stop takes the push |
-| Weighted, non-slip base (R33) | No room for a weight | Yes | **Yes, a steel plate in the foot** |
-| Folded size | About 34 mm thick | About 75 mm. A pin at the centre leaves the folded head high above the base | **About 40 mm thick, one round puck** |
-| Tilt | 2 fixed angles | Any angle | 3 detents: 0°, 12°, 24° back |
-| Number of parts | Lowest | Highest: base, 2 arms, 2 pivots | Low: one plate, one pin, a weight |
-| Weak points over 30 years | The thin leg and its small hinge | Two pivots, more to loosen | One hinge, short and thick, made of metal |
-| Score (my judgement, out of 5) | 2.5 | 3.5 | **4.5** |
+All options keep every electronic part in the head, so no wire crosses a hinge.
 
-**Recommended: C.** It meets R33, is the most stable under a finger and folds the smallest. Its one hinge is short, thick and metal.
+| | A. Thin kickstand leg | B. Head in a U-shaped base | C. Weighted foot plate under the head (first draft) | **D. Pop-out back panel** |
+|---|---|---|---|---|
+| How it works | A narrow leg hinged on the back | Head turns on two side pins | A plate hinged at the bottom-rear edge | The lower half of the back swings out and props the head |
+| Leans back | Yes | Yes | Yes | **Yes, 15°** |
+| Steady under a tap | Fair: narrow, can twist | Good | Good | **Good:** 60 mm wide toe, hard stop, weight low in the head |
+| Folded | 34 mm, leg visible | About 75 mm | About 40 mm, plate on the back | **About 38 mm, flush, nothing sticks out** |
+| Parts | Low | High | Low | **Low:** one panel, one pin, one stop block |
+| Weak points over 30 years | Thin leg | Two pivots | One hinge | One hinge, 60 mm long, metal pin |
+| Score (my judgement, out of 5) | 2.5 | 3 | 4 | **4.5** |
 
-## 3. Layout (option C)
+**Chosen: D (owner approved 2026-11-13).** It is the same idea as C, moved from under the head to the back of it. The clock then rests on its own bottom edge and the stand only props it, so it folds flush.
+
+## 3. Layout (option D)
 
 ```
- side section (front on the left)
+ in use, side view (front on the left)        back view
 
-   ┌──────────┐
-   │▓ ░░░░ ▒▒ │   ▓ halo diffuser (front ring around the screen)
-   │  ████ ▒▒ │   █ display board, about 49 mm, on 3 × M2 screws to the board carrier
-   │▓ ████│▒▒ │   ░ light gap, 8 mm, between the ring LEDs and the diffuser
-   │  ████│▒▒ │   │ chassis plate with brass inserts
-   │  ████│▒▒ │   ▒ battery tray (rear), speaker beside it, grille in the back cover
-   │▓ ░░░░│▒▒ │
-   └──────────┘○──────────────┐   ○ stainless pin, brass bushings, detent stop
-          ▔▔    └──[ steel ]───┘   fold-out foot, 60 mm, with silicone feet
+        ┌────────┐                              ╭────────╮
+       ╱        ╱                              │ speaker │
+      ╱  head  ╱ ○  hinge, mid-height          │ ─────── │  ← hinge line
+     ╱        ╱   ╲                            │▒▒▒▒▒▒▒▒▒│
+    ╱        ╱     ╲  stand, 40 mm             │▒ stand ▒│
+   └────────┘       ╲                           ╰▒▒▒▒▒▒▒╯
+ ══▀▀═══════════════▀══  table
+   pads              toe
 ```
 
 ### Head, front to back (sizes to be confirmed by measuring the board)
 
 | Layer | Depth (mm) | Contents |
 |-------|-----------:|----------|
-| Front bezel and halo diffuser | 2.5 | The opening leaves the 44.5 mm active area clear. The bezel must not press on the touch glass (pressure can cause phantom touches); a 0.5 mm gap or a thin TPU ring keeps it clear. |
+| Front bezel and halo diffuser | 3 | **Laser-cut** opal acrylic ring (§4). The opening leaves the 44.5 mm active area clear. The bezel must not press on the touch glass (pressure can cause phantom touches); a 0.5 mm gap keeps it clear. |
 | Display board | 10.4 | Sits in the board carrier. The ring surrounds it: board about 49 mm across, ring opening 52.2 mm. |
 | Light gap and ring | 8 + 3.3 | The ring sits 8 mm behind the diffuser so 24 LED points blend into one even glow. A white inner wall reflects light forward. A thin wall stops light leaking onto the screen edge. |
 | Chassis plate | 2.5 | Brass inserts for everything. Cable holes have rounded edges. |
-| Rear bay | 12 | Battery 50 × 34 × 10 mm in a tray with 2 mm of swell room on top, so it never presses toward the screen. Speaker 30 × 20 × 6.8 mm beside it. The fuse, capacitor and resistor go in the curved space at the top. |
-| Back cover | 2.5 | Speaker grille holes, vents, USB-C panel socket, hinge knuckles. |
-| **Head total** | **about 32 mm deep, about 88 mm across** | |
+| Rear bay | 12 | Battery 50 × 34 × 10 mm in a tray with 2 mm of swell room, so it never presses toward the screen. Speaker 30 × 20 × 6.8 mm above it, behind the grille. The fuse, capacitor and resistor go in the curved space at the top. A stack of steel washers (about 100 g) sits at the very bottom. |
+| Back cover with stand recess | 2.5 + 5 | Upper half: speaker grille and vents. Lower half: a 5 mm deep recess that the stand folds into. |
+| **Head total** | **about 38 mm deep, about 88 mm across** | |
 
-Fit check: the battery and speaker side by side make a 54 × 50 mm block. Its diagonal is 74 mm, which fits the 83 mm inner circle.
+The bottom of the head is not round. It has a flat facet cut at 15°, about 45 mm wide, with two silicone pads, so the leaning head sits flat on the table and cannot roll.
 
-### Foot
+### Stand
 
-- About 88 × 60 × 7 mm, ASA, with a 3 mm steel plate (about 80 g) held by two screws. The total weight of about 250 g keeps it from moving when the screen is tapped.
-- Four press-in silicone bumpers go into holes, with no adhesive. When they harden in 10–20 years, pull them out and press in new ones.
-- A cable notch in the foot leads the USB-C cable straight back.
-- **Folded:** the foot swings up flat against the back cover, and a small magnet pair keeps it shut in a bag. Neodymium magnets keep their strength for decades at room temperature. The whole clock becomes a puck about 88 mm across and about 40 mm thick.
+- **Shape:** the lower half of the back, a half-disc about 60 mm wide at the toe and 40 mm from hinge to toe, 5 mm thick. Printed in ASA with the hinge knuckles as part of it. A silicone strip on the toe.
+- **Hinge:** one M3 × 70 stainless screw is the pin, running across the back at mid-height through printed knuckles lined with brass tube (4 mm outside, 3 mm bore). A nylon-insert locknut sets the friction and can be re-tightened.
+- **Stop block:** a small separate printed block, held by one screw, that the stand's knuckle lands on when open. The stop, not friction, carries the load. The stand opens about 50° to give a 15° lean. To change the lean, print another block (10°, 15° and 20° versions).
+- **Pop out:** a finger notch at the toe. A 6 × 2 mm magnet pair holds it shut. Pull with a fingernail and it swings to the stop.
+- **Print direction:** knuckles printed so the load runs along the layers.
 
-### Hinge
+### Stability (calculated, not yet tested)
 
-- Stainless steel shoulder screw (M3, 4 mm shoulder) through two brass flanged bushings pressed into the printed knuckles.
-- A wave washer and a nylon-insert locknut set the friction. When it loosens after years of use, a quarter turn restores it.
-- **Detents:** a printed cam with three notches (0°, 12°, 24°) and a hard stop. The stop, not the friction, takes the push from a tap or hold on the screen.
-- Print the knuckles so the load runs along the layers, never across them, so the layers cannot split.
+| Figure | Value |
+|--------|-------|
+| Weight, with about 100 g of steel washers low in the head | about 280 g (estimate) |
+| Support: front pads to stand toe | about 70 mm |
+| Centre of mass behind the front pads | about 28 mm |
+| Push at the top of the screen that tips it backward | about 1.5 N (about 150 g of finger force) |
+| Push that makes it slide (silicone on wood) | about 2 N |
+
+A normal tap on a touchscreen is under 1 N, so the margin is there but not large. If check C1 fails, the fixes are more washers or a 50 mm stand. Without the washers the tip force drops to about 1 N, so the weight is recommended.
+
+### What the laser cutter makes
+
+| Part | Material | Why laser instead of print |
+|------|----------|----------------------------|
+| Halo diffuser ring | 3 mm **cast opal acrylic** | Perfectly even glow with no layer lines. Acrylic does not yellow indoors for decades. |
+| Speaker gasket, toe strip, foot pads | 1.5 mm silicone sheet | Replaces TPU prints and foam. |
+| Optional: face for the stand or back | 3 mm acrylic or plywood veneer | Looks only. |
+
+Do not laser-cut polycarbonate or PVC: polycarbonate chars and PVC gives off chlorine gas.
 
 ## 4. Light, sound, heat
 
-- **Halo diffuser:** natural (uncoloured) PETG or opal polycarbonate, 1.6–2 mm thick, separate part. Polycarbonate yellows under sunlight but is fine at a bedside. Either way it is a cheap reprint.
-- **Speaker:** the unit is sealed, so it needs no tuned chamber, only a grille (HARDWARE.md §4). Use printed holes, not cloth, since cloth fades and collects dust. Seal it with a printed TPU gasket rather than foam, because foam crumbles within about 10 years.
+- **Halo diffuser:** laser-cut 3 mm cast opal acrylic ring, a separate part held by the bezel. Fallback: natural PETG printed flat.
+- **Speaker:** the unit is sealed, so it needs no tuned chamber, only a grille (HARDWARE.md §4). Use printed holes, not cloth, since cloth fades and collects dust. Seal it with a laser-cut silicone gasket rather than foam, because foam crumbles within about 10 years.
 - **Heat:** the ring at the 0.9 A cap gives off about 4.5 W during a sunrise. Intake slots along the bottom edge and exhaust slots on top let air flow up through the light gap past the ring. The battery sits behind the chassis plate, away from the ring: every 10 °C cooler roughly doubles battery life. Bench test M6 is repeated with the case closed.
 - **Capacitor:** 105 °C-rated (EEU-FR is). Kept away from the ring, it lasts well beyond 30 years.
 
@@ -117,15 +133,16 @@ Fit check: the battery and speaker side by side make a 54 × 50 mm block. Its di
 | Level shifter 74AHCT125 | Same space, on a small perfboard | — |
 | Halo driver PCB v2 | Redrawn to the top-curve shape (about 60 × 14 mm usable) once the board is measured (D-020) | Inline parts are used instead. |
 | USB-C panel socket | Back cover | A plain hole reaches the board's port. |
-| Steel weight | Foot | The foot still works, just lighter. |
+| Steel washers | Bottom of the rear bay | The clock still stands, but tips at about 1 N instead of 1.5 N. |
 
 ## 7. Materials and print settings (draft)
 
 | Part | Material | Settings |
 |------|----------|----------|
-| Head shell, chassis plate, back cover, foot | **ASA** (best heat and UV resistance) or PETG | 0.2 mm layers, 4 walls, 40 % gyroid infill. 5 walls around each insert. |
-| Halo diffuser | Natural PETG | 100 % infill, printed flat. Test the evenness before committing. |
-| Gaskets, button springs, port plugs | TPU 95A | — |
+| Head shell, chassis plate, back cover, stand, stop block | **ASA** (best heat and UV resistance) or PETG | 0.2 mm layers, 4 walls, 40 % gyroid infill. 5 walls around each insert. |
+| Halo diffuser | 3 mm cast opal acrylic, laser-cut | Fallback: natural PETG, 100 % infill, printed flat. |
+| Gasket, toe strip, pads | 1.5 mm silicone sheet, laser-cut | — |
+| Button springs, port plugs | TPU 95A (or PETG flexures if no TPU) | — |
 
 Inserts: M3 × 5.7 mm brass heat-set (CNC Kitten or Ruthex style). Hole size as the insert maker specifies, usually 4.0–4.2 mm.
 
@@ -135,10 +152,11 @@ Inserts: M3 × 5.7 mm brass heat-set (CNC Kitten or Ruthex style). Hole size as 
 |------|-----|-------|
 | M3 brass heat-set inserts | 20 (10 spare) | $5 |
 | M3 × 8 stainless socket-head screws | 20 (10 spare) | $4 |
-| M3 stainless shoulder screw, 4 mm shoulder, plus nylon-insert locknut and wave washer | 1 set | $3 |
-| Brass flanged bushings, 4 mm bore | 2 | $2 |
-| Steel plate, about 80 × 50 × 3 mm (or a stack of large washers) | 1 | $3 |
-| Press-in silicone bumpers | 6 (2 spare) | $3 |
+| M3 × 70 stainless screw plus nylon-insert locknut (hinge pin) | 1 | $2 |
+| Brass tube, 4 mm outside, 3 mm bore, 100 mm | 1 | $3 |
+| Steel washers, about 100 g in total | — | $3 |
+| Cast opal acrylic, 3 mm, 100 × 100 mm | 1 | $4 |
+| Silicone sheet, 1.5 mm, 100 × 100 mm | 1 | $4 |
 | 6 × 2 mm neodymium magnets | 2 | $1 |
 | USB-C panel-mount extension, screw flange (optional) | 1 | $4 |
 | ASA or PETG filament, natural PETG, TPU | — | owner's stock |
@@ -160,8 +178,8 @@ Board size from a third-party listing (Core Electronics): **48.96 mm across × 1
 
 | # | Check | Pass |
 |---|-------|------|
-| C1 | Tap and 2 s hold at the screen edge, at each tilt | The clock does not slide or tip. The hinge does not move. |
-| C2 | Fold and unfold 500 times (about 15 years of weekly travel) | The hinge holds each detent. No cracks. |
+| C1 | Tap and 2 s hold at the top edge of the screen; then push there with a kitchen scale | The clock does not slide or tip in use. It tips at no less than 1.5 N (150 g). |
+| C2 | Fold and unfold 500 times (about 15 years of weekly travel) | The stand still lands on its stop and stays shut when folded. No cracks. |
 | C3 | Sunrise at the cap for 30 min, case closed | Ring < 60 °C, battery < 40 °C (M6) |
 | C4 | Halo evenness | No visible LED dots from 1 m |
 | C5 | Take out the battery, board and speaker, then put them back | 2.5 mm hex key only. Under 10 minutes. Nothing broken. |
@@ -170,7 +188,8 @@ Board size from a third-party listing (Core Electronics): **48.96 mm across × 1
 
 ## 11. Open questions for the owner
 
-1. Option C (fold-out weighted foot): OK?
+1. ~~Option D (pop-out back panel, 15° lean back): OK?~~ **Approved 2026-11-13.**
+5. What can your laser cutter cut: acrylic, plywood, silicone sheet? What is its bed size and power?
 2. Halo on the **front** around the screen (this draft), or facing **backward** to wash the wall behind? A rear glow is softer but needs a wall close behind.
-3. Colour and finish: one colour, or a contrasting foot and bezel?
+3. Colour and finish: one colour, or a contrasting stand and bezel?
 4. Can you measure E1–E6 with calipers? If not, I work from Waveshare's drawing and you test-fit a quick print.

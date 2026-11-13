@@ -61,3 +61,12 @@
 - Added LIGHT.md (evidence-based dawn, evening and night light, D-033) and LONGEVITY.md (30-year, offline, daylight saving without a server, D-030, D-031).
 - Battery: a thin 503450-class cell by specification (D-035). Wi-Fi, BLE and OTA dropped; Phase 6 repurposed.
 - Renumbered: the enclosure draft kept D-029; this round is D-030 to D-035. R5, R6, R12, R13, R16, R28, R30 reworded; N1–N3 dropped; R38–R43 and K11–K12 added.
+- Revised the same day after owner input (3D printer and laser cutter only, pop-out stand, lean back): option D, a pop-out back panel with a stop block and 15° lean; laser-cut opal acrylic diffuser and silicone gaskets; stability figures added (calculated). D-029 rewritten.
+- Owner approved stand option D (pop-out back panel).
+
+## 2026-11-13 — Phase 2 revision, round 3
+- **Measured a flaw:** a dial that could start in an outer band mistook 108 of 179 sideways swipes (60 %) for turns. Replaced by dots on rings, like clock hands: only a touch on a dot, after a short pause, moving along the ring, can turn it (D-036). Removed all buttons, tap zones and hold-to-repeat. Sideways always means the next neighbour.
+- Stress test: 1,249 random swipes (651 within 56 px of a dot), 0 mistaken for a dial turn.
+- Settings redesigned as eight pictures (D-037): Time, Date, Region, Sleep (a band of night on the clock ring), Brightness, Alarm volume, Preview alarm, About. Bedtime and Wake merged into Sleep.
+- Added `/firmware/dialtest`, a test app for the real touch screen (compiles, not yet flashed).
+- Owner answers: battery spec yes (D-035 accepted), phone link and OTA dropped (D-030 accepted), 30 years is a yardstick not a promise (wording softened in LONGEVITY.md and elsewhere).

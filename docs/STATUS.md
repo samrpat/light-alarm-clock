@@ -10,17 +10,16 @@ Last updated: 2026-11-13
 | 3 | Core firmware (MVP) | ⏳ Next |
 | 4 | 3D-printed enclosure | — |
 | 5 | Sleep sounds library | — |
-| 6 | Offline update and the 30-year kit (was BLE, dropped by D-030) | — |
+| 6 | Offline update and the long-life kit (was BLE, dropped by D-030) | — |
 | 7 | Polish (power, assembly guide) | — |
 
 ## Phase 2 revision (2026-11-13)
-- Fewer words: at most four text lines per screen. Eight settings pages: Time, Date, Region, Sleep hours, Brightness, Alarm volume, Preview alarm, About (D-032).
-- The face follows the day (gold, cool white, warm, a 3-hour wind-down, dim amber night). No sun arc.
-- The touch rim dial is back, with tap zones as the backup (D-034).
-- Light plan from the evidence: 30-minute dawn, nothing lights the sleeper ([LIGHT.md](LIGHT.md), D-033).
-- 30-year offline plan: no network ever, daylight saving with rules plus Manual plus an SD file, wear parts replaceable ([LONGEVITY.md](LONGEVITY.md), D-030, D-031).
-- Battery: a thin 503450-class cell (D-035). Wi-Fi, BLE and over-the-air updates dropped (D-030).
-- Concept page: https://claude.ai/artifact/UGtnZ6MqkrSfuM5BShyG5a (private link). Text check: 257 states, 0 issues.
+- **One way to edit.** Four gestures, four jobs: swipe goes, tap does, drag a dot changes, hold stops. No buttons (D-036). The dial lives on dots like clock hands (outer minutes, inner hours). Measured: a rim-band dial hijacked 60 % of sideways swipes; the dot design lost none in 1,249 random swipes.
+- **Sideways always means the next neighbour:** Light | Clock | Sound, the days, the settings pages.
+- **Settings redesigned (D-037):** eight pages, each a picture of what it sets: a watch face, a calendar page, a band of night on the clock ring for Sleep, a glowing orb, sound waves, a tiny sunrise, a battery ring.
+- Fewer words (at most four lines per screen), the face that follows your day, the light plan ([LIGHT.md](LIGHT.md)), the offline and repairable plan ([LONGEVITY.md](LONGEVITY.md), 30 years is a yardstick not a promise).
+- Concept page: https://claude.ai/artifact/UGtnZ6MqkrSfuM5BShyG5a (private link). Text check: 283 states, 0 issues.
+- Board test app `/firmware/dialtest` (compiles, not yet flashed): feel the dots and check swipes on the real glass.
 
 ## Hardware state (bring-up test, 2026-11-12)
 - `/firmware/bringup` runs on the real board: screen, touch, 7 I2C chips, ring (GRBW, smooth dithered sunrise), speaker.
@@ -28,17 +27,16 @@ Last updated: 2026-11-13
 - Not yet tested: battery, full 0.9 A ring current with fuse + capacitor + resistor, USB voltage under load.
 
 ## Waiting for owner
-1. **Approve Phase 2** (accepts D-024 as amended, D-025, D-028, D-030 to D-035).
-2. **Battery:** order a 503450-class cell by the specification in HARDWARE.md §1, then check the plug and polarity on arrival. I could not confirm a single store listing.
-3. **Daylight saving:** US Eastern with automatic rules, a Manual option, and a two-touch fix. OK?
-4. **A lux meter** (about $20–30) would let me set the dawn and evening light levels by measurement (LIGHT.md L1–L3). Optional.
-5. **Phase plan:** Phase 6 (phone link) is dropped. Phase 6 becomes "offline update and the 30-year kit". OK?
+1. **Approve Phase 2** (accepts D-024 as amended, D-025, D-028, D-030 to D-037).
+2. **Flash `/firmware/dialtest`** and try it (swipe near the rim, next to a dot, in the middle; grab a dot with and without a pause). Tell me anything that feels wrong (UX-B2). I could not flash it because the board was not plugged in.
+3. **Daylight saving:** US Eastern with automatic rules, a Manual option and a two-touch fix. OK? (not yet answered)
+4. **Battery:** order a 503450-class cell by the specification in HARDWARE.md §1 (answered yes).
 
-Answered: 12-hour AM/PM yes · 5-minute steps · day vibe = the dynamic face · no picker feel test in the bring-up app (the dial may change that: UX-B2).
+Answered: 12-hour AM/PM · 5-minute steps · battery spec · no lux meter · drop the phone link and wireless updates (Phase 6 becomes the offline update and the long-life kit) · 30 years is a quality yardstick, not a promise.
 
 ## Early enclosure draft (2026-11-13, at the owner's request)
-- [ENCLOSURE.md](ENCLOSURE.md) draft and proposed D-029: fold-out weighted foot, all electronics in the head, built for 30 years with replaceable wear parts. Phase 4 has not started.
-- Waiting for the owner: approve option C, front halo or rear wall-wash, colours, board measurements E1–E6.
+- [ENCLOSURE.md](ENCLOSURE.md) draft and proposed D-029 (revised): pop-out back-panel stand leaning 15° back, made with a 3D printer and laser cutter, all electronics in the head, built for 30 years with replaceable wear parts. Phase 4 has not started. **Option D approved by the owner 2026-11-13.**
+- Waiting for the owner: laser cutter materials, front halo or rear wall-wash, colours, board measurements E1–E6.
 
 ## Blockers
 - None for Phase 3. Bench checks needed along the way: battery polarity (V2), RTC keeps time on battery (V6), PWR-key long-press can be disabled (V7), ring at 0.9 A for 30 min with the protection parts, night dimness banding (UX-B1), touch reliability near the edge (UX-B2).

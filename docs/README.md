@@ -29,13 +29,13 @@ Reference product for feel and features: Dreamie by Hello Ambient (helloambient.
 | [POWER.md](POWER.md) | Power design, current budget, runtime math | Phase 1 |
 | [UX.md](UX.md) | Gestures, options compared, screen map, day/night look, type and layout rules, acceptance checks | Phase 2 |
 | [LIGHT.md](LIGHT.md) | The evidence and the ring and screen light plan: dawn, evening, night | Phase 2 |
-| [LONGEVITY.md](LONGEVITY.md) | 30-year, offline plan: time, daylight saving, wear, updates | Phase 2 |
+| [LONGEVITY.md](LONGEVITY.md) | Long-life, offline plan: time, daylight saving, wear, updates | Phase 2 |
 | `licenses/` | Third-party licence texts (Ubuntu Font Licence) | Phase 2 |
 | RELIABILITY.md | FMEA, watchdog design | Phase 3 |
 | TEST_PLAN.md | Test cases T-xx ↔ requirements | Phase 3 |
 | ENCLOSURE.md | Enclosure design, print and assembly | Phase 4 |
 
-Interface concept: `/mockups/ux-concept.html` (open in a browser; also published as a private page, link in UX.md). PCB: `/pcb/halo-driver`. Code: `/firmware` (ESP-IDF project, from Phase 3) · CAD: `/enclosure` (from Phase 4).
+Interface concept: `/mockups/ux-concept.html` (open in a browser; also published as a private page, link in UX.md). PCB: `/pcb/halo-driver`. Code: `/firmware` (`bringup` and `dialtest` hardware test apps now, the product firmware from Phase 3) · CAD: `/enclosure` (from Phase 4).
 
 ## Build & flash
 The product firmware starts in Phase 3. A hardware **bring-up test** exists now in `/firmware/bringup` (see its README).

@@ -1,8 +1,8 @@
-# Built to last 30 years, offline
+# Built to last: offline and repairable
 
 2026-11-13 · Decisions: [D-030](DECISIONS.md), [D-031](DECISIONS.md), [D-035](DECISIONS.md) · Requirements: R16, R28, R38–R42
 
-**The standard:** like an old Nokia. It does one job, needs nothing from the outside world, and can be fixed by whoever owns it. No warranty covers 30 years of electronics, so the goal is honest: nothing in the design is *guaranteed* to expire, every part that will wear out can be replaced, and a failure of one part never takes the alarm with it.
+**The yardstick:** like an old Nokia. "30 years" is a measure of quality the owner wants, not a promise or something to be proven. It does one job, needs nothing from the outside world, and can be fixed by whoever owns it. No warranty covers 30 years of electronics, so the goal is honest: nothing in the design is *guaranteed* to expire, every part that will wear out can be replaced, and a failure of one part never takes the alarm with it.
 
 ## 1. Standalone rules
 
@@ -42,7 +42,7 @@ This removes from the plan: Wi-Fi time sync, over-the-air updates, and the phone
 
 | Option | Verdict |
 |--------|---------|
-| Time from Wi-Fi (NTP) | Rejected: needs a server and a network for 30 years |
+| Time from Wi-Fi (NTP) | Rejected: needs a server and a network for decades |
 | GNSS satellite receiver | Not on this board (only the "-G" variant has one). Possible as an optional part later. |
 | Radio time signal (like WWVB) | Rejected: depends on one broadcaster, and the board has no receiver |
 | **Rules inside + Manual + SD file** | **Chosen** |
@@ -53,7 +53,7 @@ Tests: every transition from 2026 to 2056 for every region, on a computer, and t
 
 ## 4. Hardware that wears out
 
-| Part | Risk over 30 years | What we do |
+| Part | Risk over the long run | What we do |
 |------|--------------------|-----------|
 | **Li-Po battery** | Lasts roughly 3–5 years and can swell with age | A **consumable**: the bay has a door, the cell is never glued, and the clock works without it (R36). Replace every 3–5 years. Write the date on the cell. |
 | **AMOLED screen** | Pixels dim and can burn in; lifetime is not specified | Mostly black UI, the face shifts every minute, night level is very dim, the day arc moves. If the screen ever fails, the light, the sound and a BOOT-button dismiss still work. |
@@ -71,7 +71,7 @@ Tests: every transition from 2026 to 2056 for every region, on a computer, and t
 
 - **Pin everything** (done: ESP-IDF v5.5.6).
 - **Keep every library in the repository.** The board support package, LVGL, the LED driver and the rest are copied into `managed_components` and committed (today that folder is not committed; Phase 3 changes this).
-- **A "30-year kit"** (Phase 7): one folder to copy onto two USB sticks or SD cards, with the ESP-IDF source and tool archives, the Python packages, the flashing tool, the fonts, the licences, this documentation printed to PDF, the built firmware files, and a list of checksums. A rebuild test every five years confirms it still works.
+- **A "long-life kit"** (Phase 7): one folder to copy onto two USB sticks or SD cards, with the ESP-IDF source and tool archives, the Python packages, the flashing tool, the fonts, the licences, this documentation printed to PDF, the built firmware files, and a list of checksums. A rebuild test every five years confirms it still works.
 - **Update from the SD card:** the clock looks for `clock-update.bin` at start-up, checks it, writes it to the spare program slot, and rolls back if the new program does not pass its self-test. No tool, no network. A USB cable and the flashing tool is the second way.
 - **Settings export:** the settings are copied to the SD card on request, so a replacement board can be brought up in a minute.
 - **A spare:** keep one spare board, ring and battery in a drawer, flashed.
@@ -103,4 +103,4 @@ Tests: every transition from 2026 to 2056 for every region, on a computer, and t
 
 ## 8. What I cannot promise
 
-The screen, the battery and the flash are parts whose real life at 30 years I could not confirm from a datasheet. The design is built so that none of them is a single point of failure for the alarm, and so that each can be replaced.
+The screen, the battery and the flash are parts whose real long-term life I could not confirm from a datasheet. The design is built so that none of them is a single point of failure for the alarm, and so that each can be replaced.
