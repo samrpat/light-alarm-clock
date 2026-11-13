@@ -231,6 +231,37 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
 - **Risk:** calculated tip force is about 1.5 N at the top of the screen; to be tested (C1).
 - **Open:** front halo or a rear wall-wash, colours, laser cutter materials, and the board measurements E1–E6.
 
+## D-030 — Standalone and long-lived: no network, ever
+- **Date:** 2026-11-13 · **Status:** Accepted 2026-11-13 (owner: "yes"; "30 years is not serious, I just want a product of that quality", so 30 years is a quality yardstick, not a promise or a test) · Request: "last 30 years, not dependent on any external software, Wi-Fi or servers, like a Nokia" · supersedes D-010 · **Reqs:** R16, R38, R41
+- **Decision:** The product never uses Wi-Fi, Bluetooth, a time server, a cloud, an account or a phone. The radios are never initialised. Time is set by hand. Updates come from an SD-card file or a USB cable. The build tools and every library are kept offline. Full plan in [LONGEVITY.md](LONGEVITY.md).
+- **Why:** Servers, certificates, apps and cloud accounts are what stop working first.
+- **Consequences:** The phone link (Phase 6) and over-the-air updates are dropped. Phase 6 becomes "offline update and the long-life kit", Phase 7 polish.
+
+## D-031 — Daylight saving and time with no server
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "dst, figure out a way") · **Reqs:** R16, R28, R39, K12 · refines D-003
+- **Decision:** Four layers: rules stored in the clock as time-zone rule strings (any year to 2099), a **Manual** region, a `region.txt` file on the SD card for a rule the clock does not know, and alarms stored as wall-clock times. After a law change, fix the clock in two touches (hold the clock, drag the inner dot one step). The clock learns its own drift when corrected.
+- **Options considered:** NTP over Wi-Fi (needs a server), a GNSS receiver (not on this board), a radio time signal (one broadcaster, no receiver) · **rules inside + Manual + SD file (chosen)**.
+
+## D-032 — A face that follows the day
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "a face which is dynamic till sleep", "don't need where the sun is") · supersedes D-027, D-024 item 3 · **Reqs:** R6
+- **Decision:** The face is a function of the time between wake and bedtime: gold in the morning, cool white at noon, warm in the afternoon, a 3-hour wind-down (blue drains out, brightness falls smoothly, the date fades) and a dim amber night face. No sun arc or marker. At most four text lines on any screen. The settings pages are in D-037.
+- **Why:** Colour and brightness alone carry the day, with nothing static to burn in. The 3-hour wind-down follows the evening-light guidance in [LIGHT.md](LIGHT.md).
+
+## D-033 — The light plan follows the evidence
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "make the LED sequence most scientifically beneficial") · **Reqs:** R12, R13, R43
+- **Decision:** A fixed 30-minute exponential dawn (deep red, amber, warm white at the alarm, a bright daylight hold for 10 minutes), a ring that is off from bedtime to the dawn, a warm and capped evening light, and a night light that never stays on in sleep. The evidence is modest, and LIGHT.md says where I could not read the source. Calibration with a lux meter is optional (L1 to L5).
+- **Options considered:** a shorter ramp, cool white while asleep, a sleep-stage trigger (needs a sensor), a length setting. All rejected (LIGHT.md §3).
+
+## D-034 — The touch rim dial is back, with tap zones as the backup
+- **Date:** 2026-11-13 · **Status:** Superseded by D-036 (a rim band was measured and rejected; the dial now lives on dots) · Was: Proposed (owner: "I actually like the idea of the dial with touch")
+- **Decision then:** A finger run around the outer 10 mm sets a value, with tap zones as the backup. Replaced after a test showed 60 % of sideways swipes starting in the band were mistaken for dial turns.
+
+## D-035 — Battery: thin 503450-class cell, replaceable
+- **Date:** 2026-11-13 · **Status:** Accepted 2026-11-13 (owner: "yes") · Request: "give me the one to order that works, fits, and keeps the case thin and portable" · amends D-012 and the 2000 mAh figure in POWER.md · **Reqs:** R30, R42
+- **Decision:** Order a **3.7 V Li-polymer 503450 cell: 5 × 34 × 50 mm, about 1000 mAh, with a built-in protection board and a 1.25 mm 2-pin plug of the Molex PicoBlade type**, wires at least 50 mm. Half the thickness of the earlier 103450 draft. I could not confirm any single store listing or the polarity from Waveshare's documents, so the part is chosen by specification and must be checked on arrival (HARDWARE.md §1).
+- **Runtime (calculated):** about 3.0 Wh usable. Clock only about 15 h. A typical night with a 90-minute sleep timer uses about 75 %. A full 8 h of white noise on battery is not covered.
+- **Consequences:** ENCLOSURE.md assumes a 10 mm cell; the tray can drop to 5 mm plus swell room. It is a consumable (R42).
+
 ## D-036 — One way to edit: drag a dot. No buttons. Sideways means the next neighbour.
 - **Date:** 2026-11-13 · **Status:** Proposed (owner: "seems weird to have dial and buttons and left and right swipe, optimize"; "really pressing that it works well, don't mess up left and right swipe") · supersedes D-034 and the tap zones of D-026 · **Reqs:** R2, R5, R44
 - **Measured first:** with a dial that could start anywhere in an outer band, 108 of 179 sideways swipes that began there (60 %) were mistaken for dial turns.
