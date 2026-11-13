@@ -1,53 +1,38 @@
 # Status
 
-Last updated: 2026-11-12
+Last updated: 2026-11-13
 
 | Phase | Name | State |
 |-------|------|-------|
 | 0 | Requirements & architecture | ✅ Done, approved 2026-11-12 |
-| 1 | Power & wiring | ✅ Done, **awaiting approval** |
-| 2 | UX & gesture design | ⏳ Next (concept already explored, see below) |
-| 3 | Core firmware (MVP) | — |
+| 1 | Power & wiring | ✅ Done, approved 2026-11-13 |
+| 2 | UX & gesture design | ✅ Done, **awaiting approval** |
+| 3 | Core firmware (MVP) | ⏳ Next |
 | 4 | 3D-printed enclosure | — |
 | 5 | Sleep sounds library | — |
 | 6 | BLE settings sync | — |
 | 7 | Polish (OTA, power, assembly guide) | — |
 
-## Done in Phase 0
-- Requirements R1–R33, N1–N5, with planned test IDs
-- Assumptions A1–A8 still to verify, risks K1–K10
-- Proposed decisions D-001…D-010
-- Block diagram, RTOS task layout, alarm state machine ([FIRMWARE.md](FIRMWARE.md))
-- Dreamie reference reviewed: adopted ideas recorded
+## Done in Phase 2
+- [UX.md](UX.md): principles, touch maths for the 44.5 mm screen, four-gesture vocabulary, screen map, wireframes for every screen and state, settings (8 pages), first-run flow, gesture counts, night theme, status-line priorities, acceptance checks.
+- Key rule (D-024): anything that can stop an alarm needs a hold; anything that only makes it ring is a tap.
+- Concept page updated: https://claude.ai/artifact/UGtnZ6MqkrSfuM5BShyG5a (private link). It shows the clock, Tomorrow, Week, Day, Sound, Light and Ringing. Settings, first run, warnings and the sunrise screen are wireframes only.
+- Phase 1 accepted: D-012, D-014 (amended), D-019 (in principle).
+- Fewest-parts rule proposed (D-023): level shifter, PCB and PCB v2 left out of the baseline.
 
-## UX exploration ahead of Phase 2
-- Owner reviewed mockups and set the direction: no motion gestures, swipe between screens, fewest possible touches (D-011).
-- Interactive concept: `/mockups/ux-concept.html`. Awaiting owner feedback. UX.md is still written in Phase 2.
-
-## Done in Phase 1
-- Board pins, chips and header verified from Waveshare's hardware reference (schematic PDF not yet read)
-- Power design: USB-C main supply, ring on VBUS with fuse, backup battery, PMIC settings ([POWER.md](POWER.md))
-- BOM, pin table, wiring diagram, speaker hookup, bench checks V1–V9 ([HARDWARE.md](HARDWARE.md))
-- Halo driver PCB v1: fabrication files in `/pcb/halo-driver/` (script-checked, not yet CAD-checked or built)
-- Owner answers recorded as D-010, D-013, D-015…D-018. Proposed: D-012, D-014.
-- Project under git, pushed to GitHub
-
-## Bring-up test (ahead of Phase 2, at the owner's request)
-- ESP-IDF v5.5.6 installed on the Mac. `/firmware/bringup` compiles. 
-- Quick wiring: ring straight to VBUS / GND / GPIO17, no level shifter or fuse, ring capped at 300 mA.
-- **Flashed and running on the board (2026-11-12).** Startup log: display, touch (CST9217) and LVGL started; all 7 I2C chips answered; ring driver started on GPIO17; codec and speaker opened at 22 050 Hz.
-- **Owner confirmed 2026-11-12: all modes work** (touch, ring sunrise and white, white noise, tone). Ring ran on a direct 3.3 V data line with short wires and a 300 mA cap.
-- Not yet tested: battery, full 0.9 A ring current, level shifter, USB voltage under load.
+## Hardware state (from the bring-up test, 2026-11-12)
+- `/firmware/bringup` runs on the real board: screen, touch, all 7 I2C chips, ring (GRBW, 24 LEDs, smooth dithered sunrise), speaker (noise and tone).
+- Ring ran with a direct 3.3 V data line, short wires and a 300 mA cap.
+- Not yet tested: battery, full 0.9 A ring current with the fuse, capacitor and resistor, USB voltage under load.
 
 ## Waiting for owner
-1. **Approve Phase 1** (accepts D-012, D-014, D-019).
-2. PCB v2 direction (D-021): USB-C socket on the PCB at the rear, ring powered directly. Layout comes after the case design.
-3. PCB layout accepted in principle; it is ordered only after the case design (D-020). First build is on a breadboard.
-
-Answered 2026-11-12: battery yes (2000 mAh) · ring is #2861 warm white · speaker is Waveshare Speaker (B), 20 × 30 × 6.8 mm · charge to 4.1 V.
+1. **Approve Phase 2** (accepts D-024).
+2. **D-023 fewest parts:** accept leaving out the level shifter, PCB and PCB v2 for now? (Reversible: add the $1.50 chip if the ring flickers at full current.)
+3. **Daytime brightness:** the board has no light sensor, so the face is always very dim and a tap lifts it for 5 s. Fine, or add a Day/Night schedule?
+4. **Battery:** ordered? Check the plug polarity with a multimeter before connecting it.
 
 ## Blockers
-- None for Phase 2. Phase 3 needs bench checks V1–V8 on the real hardware.
+- None for Phase 3 to start. These bench checks are needed along the way: battery polarity (V2), RTC keeps time on battery (V6), PWR-key long-press can be disabled (V7), ring at 0.9 A for 30 min (D-023), night dimness banding (UX-B1).
 
-## Next (Phase 2 plan)
-Turn the approved concept (`/mockups/ux-concept.html`, D-011) into UX.md: screen map, gesture table, wireframes, night theme with pixel shift (D-016), first-run flow (no default alarm, D-015), warning and battery screens, settings (time zone, Wi-Fi, sunrise length).
+## Next (Phase 3 plan)
+Real firmware in `/firmware/clock`, built in small testable steps: time and schedule logic with host tests (`next_alarm`, DST, overrides), NVS A/B storage, alarm engine on core 1, light engine (sunrise, dithering, current cap), audio (noise, fades, escalation), the UI from UX.md, watchdogs and boot-loop safe mode. Also RELIABILITY.md and TEST_PLAN.md.

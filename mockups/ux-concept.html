@@ -108,8 +108,8 @@ section{display:flex;flex-direction:column;gap:28px}
     <div class="verbs">
       <div class="verb"><span>Swipe</span><p>Go somewhere. Every screen is one swipe from the clock, and the opposite swipe brings you back.</p></div>
       <div class="verb"><span>Turn</span><p>Run a finger around the edge to change a value: time, volume, brightness. Start anywhere on the rim.</p></div>
-      <div class="verb"><span>Tap</span><p>On or off. The whole face is the button, so you can hit it with your eyes closed.</p></div>
-      <div class="verb"><span>Hold</span><p>For the one thing that must not happen by accident: turning the alarm off.</p></div>
+      <div class="verb"><span>Tap</span><p>Snooze, play, turn on. The whole face is the button, so you can hit it with your eyes closed.</p></div>
+      <div class="verb"><span>Hold</span><p>For anything that could stop an alarm: turning a day off, skipping tomorrow, dismissing.</p></div>
     </div>
   </section>
 
@@ -139,7 +139,7 @@ section{display:flex;flex-direction:column;gap:28px}
       </div>
       <div class="counts">
         <div><p>Wake earlier tomorrow<small>swipe up, turn the edge</small></p><strong>2</strong></div>
-        <div><p>Skip tomorrow's alarm<small>swipe up, tap</small></p><strong>2</strong></div>
+        <div><p>Skip tomorrow's alarm<small>swipe up, hold</small></p><strong>2</strong></div>
         <div><p>Start white noise<small>swipe left, tap</small></p><strong>2</strong></div>
         <div><p>Night light on<small>swipe right, tap</small></p><strong>2</strong></div>
         <div><p>Change every Wednesday<small>swipe down, tap Wed, turn the edge</small></p><strong>3</strong></div>
@@ -206,7 +206,7 @@ h+=T(200,258,14,s.skip?'Skipped · tap to bring back':s.one!=null?'Just this onc
 if(n=='week'){for(let i=0;i<7;i++){const a0=i*360/7-180/7+1,a1=a0+360/7-2,d=s.days[i],[x,y]=P((a0+a1)/2,104);
 h+=wedge(a0,a1,60,147,d.on?'#1f150b':'#0d0c0b',d.on?'#3d2815':'#1b1917')+T(x,y-3,17,DN[i],d.on?A:OFFC,400)+T(x,y+17,13,d.on?f(d.min):'off',d.on?A2:'#3e3630',400)}
 h+=T(200,197,14,'Every week',A2,400)+T(200,216,12,'tap a day',A3,400)}
-if(n=='day'){const d=s.days[s.sel];h+=ticks(d.min,d.on?'#3a2c1f':'#241c15',d.on?'#8a5e30':'#3a2c1f')+T(200,152,16,'Every '+DF[s.sel],A2,400)+T(200,224,76,f(d.min),d.on?A:'#4a3d32',200)+T(200,258,14,d.on?'On · tap to turn off':'Off · tap to turn on',d.on?A2:A3,400);
+if(n=='day'){const d=s.days[s.sel];h+=ticks(d.min,d.on?'#3a2c1f':'#241c15',d.on?'#8a5e30':'#3a2c1f')+T(200,152,16,'Every '+DF[s.sel],A2,400)+T(200,224,76,f(d.min),d.on?A:'#4a3d32',200)+T(200,258,14,d.on?'On · hold to turn off':'Off · tap to turn on',d.on?A2:A3,400);
 for(let i=0;i<7;i++)h+=`<circle cx="${170+i*10}" cy="292" r="${i==s.sel?3.5:2.5}" fill="${i==s.sel?A:'#3a3129'}"/>`}
 if(n=='sound'){h+=knob(s.vol,'#8a5e30',true);
 h+=s.play?`<rect x="188" y="112" width="8" height="26" rx="2.5" fill="${A}"/><rect x="204" y="112" width="8" height="26" rx="2.5" fill="${A}"/>`:`<path d="M191 111l24 14-24 14z" fill="${A2}"/>`;
@@ -214,15 +214,16 @@ h+=T(200,190,28,'White noise',A,300)+T(200,218,14,s.play?'Playing · tap to paus
 if(n=='light'){const l=s.lt.l[s.lt.m];h+=knob(l,s.lt.m?'#e8a050':'#c8481a',s.lt.on)+T(200,150,16,s.lt.m?'Reading light':'Night light',A2,400)+T(200,218,64,s.lt.on?l+'%':'Off',s.lt.on?A:OFFC,200)+T(200,248,14,s.lt.on?'Tap to turn off':'Tap to turn on',A3,400)+chip(s.lt.m?'Switch to night':'Switch to reading')}
 if(n=='ring'){if(s.done)h+=`<text x="200" y="206" font-size="40" fill="#fff0dc" text-anchor="middle" font-family="Instrument Serif,Georgia,serif">Good morning</text>`+T(200,238,14,'Alarm off','#c8b098',400);
 else{h+=T(200,214,92,'07:00','#fff0dc',200,'letter-spacing="-2"')+T(200,254,16,s.snz?'Tap to snooze · '+s.snz+' left':'No snoozes left','#e8cfae',400)+T(200,280,14,'Hold to turn off','#a8927a',400);if(s.hold>0)h+=arc(144,0,360*s.hold,'#fff0dc',7)}}
+if(s.hold>0&&n!='ring')h+=arc(144,0,360*s.hold,'#fff0dc',7);
 return h}
 const stops=[[0,[0,0,0]],[.12,[70,6,0]],[.36,[214,62,10]],[.6,[255,140,46]],[.82,[255,191,115]],[1,[255,234,203]]];
 function sun(t){for(let i=1;i<stops.length;i++)if(t<=stops[i][0]){const[a,ca]=stops[i-1],[b,cb]=stops[i],k=(t-a)/(b-a);return 'rgb('+ca.map((v,j)=>Math.round(v+(cb[j]-v)*k)).join(',')+')'}return 'rgb(255,234,203)'}
 function glow(col,k){$('ring').setAttribute('stroke',k>0?col:'#1b1c1f');$('ring').setAttribute('opacity',k>0?.3+.7*k:1);$('glow').style.background=col;$('glow').style.opacity=k>0?(.12+.5*k):0}
 function sync(){if(S.scr=='ring')glow('#ffe9cc',1);else if(S.sun!=null)glow(sun(S.sun),Math.pow(S.sun,1.3));else if(S.lt.on)glow(S.lt.m?'#ffb46a':'#ff5a1c',S.lt.l[S.lt.m]/100);else glow('#000',0)}
 const LG={clock:[['Tap','Brighten the face and show the way'],['Swipe up','Tomorrow’s alarm'],['Swipe down','Weekly schedule'],['Swipe left','Sleep sound'],['Swipe right','Light']],
-tmr:[['Turn the edge','Change the time, for tomorrow only'],['Tap','Skip tomorrow, or bring it back'],['Hold','Return to the usual time'],['Swipe down','Back to the clock']],
+tmr:[['Turn the edge','Change the time, for tomorrow only'],['Hold 1 s','Skip tomorrow'],['Tap','Bring tomorrow back, if skipped'],['Swipe down','Back to the clock']],
 week:[['Tap a day','Open that day'],['Swipe up','Back to the clock']],
-day:[['Turn the edge','Set the time for every week'],['Tap','Day on or off'],['Swipe sideways','Next or previous day'],['Swipe up','Back to the week']],
+day:[['Turn the edge','Set the time for every week'],['Tap','Turn the day on'],['Hold 1 s','Turn the day off'],['Swipe sideways','Next or previous day, keeps the time'],['Swipe up','Back to the week']],
 sound:[['Tap','Play or pause'],['Turn the edge','Volume'],['Tap the timer','15, 30, 60, 90 minutes or all night'],['Swipe right','Back to the clock']],
 light:[['Tap','On or off'],['Turn the edge','Brightness'],['Tap the switch','Night light or reading light'],['Swipe left','Back to the clock']],
 ring:[['Tap anywhere','Snooze for 9 minutes'],['Hold 2 seconds','Turn the alarm off']]};
@@ -235,9 +236,9 @@ function ripple(x,y){const c=document.createElementNS(NS,'circle');c.setAttribut
 let awT;function wake(){S.awake=true;clearTimeout(awT);awT=setTimeout(()=>{S.awake=false;if(S.scr=='clock'&&!busy)render()},5000)}
 function tap(x,y){const r=Math.hypot(x-200,y-200),s=S.scr,ch=y>270&&Math.abs(x-200)<80;
 if(s=='clock'){wake();S.msg='';fb('Tap: the face brightens and shows the way')}
-else if(s=='tmr'){if((S.one??usual(S))==null)return fb('Turn the edge to set an alarm');S.skip=!S.skip;fb(S.skip?'Tomorrow’s alarm skipped':'Tomorrow’s alarm is back')}
+else if(s=='tmr'){if((S.one??usual(S))==null)return fb('Turn the edge to set an alarm');if(S.skip){S.skip=false;fb('Tomorrow’s alarm is back')}else fb('Hold to skip tomorrow')}
 else if(s=='week'){if(r>58){let a=Math.atan2(x-200,200-y)*180/Math.PI;a=(a+360+180/7)%360;S.sel=Math.floor(a/(360/7));return nav('day',[0,-1],'Editing every '+DF[S.sel])}return fb('Tap a day to edit it')}
-else if(s=='day'){const d=S.days[S.sel];d.on=!d.on;fb(DF[S.sel]+' alarm '+(d.on?'on':'off'))}
+else if(s=='day'){const d=S.days[S.sel];if(!d.on){d.on=true;fb(DF[S.sel]+' alarm on')}else fb('Hold to turn this day off')}
 else if(s=='sound'){if(ch){S.ti=(S.ti+1)%5;fb('Sleep timer: '+(TM[S.ti]?TM[S.ti]+' minutes':'all night'))}else{S.play=!S.play;fb(S.play?'White noise playing':'Paused')}}
 else if(s=='light'){if(ch){S.lt.m^=1;S.lt.on=true;fb(S.lt.m?'Reading light':'Night light')}else{S.lt.on=!S.lt.on;fb(S.lt.on?'Light on':'Light off')}}
 else if(s=='ring'){if(S.done)return;if(S.snz>0){S.snz--;S.msg='Snoozed until 07:09';return nav('clock',null,'Snoozed for 9 minutes')}return fb('No snoozes left. Hold to turn off')}
@@ -246,7 +247,7 @@ function swipe(d){const s=S.scr;
 if(s=='clock'){if(d=='up')return nav('tmr',[0,1],'Tomorrow’s alarm');if(d=='down')return nav('week',[0,-1],'Weekly schedule');if(d=='left')return nav('sound',[1,0],'Sleep sound');return nav('light',[-1,0],'Light')}
 if(s=='tmr'&&d=='down')return nav('clock',[0,-1],'Saved');
 if(s=='week'&&d=='up')return nav('clock',[0,1],'Back to the clock');
-if(s=='day'){if(d=='up')return nav('week',[0,1],'Saved');if(d=='left'||d=='right'){S.sel=(S.sel+(d=='left'?1:6))%7;return nav('day',[d=='left'?1:-1,0],'Every '+DF[S.sel])}}
+if(s=='day'){if(d=='up')return nav('week',[0,1],'Saved');if(d=='left'||d=='right'){const t=S.days[S.sel].min;S.sel=(S.sel+(d=='left'?1:6))%7;if(!S.days[S.sel].on)S.days[S.sel].min=t;return nav('day',[d=='left'?1:-1,0],'Every '+DF[S.sel])}}
 if(s=='sound'&&d=='right')return nav('clock',[-1,0],'Back to the clock');
 if(s=='light'&&d=='left')return nav('clock',[1,0],'Back to the clock');
 fb('Nothing in that direction')}
@@ -257,13 +258,14 @@ else if(s=='sound'){S.vol=Math.max(0,Math.min(100,Math.round(base+acc/2.7)));fb(
 else if(s=='light'){S.lt.on=true;S.lt.l[S.lt.m]=Math.max(1,Math.min(100,Math.round(base+acc/2.7)));fb('Brightness '+S.lt.l[S.lt.m]+'%')}
 render()}
 function onHold(){if(S.scr=='ring'){S.hold=0;S.done=true;fb('Alarm off');render();setTimeout(()=>{S.done=false;S.snz=3;S.msg='';nav('clock',null,'Good morning')},1900)}
-else if(S.scr=='tmr'){S.one=null;S.skip=false;fb('Back to the usual time');render()}}
+else if(S.scr=='tmr'){S.hold=0;S.skip=true;fb('Tomorrow’s alarm skipped');render()}
+else if(S.scr=='day'){S.hold=0;S.days[S.sel].on=false;fb(DF[S.sel]+' alarm off');render()}}
 const dev=$('dev');let G=null,busy=false;
 function pt(e){const b=dev.getBoundingClientRect();return[(e.clientX-b.left)*400/b.width,(e.clientY-b.top)*400/b.height]}
 dev.addEventListener('pointerdown',e=>{if(busy)return;const[x,y]=pt(e),r=Math.hypot(x-200,y-200);if(r>152)return;dev.setPointerCapture(e.pointerId);ripple(x,y);
 const g=G={x,y,t:performance.now(),edge:r>=98&&['tmr','day','sound','light'].includes(S.scr),a:Math.atan2(x-200,200-y)*180/Math.PI,rot:false,moved:false,held:false};
-const hm=S.scr=='ring'&&!S.done?2000:(S.scr=='tmr'&&!g.edge?800:0);
-if(hm)(function lp(){if(G!==g||g.moved)return;const p=(performance.now()-g.t)/hm;if(S.scr=='ring'&&p>.12){S.hold=Math.min(1,(p-.12)/.88);render()}if(p>=1){g.held=true;return onHold()}requestAnimationFrame(lp)})()});
+const hm=S.scr=='ring'&&!S.done?2000:(!g.edge&&((S.scr=='tmr'&&!S.skip&&(S.one??usual(S))!=null)||(S.scr=='day'&&S.days[S.sel].on))?1000:0);
+if(hm)(function lp(){if(G!==g||g.moved)return;const p=(performance.now()-g.t)/hm;if((S.scr=='ring'||S.scr=='tmr'||S.scr=='day')&&p>.12){S.hold=Math.min(1,(p-.12)/.88);render()}if(p>=1){g.held=true;return onHold()}requestAnimationFrame(lp)})()});
 dev.addEventListener('pointermove',e=>{if(!G)return;const[x,y]=pt(e);if(!G.moved&&Math.hypot(x-G.x,y-G.y)>10){G.moved=true;if(S.hold){S.hold=0;render()}}
 if(G.edge&&G.moved){if(!G.rot){G.rot=true;acc=0;base=S.scr=='tmr'?(S.one??usual(S)??420):S.scr=='day'?S.days[S.sel].min:S.scr=='sound'?S.vol:S.lt.l[S.lt.m]}
 const a=Math.atan2(x-200,200-y)*180/Math.PI;let d=a-G.a;if(d>180)d-=360;if(d<-180)d+=360;G.a=a;rot(d)}});

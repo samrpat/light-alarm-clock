@@ -5,14 +5,14 @@ Priority: **M** = must-have, **N** = nice-to-have.
 Every requirement maps to at least one test. Test IDs (`T-xx`) are placeholders until
 [TEST_PLAN.md](TEST_PLAN.md) is written in Phase 3.
 
-Last reviewed: 2026-11-12 (Phase 1)
+Last reviewed: 2026-11-13 (Phase 2)
 
 ## 1. Schedule
 
 | ID | Pri | Requirement | Phase | Test |
 |----|-----|-------------|-------|------|
 | R1 | M | `[ ]` Weekly schedule: for each of the 7 weekdays, a wake time (HH:MM, 1-minute resolution) and an on/off flag, set independently. | 3 | T-01 |
-| R2 | M | `[ ]` Editing one weekday's alarm (change its time, or toggle it) takes **≤ 3 gestures** and **≤ 10 s** from the clock face. | 2, 3 | T-02 |
+| R2 | M | `[~]` Changing one weekday's time takes **≤ 3 gestures** (swipe down, tap the day, turn the edge) and **≤ 10 s** from the clock face. Designed in UX.md §6; not yet built. | 2, 3 | T-02 |
 | R3 | M | `[ ]` One-off overrides: **Skip next alarm** and **Tomorrow only at HH:MM**. An override is used once, then cleared automatically. It can be cancelled before it fires. | 3 | T-03 |
 | R4 | M | `[ ]` The clock face always shows the next alarm that will actually fire, overrides included (for example "Skipping Tue → next Wed 06:45"), or "No alarm set". | 2, 3 | T-04 |
 
@@ -20,10 +20,12 @@ Last reviewed: 2026-11-12 (Phase 1)
 
 | ID | Pri | Requirement | Phase | Test |
 |----|-----|-------------|-------|------|
-| R5 | M | `[ ]` Gesture-based UI on the 466×466 round touchscreen, usable half-asleep in the dark: large targets (≥ 60 px), no small text needed for core actions, no precision taps. | 2 | T-05 |
-| R6 | M | `[ ]` Night theme protects sleep: dim warm/red palette, no full-white frames, clock can be dimmed to near-black or hidden, display turns off when idle and wakes on touch or pick-up. | 2, 3 | T-06 |
+| R5 | M | `[ ]` Gesture-based UI on the 466×466 round touchscreen, usable half-asleep in the dark: tap zones ≥ 100 px, a rim band of 80 px, text ≥ 26 px, no precision taps, and a swipe can start anywhere (UX.md §2–3). | 2 | T-05 |
+| R6 | M | `[~]` Night theme protects sleep (UX.md §9): amber only with blue under 15 %, dimmed through the panel's brightness setting, an always-on face that moves every minute (D-016), no white until the alarm rings. | 2, 3 | T-06 |
 | R7 | — | ~~IMU gestures (pick-up to wake, flip to snooze).~~ **Dropped** by D-011: the clock is stationary. | — | — |
-| R8 | N | `[ ]` One-touch **scenes** (e.g. Wind down, Sleep, Night light, Wake), each remembering its own light and volume settings. *(Idea taken from the Dreamie reference product.)* | 2, 3 | T-08 |
+| R8 | N | `[ ]` Sound and Light remember their last volume, timer, brightness and colour mode, so starting either is 2 gestures. This replaces the scenes idea taken from Dreamie (D-024, D-023). | 2, 3 | T-08 |
+| R34 | M | `[ ]` Anything that can stop an alarm (turn a day off, skip tomorrow, dismiss, cancel a snooze or sunrise) needs a **hold**. Anything that only makes it ring (turn on, snooze, bring back) is a tap (D-024). | 2, 3 | T-34 |
+| R35 | M | `[ ]` Every sub-screen returns to the clock after 20 s without a touch (settings 30 s). Every change is saved the moment it is made (D-024). | 2, 3 | T-35 |
 
 ## 3. Sound
 
@@ -53,7 +55,7 @@ Last reviewed: 2026-11-12 (Phase 1)
 | R20 | M | `[ ]` Missed-alarm catch-up: if the device boots within the catch-up window (default 60 min) after an alarm that was never handled, the alarm fires at once. | 3 | T-20 |
 | R21 | M | `[ ]` Defined, tested behaviour for brownout, low battery, USB unplug/replug, and reboot during the sunrise or ringing window (the alarm resumes at the right escalation stage). | 1, 3 | T-21 |
 | R22 | M | `[ ]` Escalating alarm: light (sunrise) → soft sound → louder sound in steps, up to a configured maximum. The alarm volume has a floor that cannot be set to silent. | 3 | T-22 |
-| R23 | M | `[ ]` Snooze (default 9 min, max 3 snoozes, both configurable). Dismiss needs a deliberate gesture that is hard to trigger by accident (Phase 2 defines it). A hardware-button fallback dismiss works even if the touch/UI is dead. | 2, 3 | T-23 |
+| R23 | M | `[ ]` Snooze (default 9 min, max 3 snoozes, both configurable). Snooze is a tap anywhere. Dismiss is a 2 s hold with a filling rim, hard to trigger by accident. A BOOT-button hold (3 s) dismisses even if the touch/UI is dead. | 2, 3 | T-23 |
 | R24 | M | `[ ]` Low-battery warning the night before: at bedtime, or when USB is unplugged after 20:00, warn if the predicted charge can't cover the night plus alarm. | 1, 3 | T-24 |
 | R25 | M | `[ ]` Battery reserve: as the battery nears the energy needed for the next alarm, shed load (white noise, then display, then sunrise brightness) so the alarm sound still fires. | 1, 3 | T-25 |
 | R26 | M | `[ ]` Self-test / **Preview alarm**: a compressed 60 s run of sunrise → sound escalation → snooze/dismiss, plus an LED, speaker and RTC check. | 3 | T-26 |

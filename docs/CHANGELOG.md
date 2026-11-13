@@ -32,3 +32,13 @@
 - Bring-up test flashed and booted on the real board: display, touch, all 7 I2C chips, ring driver and speaker codec initialised without errors. Visual and audio results still to be confirmed by the owner.
 - Owner confirmed the bring-up test works on the hardware: touch, ring (GRBW order, direct 3.3 V data at short range), white noise and tone.
 - Bring-up test: sunrise made smooth with dithering across the 24 LEDs and across time (250 frames a second), plus eased colour curves. To be carried into the product light engine (R12).
+
+## 2026-11-13 — Phase 1 approved; fewest-parts rule
+- Phase 1 approved by the owner. D-012 and D-014 accepted; D-019 accepted in principle.
+- D-023 (proposed): parts stay only if they add function or protection. Level shifter, PCB and PCB v2 electronics left out of the baseline; HARDWARE.md §3b describes the three-part inline build.
+
+## 2026-11-13 — Phase 2: UX & gesture design
+- Added UX.md: principles, touch maths, gesture vocabulary, screen map, wireframes for every screen and state, 8 settings pages, first-run flow, edit-flow gesture counts, night theme, status-line priorities, acceptance checks UX-1…UX-12 and UX-B1.
+- D-024: off needs a hold, on needs a tap; auto-return; carry-over; velocity steps; panel dimming; scenes replaced by memory.
+- Requirements R2, R5, R6, R8, R23 reworded; R34 and R35 added.
+- Concept page updated for hold-to-turn-off and carry-over.

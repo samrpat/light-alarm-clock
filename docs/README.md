@@ -9,7 +9,7 @@ It is controlled with gestures on a 1.75" round touchscreen. The phone is option
 Reference product for feel and features: Dreamie by Hello Ambient (helloambient.com). Differences are in [REQUIREMENTS.md](REQUIREMENTS.md#reference-product-dreamie-helloambientcom).
 
 ## Current phase
-**Phase 1: Power & wiring.** Done, waiting for owner approval. Phase 0 is approved. Details in [STATUS.md](STATUS.md).
+**Phase 2: UX & gesture design.** Done, waiting for owner approval. Phases 0 and 1 are approved. Details in [STATUS.md](STATUS.md).
 
 ## Hardware (fixed)
 - Waveshare ESP32-S3-Touch-AMOLED-1.75: ESP32-S3R8, 466×466 CO5300 AMOLED, CST9217 touch, QMI8658 IMU, PCF85063 RTC, AXP2101 PMIC, audio codec + ES7210 mics, TF slot
@@ -27,12 +27,12 @@ Reference product for feel and features: Dreamie by Hello Ambient (helloambient.
 | [CHANGELOG.md](CHANGELOG.md) | Dated change history | Phase 0 |
 | [HARDWARE.md](HARDWARE.md) | BOM, pin table, wiring, speaker, bench checks | Phase 1 |
 | [POWER.md](POWER.md) | Power design, current budget, runtime math | Phase 1 |
-| UX.md | Screen map, gestures, wireframes | Phase 2 |
+| [UX.md](UX.md) | Screen map, gestures, wireframes, night theme, acceptance checks | Phase 2 |
 | RELIABILITY.md | FMEA, watchdog design | Phase 3 |
 | TEST_PLAN.md | Test cases T-xx ↔ requirements | Phase 3 |
 | ENCLOSURE.md | Enclosure design, print and assembly | Phase 4 |
 
-Interface concept: `/mockups/ux-concept.html` (open in a browser). PCB: `/pcb/halo-driver`. Code: `/firmware` (ESP-IDF project, from Phase 3) · CAD: `/enclosure` (from Phase 4).
+Interface concept: `/mockups/ux-concept.html` (open in a browser; also published as a private page, link in UX.md). PCB: `/pcb/halo-driver`. Code: `/firmware` (ESP-IDF project, from Phase 3) · CAD: `/enclosure` (from Phase 4).
 
 ## Build & flash
 The product firmware starts in Phase 3. A hardware **bring-up test** exists now in `/firmware/bringup` (see its README).

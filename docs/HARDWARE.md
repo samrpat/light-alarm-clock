@@ -31,6 +31,8 @@ Prices are approximate (USD, late 2026) and not checked against a live listing.
 
 Baseline total to buy: about **$25**.
 
+> **Minimal build (D-023, proposed).** Rows 4, 8, 9, 13, 13a and 13b are **not needed for the first build**. What is needed: rows 5, 6 and 7 (fuse, capacitor, resistor, about $1.15), the battery, an adapter and wire. The three small parts are soldered inline (§3b). Rows 4, 8 and 9 (level shifter) are added only if the ring flickers at full current.
+
 ## 2. Pin table
 
 ### Used by this project
@@ -111,7 +113,28 @@ Build notes:
 - Wire to the ring's **Data In** pad. Data Out stays unconnected.
 - The ring's ground and the board's ground must be joined (they are, through header pin 2).
 
-## 3a. First build on a breadboard
+## 3b. Minimal build (D-023): no breadboard, no PCB
+
+Three small parts soldered inline between the board header and the ring:
+
+```
+ header VBUS ──[ fuse 1.1 A ]──────────┬────────► ring PWR / 5V
+                                       │
+                                   [1000 µF]      stripe (−) side to GND
+                                       │
+ header GND  ──────────────────────────┴────────► ring GND
+
+ header 17   ──[ 470 Ω ]────────────────────────► ring IN (Data In)
+```
+
+- Solder the capacitor straight across the ring's PWR and GND holes, on the ring itself.
+- Put the 470 Ω resistor in the data wire close to the ring.
+- Insulate every joint with heat-shrink.
+- Keep all three wires under about 15 cm.
+- The bring-up test already ran this way (without the fuse, capacitor and resistor) at 0.3 A.
+- **Before raising the cap from 0.3 A to 0.9 A:** fit these three parts, then watch for flicker for 30 min. If it flickers, add the level shifter (§3).
+
+## 3a. First build on a breadboard (superseded by §3b if D-023 is accepted)
 
 Same circuit as above, no PCB.
 
