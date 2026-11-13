@@ -1,0 +1,285 @@
+<title>Sunrise Clock Interface</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@200;300;400;500&display=swap">
+<style>
+/* Layout: a night scene. Copy on the left, the live device glowing on the right, then four short proof sections below. Single dark look by choice: the product lives in a dark bedroom. */
+:root{
+  color-scheme:dark;
+  --night:#090b11; --panel:#10131c; --line:#222737;
+  --ink:#efe7db; --ink2:#a59e95; --ink3:#6f6c6b;
+  --amber:#ffb869; --dawn:#ff7a3d; --teal:#84d8c0;
+  --display:'Instrument Serif',Georgia,'Times New Roman',serif;
+  --ui:'Outfit',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+body{background:var(--night);color:var(--ink);font-family:var(--ui);font-weight:300;font-size:17px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
+.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:88px;padding-block:56px 72px}
+h1,h2{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0;line-height:1.05}
+h1{font-size:clamp(40px,6.2vw,72px);letter-spacing:-.01em}
+h1 em{color:var(--amber)}
+h2{font-size:clamp(30px,3.6vw,42px)}
+p{margin:0}
+.eyebrow{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);font-weight:400}
+.lede{color:var(--ink2);max-width:34em;font-size:19px}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,460px);gap:48px;align-items:center}
+.hero-copy{display:flex;flex-direction:column;gap:22px;min-width:0}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+button{font:inherit;font-weight:400;font-size:15px;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:999px;padding:9px 18px;cursor:pointer}
+button:hover{border-color:var(--ink3)}
+button:focus-visible,.mini:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+button.go{background:var(--amber);border-color:var(--amber);color:#2a1806;font-weight:500}
+.stage{display:flex;flex-direction:column;align-items:center;gap:14px;min-width:0}
+.devwrap{position:relative;width:100%;max-width:420px;display:flex;justify-content:center}
+.glow{position:absolute;inset:-6%;border-radius:50%;filter:blur(56px);opacity:0;background:#000;pointer-events:none}
+#dev{position:relative;width:100%;max-width:420px;height:auto;touch-action:none;user-select:none;-webkit-user-select:none;cursor:pointer;font-family:var(--ui)}
+#fb{font-size:15px;color:var(--amber);min-height:24px;text-align:center}
+.legend{width:100%;max-width:420px;display:flex;flex-direction:column}
+.legend div{display:flex;gap:14px;font-size:15px;padding:8px 0;border-top:1px solid var(--line);color:var(--ink2)}
+.legend b{font-weight:400;color:var(--ink);flex:0 0 118px}
+.scale{font-size:13px;color:var(--ink3)}
+.scale button{font-size:13px;padding:3px 10px;margin-left:6px}
+section{display:flex;flex-direction:column;gap:28px}
+.verbs{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:0;border-top:1px solid var(--line)}
+.verb{padding:22px 22px 22px 0;display:flex;flex-direction:column;gap:6px;min-width:0}
+.verb span{font-family:var(--display);font-size:34px;line-height:1;color:var(--amber)}
+.verb p{color:var(--ink2);font-size:16px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center}
+.map{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:440px;width:100%;justify-self:center}
+.mini{display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;border-radius:16px;padding:6px;font-size:13px;color:var(--ink2)}
+.mini svg{width:100%;height:auto;font-family:var(--ui)}
+.mini small{font-size:12px;color:var(--ink3)}
+.counts{display:flex;flex-direction:column}
+.counts div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;padding:13px 0;border-top:1px solid var(--line);align-items:baseline}
+.counts div p{min-width:0}
+.counts small{display:block;color:var(--ink3);font-size:14px}
+.counts strong{font-family:var(--display);font-weight:400;font-size:30px;color:var(--amber);font-variant-numeric:tabular-nums}
+.tl{display:flex;flex-direction:column;gap:10px}
+.bar{height:44px;border-radius:10px;background:linear-gradient(90deg,#050505 0%,#3a0500 12%,#b8320a 34%,#ff8a2e 58%,#ffbf73 80%,#ffeacb 100%)}
+.fade{height:14px;border-radius:7px;background:linear-gradient(90deg,var(--teal) 0%,rgba(132,216,192,0) 9%)}
+.steps{display:grid;grid-template-columns:86% 1fr;height:30px;align-items:end}
+.steps i{display:block}
+.steps .s{display:flex;align-items:flex-end;gap:2px;height:30px}
+.steps .s b{flex:1;background:var(--amber);border-radius:2px 2px 0 0}
+.axis{display:flex;justify-content:space-between;font-size:13px;color:var(--ink3);font-variant-numeric:tabular-nums}
+.tlrow{display:grid;grid-template-columns:120px minmax(0,1fr);gap:14px;align-items:center;font-size:14px;color:var(--ink2)}
+.prin{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:36px 44px}
+.prin div{display:flex;flex-direction:column;gap:8px;min-width:0}
+.prin h3{font-family:var(--ui);font-weight:500;font-size:18px;margin:0}
+.prin p{color:var(--ink2);font-size:16px}
+.note{font-size:14px;color:var(--ink3);border-top:1px solid var(--line);padding-top:20px;max-width:60em}
+@media (max-width:820px){.hero,.two{grid-template-columns:minmax(0,1fr)}.wrap{gap:64px;padding-block:32px 56px}.tlrow{grid-template-columns:minmax(0,1fr)}}
+</style>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Interface concept · 44 mm round touchscreen</p>
+      <h1>Everything is <em>one flick</em> from the time.</h1>
+      <p class="lede">A screen this small has no room for buttons, so there aren't any. The clock sits in the middle. Swipe in any direction and you are on the thing you wanted. Four gestures run the whole product.</p>
+      <div class="btns">
+        <button class="go" id="bMorn">Play a morning</button>
+        <button id="bRing">Ring the alarm</button>
+        <button id="bReset">Reset</button>
+      </div>
+      <p class="scale">The device is live. Use your mouse or finger on it. <span id="szl">Shown enlarged.</span><button id="bSize">Real size</button></p>
+    </div>
+    <div class="stage" id="stage">
+      <div class="devwrap">
+        <div class="glow" id="glow"></div>
+        <svg id="dev" viewBox="0 0 400 400" role="application" aria-label="Interactive clock prototype">
+          <defs><clipPath id="clip"><circle cx="200" cy="200" r="150"/></clipPath>
+          <radialGradient id="body" cx="50%" cy="35%" r="70%"><stop offset="0" stop-color="#26272b"/><stop offset="1" stop-color="#0d0e10"/></radialGradient></defs>
+          <circle cx="200" cy="200" r="198" fill="url(#body)"/>
+          <circle id="ring" cx="200" cy="200" r="179" fill="none" stroke="#1b1c1f" stroke-width="26"/>
+          <circle cx="200" cy="200" r="160" fill="#08080a"/>
+          <circle cx="200" cy="200" r="150" fill="#000"/>
+          <g clip-path="url(#clip)"><g id="old"></g><g id="cur"></g></g>
+          <g id="fx"></g>
+        </svg>
+      </div>
+      <div id="fb" aria-live="polite">Swipe up on the clock</div>
+      <div class="legend" id="lg"></div>
+    </div>
+  </div>
+
+  <section>
+    <p class="eyebrow">The whole vocabulary</p>
+    <h2>Four gestures. No menus, no double-taps.</h2>
+    <div class="verbs">
+      <div class="verb"><span>Swipe</span><p>Go somewhere. Every screen is one swipe from the clock, and the opposite swipe brings you back.</p></div>
+      <div class="verb"><span>Turn</span><p>Run a finger around the edge to change a value: time, volume, brightness. Start anywhere on the rim.</p></div>
+      <div class="verb"><span>Tap</span><p>On or off. The whole face is the button, so you can hit it with your eyes closed.</p></div>
+      <div class="verb"><span>Hold</span><p>For the one thing that must not happen by accident: turning the alarm off.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="two">
+      <div style="display:flex;flex-direction:column;gap:20px;min-width:0">
+        <p class="eyebrow">The map</p>
+        <h2>Five screens in a cross. You are never lost.</h2>
+        <p class="lede">Tomorrow's alarm gets its own screen because that is the change people make most: an early flight, a late start. It applies once, then the weekly rhythm takes over again. Tap any screen to open it in the device above.</p>
+      </div>
+      <div class="map">
+        <span></span><button class="mini" data-mini="week"><small>swipe down</small><span>Week</span></button><span></span>
+        <button class="mini" data-mini="light"><small>swipe right</small><span>Light</span></button>
+        <button class="mini" data-mini="clock"><small>home</small><span>Clock</span></button>
+        <button class="mini" data-mini="sound"><small>swipe left</small><span>Sound</span></button>
+        <span></span><button class="mini" data-mini="tmr"><small>swipe up</small><span>Tomorrow</span></button><span></span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="two" style="align-items:start">
+      <div style="display:flex;flex-direction:column;gap:20px;min-width:0">
+        <p class="eyebrow">Touches, counted</p>
+        <h2>Every nightly task takes two gestures.</h2>
+        <p class="lede">Counted from the clock face, half asleep, in the dark. Nothing needs you to read small text or aim at a small target.</p>
+      </div>
+      <div class="counts">
+        <div><p>Wake earlier tomorrow<small>swipe up, turn the edge</small></p><strong>2</strong></div>
+        <div><p>Skip tomorrow's alarm<small>swipe up, tap</small></p><strong>2</strong></div>
+        <div><p>Start white noise<small>swipe left, tap</small></p><strong>2</strong></div>
+        <div><p>Night light on<small>swipe right, tap</small></p><strong>2</strong></div>
+        <div><p>Change every Wednesday<small>swipe down, tap Wed, turn the edge</small></p><strong>3</strong></div>
+        <div><p>Snooze<small>tap anywhere</small></p><strong>1</strong></div>
+        <div><p>Turn the alarm off<small>hold for two seconds</small></p><strong>1</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">The morning</p>
+    <h2>Light first. Sound only if you need it.</h2>
+    <div class="tl">
+      <div class="tlrow"><span>Sunrise light</span><div class="bar"></div></div>
+      <div class="tlrow"><span>White noise</span><div class="fade"></div></div>
+      <div class="tlrow"><span>Alarm sound</span><div class="steps"><i></i><div class="s"><b style="height:25%"></b><b style="height:50%"></b><b style="height:75%"></b><b style="height:100%"></b></div></div></div>
+      <div class="tlrow"><span></span><div class="axis"><span>06:30</span><span>06:40</span><span>06:50</span><span>07:00</span><span>07:05</span></div></div>
+    </div>
+    <p class="lede">The halo climbs from deep red to daylight over thirty minutes while the white noise fades away. At the alarm time a soft tone starts and steps up each minute. Press "Play a morning" at the top to watch it in ten seconds.</p>
+  </section>
+
+  <section>
+    <p class="eyebrow">Why it works at 3 a.m.</p>
+    <h2>Designed for a hand that can't see.</h2>
+    <div class="prin">
+      <div><h3>Targets bigger than a fingertip</h3><p>A fingertip covers about 10 mm of a 44 mm screen. Most screens have one touch zone: all of it. The busiest screen, the week, has seven slices of about 14 mm each.</p></div>
+      <div><h3>Dark until asked</h3><p>The night face is a dim amber time and nothing else. A tap brightens it for five seconds and shows where each swipe leads. Then it settles back.</p></div>
+      <div><h3>Easy to snooze, hard to cancel</h3><p>Any tap snoozes, up to three times. Turning the alarm off takes a deliberate two-second hold, and the rim fills as you hold so you can see it working.</p></div>
+      <div><h3>The same layout everywhere</h3><p>Label on top, big value in the middle, dial on the rim. Learn one screen and you know them all.</p></div>
+    </div>
+  </section>
+
+  <p class="note">Concept prototype. Colours, glow and timing are simulated in the browser, and the real LED ring and AMOLED panel will look different. The clock runs at a fixed demo time of Tuesday 23:14.</p>
+</div>
+
+<script>
+const $=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg';
+const DN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],DF=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],TM=[15,30,60,90,0];
+const A='#ffb869',A2='#b27c4a',A3='#6f5843',TL='#84d8c0',OFFC='#5a4c40';
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function fresh(){return{scr:'clock',awake:false,days:[0,1,2,3,4,5,6].map(i=>({on:i<5,min:i<5?405:510})),sel:2,skip:false,one:null,vol:40,play:false,ti:1,lt:{on:false,m:0,l:[20,60]},snz:3,hold:0,done:false,sun:null,msg:''}}
+let S=fresh();
+const f=m=>{m=((m%1440)+1440)%1440;return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')};
+const P=(a,r)=>[200+r*Math.sin(a*Math.PI/180),200-r*Math.cos(a*Math.PI/180)];
+function T(x,y,s,t,c,w,x2){return `<text x="${x}" y="${y}" font-size="${s}" fill="${c}" text-anchor="middle" font-weight="${w||300}" ${x2||''}>${t}</text>`}
+function arc(r,a0,a1,col,w){if(a1-a0>=359.9)return `<circle cx="200" cy="200" r="${r}" fill="none" stroke="${col}" stroke-width="${w}"/>`;if(a1-a0<=.1)return '';const[x0,y0]=P(a0,r),[x1,y1]=P(a1,r);return `<path d="M${x0} ${y0}A${r} ${r} 0 ${a1-a0>180?1:0} 1 ${x1} ${y1}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round"/>`}
+function wedge(a0,a1,r0,r1,fill,st){const[a,b]=P(a0,r1),[c,d]=P(a1,r1),[e,g]=P(a1,r0),[h,k]=P(a0,r0);return `<path d="M${a} ${b}A${r1} ${r1} 0 0 1 ${c} ${d}L${e} ${g}A${r0} ${r0} 0 0 0 ${h} ${k}Z" fill="${fill}" stroke="${st}"/>`}
+function ticks(min,col,hi){let h=`<g transform="rotate(${(min*3)%360} 200 200)">`;for(let i=0;i<60;i++){const M=i%5==0,[x0,y0]=P(i*6,M?127:133),[x1,y1]=P(i*6,142);h+=`<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="${M?hi:col}" stroke-width="${M?2.5:1.5}" stroke-linecap="round"/>`}return h+`</g><path d="M200 108l-6 10h12z" fill="${hi}"/>`}
+function knob(v,col,on){const a=-135+270*v/100,[x,y]=P(a,136);return arc(136,-135,135,'#1a1511',12)+(on?arc(136,-135,a,col,12):'')+`<circle cx="${x}" cy="${y}" r="12" fill="${on?'#fff0dc':OFFC}"/>`}
+function chip(t){return `<rect x="136" y="278" width="128" height="38" rx="19" fill="#15110d" stroke="#3a2c1f"/>`+T(200,302,14,t,A2,400)}
+const usual=s=>s.days[2].on?s.days[2].min:null;
+function next(s){const t=s.one??usual(s);if(t!=null&&!s.skip)return{i:2,min:t};for(let k=2;k<=7;k++){const i=(1+k)%7;if(s.days[i].on)return{i,min:s.days[i].min,sk:t!=null&&s.skip}}return{none:1,sk:t!=null&&s.skip}}
+function draw(n,s){let h='';
+if(n=='clock'){const dim=!s.awake&&s.sun==null,c=dim?'#8c5022':A,c2=dim?'#573619':A2,nx=next(s);
+h+=T(200,224,92,s.sun!=null?f(Math.round(390+30*s.sun)):'23:14',c,200,'letter-spacing="-2"');
+h+=T(200,262,16,s.sun!=null?'Sunrise · alarm 07:00':nx.none?'No alarm set':(nx.sk?'Wed skipped · ':'')+DN[nx.i]+' '+f(nx.min),c2,400);
+if(s.msg)h+=T(200,288,13,s.msg,c2,400);else if(s.play)h+=T(200,288,13,'White noise'+(TM[s.ti]?' · '+TM[s.ti]+' min':''),c2,400);
+if(s.awake&&s.sun==null){const st=`stroke="${A3}" stroke-width="2" fill="none" stroke-linecap="round"`;
+h+=T(200,150,14,'Tue 12 Nov',A3,400)+`<path d="M192 68l8 8 8-8" ${st}/>`+T(200,96,12,'Week',A3,400)+`<path d="M192 332l8-8 8 8" ${st}/>`+T(200,316,12,'Tomorrow',A3,400)+`<path d="M62 192l8 8-8 8" ${st}/>`+T(92,204,12,'Light',A3,400)+`<path d="M338 192l-8 8 8 8" ${st}/>`+T(306,204,12,'Sound',A3,400)}}
+if(n=='tmr'){const u=usual(s),t=s.one??u,C=s.one!=null?TL:A;
+if(t==null){h+=ticks(0,'#2a2018','#4a3826')+T(200,152,16,'Tomorrow · Wed',A2,400)+T(200,222,56,'No alarm',OFFC,200)+T(200,256,14,'Turn the edge to set one',A3,400)}
+else{h+=ticks(t,s.skip?'#241c15':'#3a2c1f',s.skip?'#3a2c1f':(s.one!=null?'#3f8f7a':'#8a5e30'))+T(200,152,16,'Tomorrow · Wed',A2,400)+T(200,224,76,f(t),s.skip?'#4a3d32':C,200,s.skip?'text-decoration="line-through"':'');
+h+=T(200,258,14,s.skip?'Skipped · tap to bring back':s.one!=null?'Just this once'+(u!=null?' · usually '+f(u):''):'Sunrise starts '+f(t-30),s.skip?A3:(s.one!=null?'#4fa58d':A2),400)}}
+if(n=='week'){for(let i=0;i<7;i++){const a0=i*360/7-180/7+1,a1=a0+360/7-2,d=s.days[i],[x,y]=P((a0+a1)/2,104);
+h+=wedge(a0,a1,60,147,d.on?'#1f150b':'#0d0c0b',d.on?'#3d2815':'#1b1917')+T(x,y-3,17,DN[i],d.on?A:OFFC,400)+T(x,y+17,13,d.on?f(d.min):'off',d.on?A2:'#3e3630',400)}
+h+=T(200,197,14,'Every week',A2,400)+T(200,216,12,'tap a day',A3,400)}
+if(n=='day'){const d=s.days[s.sel];h+=ticks(d.min,d.on?'#3a2c1f':'#241c15',d.on?'#8a5e30':'#3a2c1f')+T(200,152,16,'Every '+DF[s.sel],A2,400)+T(200,224,76,f(d.min),d.on?A:'#4a3d32',200)+T(200,258,14,d.on?'On · tap to turn off':'Off · tap to turn on',d.on?A2:A3,400);
+for(let i=0;i<7;i++)h+=`<circle cx="${170+i*10}" cy="292" r="${i==s.sel?3.5:2.5}" fill="${i==s.sel?A:'#3a3129'}"/>`}
+if(n=='sound'){h+=knob(s.vol,'#8a5e30',true);
+h+=s.play?`<rect x="188" y="112" width="8" height="26" rx="2.5" fill="${A}"/><rect x="204" y="112" width="8" height="26" rx="2.5" fill="${A}"/>`:`<path d="M191 111l24 14-24 14z" fill="${A2}"/>`;
+h+=T(200,190,28,'White noise',A,300)+T(200,218,14,s.play?'Playing · tap to pause':'Tap to play',A2,400)+T(200,244,13,'Volume '+s.vol,A3,400)+chip(TM[s.ti]?TM[s.ti]+' min timer':'All night')}
+if(n=='light'){const l=s.lt.l[s.lt.m];h+=knob(l,s.lt.m?'#e8a050':'#c8481a',s.lt.on)+T(200,150,16,s.lt.m?'Reading light':'Night light',A2,400)+T(200,218,64,s.lt.on?l+'%':'Off',s.lt.on?A:OFFC,200)+T(200,248,14,s.lt.on?'Tap to turn off':'Tap to turn on',A3,400)+chip(s.lt.m?'Switch to night':'Switch to reading')}
+if(n=='ring'){if(s.done)h+=`<text x="200" y="206" font-size="40" fill="#fff0dc" text-anchor="middle" font-family="Instrument Serif,Georgia,serif">Good morning</text>`+T(200,238,14,'Alarm off','#c8b098',400);
+else{h+=T(200,214,92,'07:00','#fff0dc',200,'letter-spacing="-2"')+T(200,254,16,s.snz?'Tap to snooze · '+s.snz+' left':'No snoozes left','#e8cfae',400)+T(200,280,14,'Hold to turn off','#a8927a',400);if(s.hold>0)h+=arc(144,0,360*s.hold,'#fff0dc',7)}}
+return h}
+const stops=[[0,[0,0,0]],[.12,[70,6,0]],[.36,[214,62,10]],[.6,[255,140,46]],[.82,[255,191,115]],[1,[255,234,203]]];
+function sun(t){for(let i=1;i<stops.length;i++)if(t<=stops[i][0]){const[a,ca]=stops[i-1],[b,cb]=stops[i],k=(t-a)/(b-a);return 'rgb('+ca.map((v,j)=>Math.round(v+(cb[j]-v)*k)).join(',')+')'}return 'rgb(255,234,203)'}
+function glow(col,k){$('ring').setAttribute('stroke',k>0?col:'#1b1c1f');$('ring').setAttribute('opacity',k>0?.3+.7*k:1);$('glow').style.background=col;$('glow').style.opacity=k>0?(.12+.5*k):0}
+function sync(){if(S.scr=='ring')glow('#ffe9cc',1);else if(S.sun!=null)glow(sun(S.sun),Math.pow(S.sun,1.3));else if(S.lt.on)glow(S.lt.m?'#ffb46a':'#ff5a1c',S.lt.l[S.lt.m]/100);else glow('#000',0)}
+const LG={clock:[['Tap','Brighten the face and show the way'],['Swipe up','Tomorrow’s alarm'],['Swipe down','Weekly schedule'],['Swipe left','Sleep sound'],['Swipe right','Light']],
+tmr:[['Turn the edge','Change the time, for tomorrow only'],['Tap','Skip tomorrow, or bring it back'],['Hold','Return to the usual time'],['Swipe down','Back to the clock']],
+week:[['Tap a day','Open that day'],['Swipe up','Back to the clock']],
+day:[['Turn the edge','Set the time for every week'],['Tap','Day on or off'],['Swipe sideways','Next or previous day'],['Swipe up','Back to the week']],
+sound:[['Tap','Play or pause'],['Turn the edge','Volume'],['Tap the timer','15, 30, 60, 90 minutes or all night'],['Swipe right','Back to the clock']],
+light:[['Tap','On or off'],['Turn the edge','Brightness'],['Tap the switch','Night light or reading light'],['Swipe left','Back to the clock']],
+ring:[['Tap anywhere','Snooze for 9 minutes'],['Hold 2 seconds','Turn the alarm off']]};
+const cur=$('cur'),old=$('old'),fb=t=>$('fb').textContent=t;
+function render(){cur.innerHTML=draw(S.scr,S);sync();$('lg').innerHTML=LG[S.scr].map(r=>`<div><b>${r[0]}</b><span>${r[1]}</span></div>`).join('')}
+let anim=0;
+function nav(to,d,msg){old.innerHTML=cur.innerHTML;S.scr=to;if(msg)fb(msg);render();cancelAnimationFrame(anim);if(RM||!d){old.innerHTML='';cur.removeAttribute('transform');return}
+const t0=performance.now();(function st(t){const p=Math.min(1,(t-t0)/240),e=1-Math.pow(1-p,3);cur.setAttribute('transform',`translate(${d[0]*310*(1-e)} ${d[1]*310*(1-e)})`);old.setAttribute('transform',`translate(${-d[0]*310*e} ${-d[1]*310*e})`);old.setAttribute('opacity',1-e);if(p<1)anim=requestAnimationFrame(st);else{old.innerHTML='';old.removeAttribute('transform');old.removeAttribute('opacity');cur.removeAttribute('transform')}})(t0)}
+function ripple(x,y){const c=document.createElementNS(NS,'circle');c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('fill','#fff');$('fx').appendChild(c);const t0=performance.now();(function st(t){const p=Math.min(1,(t-t0)/380);c.setAttribute('r',10+26*p);c.setAttribute('opacity',.22*(1-p));p<1?requestAnimationFrame(st):c.remove()})(t0)}
+let awT;function wake(){S.awake=true;clearTimeout(awT);awT=setTimeout(()=>{S.awake=false;if(S.scr=='clock'&&!busy)render()},5000)}
+function tap(x,y){const r=Math.hypot(x-200,y-200),s=S.scr,ch=y>270&&Math.abs(x-200)<80;
+if(s=='clock'){wake();S.msg='';fb('Tap: the face brightens and shows the way')}
+else if(s=='tmr'){if((S.one??usual(S))==null)return fb('Turn the edge to set an alarm');S.skip=!S.skip;fb(S.skip?'Tomorrow’s alarm skipped':'Tomorrow’s alarm is back')}
+else if(s=='week'){if(r>58){let a=Math.atan2(x-200,200-y)*180/Math.PI;a=(a+360+180/7)%360;S.sel=Math.floor(a/(360/7));return nav('day',[0,-1],'Editing every '+DF[S.sel])}return fb('Tap a day to edit it')}
+else if(s=='day'){const d=S.days[S.sel];d.on=!d.on;fb(DF[S.sel]+' alarm '+(d.on?'on':'off'))}
+else if(s=='sound'){if(ch){S.ti=(S.ti+1)%5;fb('Sleep timer: '+(TM[S.ti]?TM[S.ti]+' minutes':'all night'))}else{S.play=!S.play;fb(S.play?'White noise playing':'Paused')}}
+else if(s=='light'){if(ch){S.lt.m^=1;S.lt.on=true;fb(S.lt.m?'Reading light':'Night light')}else{S.lt.on=!S.lt.on;fb(S.lt.on?'Light on':'Light off')}}
+else if(s=='ring'){if(S.done)return;if(S.snz>0){S.snz--;S.msg='Snoozed until 07:09';return nav('clock',null,'Snoozed for 9 minutes')}return fb('No snoozes left. Hold to turn off')}
+render()}
+function swipe(d){const s=S.scr;
+if(s=='clock'){if(d=='up')return nav('tmr',[0,1],'Tomorrow’s alarm');if(d=='down')return nav('week',[0,-1],'Weekly schedule');if(d=='left')return nav('sound',[1,0],'Sleep sound');return nav('light',[-1,0],'Light')}
+if(s=='tmr'&&d=='down')return nav('clock',[0,-1],'Saved');
+if(s=='week'&&d=='up')return nav('clock',[0,1],'Back to the clock');
+if(s=='day'){if(d=='up')return nav('week',[0,1],'Saved');if(d=='left'||d=='right'){S.sel=(S.sel+(d=='left'?1:6))%7;return nav('day',[d=='left'?1:-1,0],'Every '+DF[S.sel])}}
+if(s=='sound'&&d=='right')return nav('clock',[-1,0],'Back to the clock');
+if(s=='light'&&d=='left')return nav('clock',[1,0],'Back to the clock');
+fb('Nothing in that direction')}
+let acc=0,base=0;
+function rot(da){acc+=da;const s=S.scr;
+if(s=='tmr'||s=='day'){const v=(((base+Math.round(acc/3/5)*5)%1440)+1440)%1440;if(s=='tmr'){S.one=v===usual(S)?null:v;S.skip=false}else{S.days[S.sel].min=v;S.days[S.sel].on=true}fb(f(v))}
+else if(s=='sound'){S.vol=Math.max(0,Math.min(100,Math.round(base+acc/2.7)));fb('Volume '+S.vol)}
+else if(s=='light'){S.lt.on=true;S.lt.l[S.lt.m]=Math.max(1,Math.min(100,Math.round(base+acc/2.7)));fb('Brightness '+S.lt.l[S.lt.m]+'%')}
+render()}
+function onHold(){if(S.scr=='ring'){S.hold=0;S.done=true;fb('Alarm off');render();setTimeout(()=>{S.done=false;S.snz=3;S.msg='';nav('clock',null,'Good morning')},1900)}
+else if(S.scr=='tmr'){S.one=null;S.skip=false;fb('Back to the usual time');render()}}
+const dev=$('dev');let G=null,busy=false;
+function pt(e){const b=dev.getBoundingClientRect();return[(e.clientX-b.left)*400/b.width,(e.clientY-b.top)*400/b.height]}
+dev.addEventListener('pointerdown',e=>{if(busy)return;const[x,y]=pt(e),r=Math.hypot(x-200,y-200);if(r>152)return;dev.setPointerCapture(e.pointerId);ripple(x,y);
+const g=G={x,y,t:performance.now(),edge:r>=98&&['tmr','day','sound','light'].includes(S.scr),a:Math.atan2(x-200,200-y)*180/Math.PI,rot:false,moved:false,held:false};
+const hm=S.scr=='ring'&&!S.done?2000:(S.scr=='tmr'&&!g.edge?800:0);
+if(hm)(function lp(){if(G!==g||g.moved)return;const p=(performance.now()-g.t)/hm;if(S.scr=='ring'&&p>.12){S.hold=Math.min(1,(p-.12)/.88);render()}if(p>=1){g.held=true;return onHold()}requestAnimationFrame(lp)})()});
+dev.addEventListener('pointermove',e=>{if(!G)return;const[x,y]=pt(e);if(!G.moved&&Math.hypot(x-G.x,y-G.y)>10){G.moved=true;if(S.hold){S.hold=0;render()}}
+if(G.edge&&G.moved){if(!G.rot){G.rot=true;acc=0;base=S.scr=='tmr'?(S.one??usual(S)??420):S.scr=='day'?S.days[S.sel].min:S.scr=='sound'?S.vol:S.lt.l[S.lt.m]}
+const a=Math.atan2(x-200,200-y)*180/Math.PI;let d=a-G.a;if(d>180)d-=360;if(d<-180)d+=360;G.a=a;rot(d)}});
+function up(e){if(!G)return;const g=G;G=null;const[x,y]=pt(e);if(S.hold&&!g.held){S.hold=0;render();return fb('Let go too early. Keep holding to turn off')}
+if(g.rot||g.held)return;const dx=x-g.x,dy=y-g.y;
+if(Math.hypot(dx,dy)>34)return swipe(Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up'));
+if(performance.now()-g.t<450)tap(x,y)}
+dev.addEventListener('pointerup',up);dev.addEventListener('pointercancel',()=>{G=null;if(S.hold){S.hold=0;render()}});
+$('bRing').onclick=()=>{if(busy)return;S.done=false;S.hold=0;S.sun=null;nav('ring',null,'07:00. Tap to snooze, hold to turn off')};
+$('bReset').onclick=()=>{if(busy)return;S=fresh();nav('clock',null,'Reset')};
+$('bMorn').onclick=()=>{if(busy)return;busy=true;S.awake=false;S.play=true;S.msg='';S.lt.on=false;S.sun=0;nav('clock',null,'06:30. Sunrise begins');const t0=performance.now(),D=RM?1500:9000;
+(function st(t){const p=Math.min(1,(t-t0)/D);S.sun=p;const nz=Math.max(0,Math.round((1-p*8)*100));if(nz==0)S.play=false;render();fb(f(Math.round(390+30*p))+' · light '+Math.round(Math.pow(p,1.3)*100)+'% · white noise '+nz+'%');
+if(p<1)requestAnimationFrame(st);else{S.sun=null;busy=false;S.snz=3;nav('ring',null,'07:00. Tap to snooze, hold to turn off')}})(t0)};
+let big=true;$('bSize').onclick=e=>{big=!big;dev.style.maxWidth=big?'420px':'224px';e.target.textContent=big?'Real size':'Enlarge';$('szl').textContent=big?'Shown enlarged.':'About real size on most screens: 44 mm display.'};
+const demo=fresh();demo.awake=true;demo.play=true;demo.lt.on=true;
+document.querySelectorAll('[data-mini]').forEach(b=>{const n=b.dataset.mini,st=n=='clock'?fresh():demo;const sv=`<svg viewBox="44 44 312 312" aria-hidden="true"><circle cx="200" cy="200" r="155" fill="#000" stroke="${n=='clock'?'#8a5e30':'#262a36'}" stroke-width="2"/>${draw(n,st)}</svg>`;b.insertAdjacentHTML('afterbegin',sv);
+b.onclick=()=>{if(busy)return;nav(n,null,b.querySelector('span').textContent);$('stage').scrollIntoView({behavior:RM?'auto':'smooth',block:'center'})}});
+render();
+</script>
