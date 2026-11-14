@@ -27,7 +27,7 @@ Last reviewed: 2026-11-13 (Phase 2)
 | R34 | M | `[ ]` Whether an alarm rings is changed only by a **hold**: a day on or off, skip tomorrow or bring it back, dismiss, cancel a snooze or sunrise. Snooze is a tap. A hold shows progress from the first moment (rim fill and the screen pressing in), since there is no vibration (D-040). | 2, 3 | T-34 |
 | R35 | M | `[ ]` Every sub-screen returns to the clock after 20 s without a touch (settings 30 s). Every change is saved the moment it is made (D-024). | 2, 3 | T-35 |
 | R36 | M | `[ ]` The firmware boots, keeps time and rings with no battery and with no ring fitted. Optional parts (battery, ring, protection parts, level shifter, light sensor) each have a defined behaviour when missing (D-025). | 3 | T-36 |
-| R37 | M | `[~]` No text overlaps, none under 26 px, all inside the safe circle, in Ubuntu. `layoutCheck()` reports zero issues for every screen state (D-028). Passes on the concept page; repeats on the firmware strings in Phase 3. | 2, 3 | T-37 |
+| R37 | M | `[~]` No text overlaps, none under 26 px, all inside the safe circle, in the UI typeface (D-046). `layoutCheck()` reports zero issues for every screen state (D-028). Passes on the concept page; repeats on the firmware strings in Phase 3. | 2, 3 | T-37 |
 | R38 | M | `[ ]` The device never needs a network, server, account or phone at any time in its life. Optional Bluetooth time sync is a convenience, off unless asked (D-030, D-043). | all | T-38 |
 | R39 | M | `[ ]` Dates are correct to 2099: 64-bit time, every leap day 2028–2056, the year 2038 (LONGEVITY.md §2). | 3 | T-39 |
 | R40 | M | `[ ]` The alarm still works if the screen, touch, speaker, ring or battery fails, or one copy of the program or settings is corrupt (LONGEVITY.md §6). | 3 | T-41, T-44 |
@@ -36,6 +36,8 @@ Last reviewed: 2026-11-13 (Phase 2)
 | R43 | M | `[ ]` Nothing lights the sleeper: the ring is off from bedtime to the dawn, the screen is under 1 lux at the pillow, and the evening light is warm and capped (LIGHT.md §2, §4). | 3 | T-46 |
 | R44 | M | `[~]` A swipe starting anywhere, including right next to a dot, is never mistaken for a dial turn, and a deliberate grab always turns it (D-036). Host test: 1,249 random swipes, 0 mistaken. Still to do on the real panel with `/firmware/dialtest` (UX-B2). | 2, 3 | T-47 |
 | R45 | M | `[ ]` The colour language of UX.md §7 runs smoothly on the real panel (bench check UX-B3), with fades as the fallback. Alarm is always orange with a bell; bedtime is always violet with a moon. | 3 | T-48 |
+| R47 | M | `[ ]` If the sleep sound ran that evening with an N-minute timer, it plays again for N minutes ending at the dawn start, fading in smoothly (D-044). Not for "All night". | 3 | T-50 |
+| R48 | N | `[ ]` A Focus (Pomodoro) screen: 25/5 minute rounds, four rounds then a 15 minute break; never affects an alarm (D-047). | 3 | T-51 |
 | R46 | M | `[ ]` The Time page sets hours, minutes and seconds; seconds are set with the clock paused and started by a tap (D-043). | 3 | T-49 |
 
 ## 3. Sound
@@ -43,7 +45,7 @@ Last reviewed: 2026-11-13 (Phase 2)
 | ID | Pri | Requirement | Phase | Test |
 |----|-----|-------------|-------|------|
 | R9 | M | `[ ]` White noise for falling asleep, with sleep timer (Off / 15 / 30 / 60 / 90 min / all night) and volume control. | 3 | T-09 |
-| R10 | M | `[ ]` White noise fades out smoothly (default 120 s, no clicks or steps you can hear) when the sunrise or the alarm begins. The timer end also fades (default 30 s). | 3 | T-10 |
+| R10 | M | `[ ]` Sleep sound fades out smoothly (about 3 minutes, no clicks or steps you can hear) when the sunrise begins. The timer end also fades (default 30 s). | 3 | T-10 |
 | R11 | M | `[ ]` Sixteen sleep sounds made by the clock itself: noises (pink default, white, brown, green, grey, blue, violet, fan) and nature (rain, storm, ocean, stream, waterfall, wind, forest, fire), chosen from a visual picker. No recordings, no loop gap ([SOUND.md](SOUND.md), D-040). | 3 | T-11 |
 
 ## 4. Light

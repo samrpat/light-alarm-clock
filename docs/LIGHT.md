@@ -53,7 +53,7 @@ Peak current is about 0.6 A (24 LEDs at 18 mA per channel), under the 0.9 A cap.
 
 **Brightness.** Studies used 210–300 lux at the eye. This ring will not reach that at a bedside distance. My rough estimate, not a measurement, is 40–150 lux at 0.5 m. Bench check L1 measures it; the goal is as bright as the ring and the heat allow.
 
-**Sound.** The alarm sound starts at T (D-015), after the light has peaked. White noise fades out over the first 2 minutes of the dawn.
+**Sound.** The alarm sound starts at T (D-015), after the light has peaked. The sleep sound (which came back before the dawn, D-044) fades out over about 3 minutes as the dawn begins.
 
 **What I deliberately did not do:** a shorter ramp (the authors warn it may not help), cool white while asleep, a ramp triggered by sleep stage (needs a sensor this board does not have), or a setting for length (30 minutes is the evidence).
 

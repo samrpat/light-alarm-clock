@@ -42,7 +42,8 @@ Sixteen sounds in all. Like the others they are shaped noise, not recordings: go
 ## Rules
 
 - Volume, sleep timer and the chosen sound are remembered.
-- Every start, stop and change fades (0.4 s in, 30 s out at the timer, 2 minutes out at the dawn). No clicks.
+- Every start, stop and change fades (0.4 s in, 30 s out at the timer, about 3 minutes out as the dawn begins). No clicks.
+- **Before the dawn (D-044):** a timer of N minutes played at bedtime plays again for N minutes ending at alarm − 30 min, fading in over min(N, 10) minutes. "All night" has no pre-window.
 - A 150 Hz high-pass protects the small speaker (HARDWARE.md §4). Sleep sounds are capped at about 25 % of full output.
 - Sound runs on the alarm-safe core and never blocks the alarm (D-002).
 

@@ -86,6 +86,8 @@ stateDiagram-v2
 
 The step levels and timings above are placeholders and become final in Phase 3. On boot, the engine rebuilds its state from the occurrence time and `now`, so it resumes at the right stage (R21) and catches up on missed alarms (R20).
 
+Optional UI-side feature: the Focus timer (D-047) runs on core 0 and never touches the alarm path. The pre-dawn sleep sound (D-044) is a command from `alarm_engine` to `audio_out`.
+
 ## 4. Longevity notes (D-030, D-031)
 
 - Wi-Fi is never initialised. Bluetooth is initialised only when the user taps Phone, and shut down after the sync or two minutes (D-043).

@@ -1,7 +1,7 @@
 # UX specification
 
 Phase 2 (revised 2026-11-13, round 3) · Decisions: [D-011](DECISIONS.md), [D-015](DECISIONS.md), [D-016](DECISIONS.md), [D-024](DECISIONS.md), [D-028](DECISIONS.md), [D-032](DECISIONS.md), [D-036](DECISIONS.md) to [D-039](DECISIONS.md)
-Interactive concept (touch only, Ubuntu type, 446 checked screen states): `/mockups/ux-concept.html`, published at https://claude.ai/artifact/UGtnZ6MqkrSfuM5BShyG5a (private link).
+Interactive concept (touch only, Apple-style type, 496 checked screen states): `/mockups/ux-concept.html`, published at https://claude.ai/artifact/UGtnZ6MqkrSfuM5BShyG5a (private link).
 Light and colour: [LIGHT.md](LIGHT.md). Offline and repairable: [LONGEVITY.md](LONGEVITY.md). A test app for the real touch screen: `/firmware/dialtest`.
 
 ## 1. Principles
@@ -112,7 +112,7 @@ Not a switch: the face changes continuously from wake to bedtime and winds down 
 ## 6. Screens (text budget in brackets)
 
 ### 6.1 Clock (home) [2–3 lines]
-- **The time is the hero:** Ubuntu Light 124 px. Above it the date (day only). Below it a small bell and the next alarm at 26 px.
+- **The time is the hero:** Light 124 px (Apple-style type, D-046). Above it the date (day only). Below it a small bell and the next alarm at 26 px.
 - **The alarm line shows only the time** ("6:45 AM") when the alarm is within the next 24 hours. The day appears ("Fri 6:45 AM") only when the next alarm is further away, because then it matters.
 - A status line appears only when something needs saying.
 - **Tapped (about 4 s):** five small icons **fade in smoothly (0.3 s) and fade out (0.6 s)**: calendar above (Week), bell below (Tomorrow), lamp lower left, speaker lower right, sliders for settings. At night the face also brightens and dims on the same curve, never in a jump. Nothing pulses behind the text.
@@ -248,7 +248,7 @@ One status line, highest priority first: **Set time** · Alarm timed out · Alar
 
 ## 11. Typography and layout rules
 
-**Ubuntu** (Light for numerals, Regular for text, Medium for emphasis), Ubuntu Font Licence 1.0 in `docs/licenses/`. Firmware uses bitmap fonts made from the TTFs with `lv_font_conv`.
+**Inter on the device, SF Pro in the concept** (D-046; Light for numerals, Regular for text, Medium for emphasis), Ubuntu Font Licence 1.0 in `docs/licenses/`. Firmware uses bitmap fonts made from the TTFs with `lv_font_conv`.
 
 | Role | Size |
 |------|------|

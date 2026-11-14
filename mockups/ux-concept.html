@@ -1,14 +1,14 @@
 <title>Sunrise Clock Interface</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap">
 <style>
-/* Layout: a night scene. Copy on the left, the live device on the right, then short proof sections. Single dark look by choice: the product lives in a dark bedroom. All type is Ubuntu. */
+/* Layout: a night scene. Copy on the left, the live device on the right, then short proof sections. Single dark look by choice: the product lives in a dark bedroom. All type is Apple-style (SF Pro on Apple devices, Inter elsewhere and on the real device). */
 :root{
   color-scheme:dark;
   --night:#0a0c12; --panel:#10131c; --line:#222737;
   --ink:#efe7db; --ink2:#a59e95; --ink3:#7d7a79;
   --amber:#ffb869; --teal:#84d8c0;
-  --ui:'Ubuntu',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --ui:-apple-system,'SF Pro Display','SF Pro Text',BlinkMacSystemFont,'Inter',system-ui,sans-serif;
 }
 body{background:var(--night);color:var(--ink);font-family:var(--ui);font-weight:300;font-size:17px;line-height:1.6;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
@@ -47,7 +47,7 @@ section{display:flex;flex-direction:column;gap:28px}
 .verb p{color:var(--ink2);font-size:16px}
 .two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center}
 .col{display:flex;flex-direction:column;gap:20px;min-width:0}
-.map{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:460px;width:100%;justify-self:center}
+.map{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-width:620px;width:100%;justify-self:center}
 .mini{display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;border-radius:16px;padding:6px;font-size:14px;color:var(--ink2)}
 .mini svg{width:100%;height:auto;font-family:var(--ui)}
 .mini small{font-size:12px;color:var(--ink3)}
@@ -62,6 +62,7 @@ section{display:flex;flex-direction:column;gap:28px}
 .tl{display:flex;flex-direction:column;gap:10px}
 .bar{height:44px;border-radius:10px;background:linear-gradient(90deg,#050505 0%,#3a0500 10%,#8a1a05 30%,#e0551a 50%,#ff9a3c 70%,#ffcf90 85%,#ffeedd 100%)}
 .fade{height:14px;border-radius:7px;background:linear-gradient(90deg,var(--teal) 0%,rgba(132,216,192,0) 5%)}
+.fade2{height:14px;border-radius:7px;background:linear-gradient(90deg,rgba(132,216,192,0) 0%,var(--teal) 22%,var(--teal) 38%,rgba(132,216,192,0) 52%,rgba(132,216,192,0) 100%)}
 .steps{display:grid;grid-template-columns:75% 1fr;height:30px;align-items:end}
 .steps .s{display:flex;align-items:flex-end;gap:2px;height:30px}
 .steps .s b{flex:1;background:var(--amber);border-radius:2px 2px 0 0}
@@ -147,14 +148,15 @@ section{display:flex;flex-direction:column;gap:28px}
       <div class="col">
         <p class="eyebrow">The map</p>
         <h2>Up and down for waking. Left and right for sleeping.</h2>
-        <p class="lede">Alarms live on the vertical line: the week above, tomorrow below. Sleep lives on the horizontal line: the lamp on the left, sound on the right. Sideways always means the next neighbour: light, clock, sound; the days of the week; the settings pages. Settings open with a hold on the clock. Tap any screen to open it in the device.</p>
+        <p class="lede">Alarms live on the vertical line: the week above, tomorrow below. Sleep lives on the horizontal line: the lamp on the left, sound on the right, and beyond sound the Focus timer for the day. Sideways always means the next neighbour: light, clock, sound, focus; the days of the week; the settings pages. Settings open with a hold on the clock. Tap any screen to open it in the device.</p>
       </div>
       <div class="map">
-        <span></span><button class="mini" data-mini="week"><small>swipe down</small><span>Week</span></button><span></span>
+        <span></span><button class="mini" data-mini="week"><small>swipe down</small><span>Week</span></button><span></span><span></span>
         <button class="mini" data-mini="light"><small>swipe right</small><span>Lamp</span></button>
         <button class="mini" data-mini="clock"><small>home</small><span>Clock</span></button>
         <button class="mini" data-mini="sound"><small>swipe left</small><span>Sound</span></button>
-        <span></span><button class="mini" data-mini="tmr"><small>swipe up</small><span>Tomorrow</span></button><span></span>
+        <button class="mini" data-mini="focus"><small>swipe left again</small><span>Focus</span></button>
+        <span></span><button class="mini" data-mini="tmr"><small>swipe up</small><span>Tomorrow</span></button><span></span><span></span>
       </div>
     </div>
   </section>
@@ -199,11 +201,11 @@ section{display:flex;flex-direction:column;gap:28px}
     <h2>Thirty minutes of dawn, built from the evidence.</h2>
     <div class="tl">
       <div class="tlrow"><span>Ring colour</span><div class="bar"></div></div>
-      <div class="tlrow"><span>White noise</span><div class="fade"></div></div>
+      <div class="tlrow"><span>Sleep sound</span><div class="fade2"></div></div>
       <div class="tlrow"><span>Alarm sound</span><div class="steps"><i></i><div class="s"><b style="height:25%"></b><b style="height:50%"></b><b style="height:75%"></b><b style="height:100%"></b></div></div></div>
       <div class="tlrow"><span></span><div class="axisrow"><span>Deep red</span><span>Amber</span><span>Warm white</span><span>Daylight</span></div></div>
     </div>
-    <p class="lede">It starts with deep red, which passes through closed eyelids and barely touches the body clock, then climbs through amber and warm white to a daylight white at the alarm. The rise is exponential, like a real dawn. After the alarm it holds bright for ten minutes. At night the ring is off completely. Press "Play a morning" to watch it.</p>
+    <p class="lede">It starts with deep red, which passes through closed eyelids and barely touches the body clock, then climbs through amber and warm white to a daylight white at the alarm. The rise is exponential, like a real dawn. After the alarm it holds bright for ten minutes. At night the ring is off completely. Your sleep sound comes back too: if the timer was 30 minutes, it plays for 30 minutes ending where the dawn begins, fading in so gently it feels as if it never stopped, then fading out smoothly as the light starts. Press "Play a morning" to watch and hear it.</p>
   </section>
 
   <section>
@@ -217,7 +219,7 @@ section{display:flex;flex-direction:column;gap:28px}
     </div>
   </section>
 
-  <p class="note">Concept prototype. Colours, glow and timing are simulated in the browser, and the real LED ring and AMOLED panel will look different. The date is fixed at Tuesday, Nov 12 and type is Ubuntu. Wake time is not a setting: the face treats your alarm as the start of the day.</p>
+  <p class="note">Concept prototype. Colours, glow and timing are simulated in the browser, and the real LED ring and AMOLED panel will look different. The date is fixed at Tuesday, Nov 12 and type is Apple-style: SF Pro here, Inter on the device. Wake time is not a setting: the face treats your alarm as the start of the day.</p>
 </div>
 
 <script>
@@ -234,7 +236,7 @@ const PG=['Time','Date','Region','Phone','Bedtime','Brightness','Alarm','About']
 const wrap=m=>((m%1440)+1440)%1440,clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 function t12(m){m=wrap(m);const h=Math.floor(m/60);return{h:((h+11)%12)+1,mm:String(m%60).padStart(2,'0'),ap:h<12?'AM':'PM'}}
 const f12=m=>{const t=t12(m);return t.h+':'+t.mm+' '+t.ap};
-function fresh(){return{scr:'clock',now:870,awake:false,days:[0,1,2,3,4,5,6].map(i=>({on:i<5,min:i<5?405:510})),sel:2,skip:false,one:null,vol:40,play:false,ti:1,lt:{on:false,m:0,l:[20,60]},snz:3,hold:0,done:false,sunT:null,msg:'',pg:0,df:0,clk:870,dat:{m:10,d:12,y:2026},rg:0,dayB:60,ns:1350,ld:70,test:false,snd:0,fade:1,sec:0,secMode:false,bt:0}}
+function fresh(){return{scr:'clock',now:870,awake:false,days:[0,1,2,3,4,5,6].map(i=>({on:i<5,min:i<5?405:510})),sel:2,skip:false,one:null,vol:40,play:false,ti:1,lt:{on:false,m:0,l:[20,60]},snz:3,hold:0,done:false,sunT:null,msg:'',pg:0,df:0,clk:870,dat:{m:10,d:12,y:2026},rg:0,dayB:60,ns:1350,ld:70,test:false,snd:0,fade:1,sec:0,secMode:false,bt:0,fo:{len:25,run:false,ph:0,left:1500,rd:1}}}
 const mix=(a,b,k)=>a.map((v,i)=>v+(b[i]-v)*k);
 const hex=c=>'#'+c.map(v=>clamp(Math.round(v),0,255).toString(16).padStart(2,'0')).join('');
 const NA=[224,128,28],BK=[0,0,0],WH=[255,255,255];
@@ -244,7 +246,7 @@ const usual=s=>s.days[2].on?s.days[2].min:null;
 function wakeMin(s){const u=usual(s);if(u!=null)return u;const d=s.days.find(d=>d.on);return d?d.min:420}
 function phase(s){const wk=wakeMin(s),span=wrap(s.ns-wk),since=wrap(s.now-wk);if(since<span){const left=span-since;return left>180?{p:'day',w:0}:{p:'wind',w:1-left/180}}return{p:'night',w:1}}
 const SOUNDS=[['Pink noise','pink','nz'],['White noise','white','nz'],['Brown noise','brown','nz'],['Green noise','green','nz'],['Grey noise','grey','nz'],['Blue noise','blue','nz'],['Violet noise','violet','nz'],['Fan','fan','fan'],['Rain','rain','rain'],['Storm','storm','bolt'],['Ocean','ocean','wave'],['Stream','stream','strm'],['Waterfall','falls','falls'],['Wind','wind','wind'],['Forest','forest','tree'],['Fire','fire','fire']];
-const PAL={phone:{a:[110,175,255],b:[70,100,245],bg:[10,24,66]},s_storm:{a:[160,170,235],b:[90,90,180],bg:[18,18,54]},s_stream:{a:[120,225,235],b:[60,160,210],bg:[10,40,52]},s_falls:{a:[175,220,245],b:[90,150,205],bg:[14,34,52]},s_forest:{a:[155,220,125],b:[70,150,80],bg:[14,42,18]},s_fire:{a:[255,175,85],b:[230,80,40],bg:[62,22,6]},s_pink:{a:[255,150,190],b:[230,90,160],bg:[60,16,40]},s_white:{a:[235,240,250],b:[170,180,200],bg:[30,34,44]},s_brown:{a:[215,150,95],b:[150,90,50],bg:[44,26,12]},s_green:{a:[110,225,140],b:[40,170,120],bg:[10,44,26]},s_grey:{a:[190,195,205],b:[120,125,140],bg:[28,30,36]},s_blue:{a:[100,180,255],b:[60,110,240],bg:[10,26,64]},s_violet:{a:[190,140,255],b:[130,80,230],bg:[34,16,64]},s_rain:{a:[130,190,230],b:[70,120,190],bg:[14,30,50]},s_ocean:{a:[64,224,208],b:[108,124,255],bg:[14,28,70]},s_wind:{a:[190,230,225],b:[110,170,180],bg:[16,40,42]},s_fan:{a:[170,190,210],b:[100,120,150],bg:[22,28,38]},alarm:{a:[255,150,70],b:[255,84,120],bg:[64,20,30]},sound:{a:[64,224,208],b:[108,124,255],bg:[14,28,70]},light:{a:[255,220,100],b:[255,150,40],bg:[64,38,6]},nlight:{a:[255,110,70],b:[210,40,40],bg:[60,12,8]},time:{a:[100,205,255],b:[70,120,255],bg:[10,26,64]},date:{a:[255,110,100],b:[255,160,90],bg:[60,14,20]},region:{a:[90,225,165],b:[40,175,225],bg:[8,46,42]},bed:{a:[160,140,255],b:[96,76,230],bg:[24,18,70]},about:{a:[110,225,140],b:[60,180,200],bg:[14,36,30]}};
+const PAL={focus:{a:[255,128,98],b:[232,60,78],bg:[56,14,18]},phone:{a:[110,175,255],b:[70,100,245],bg:[10,24,66]},s_storm:{a:[160,170,235],b:[90,90,180],bg:[18,18,54]},s_stream:{a:[120,225,235],b:[60,160,210],bg:[10,40,52]},s_falls:{a:[175,220,245],b:[90,150,205],bg:[14,34,52]},s_forest:{a:[155,220,125],b:[70,150,80],bg:[14,42,18]},s_fire:{a:[255,175,85],b:[230,80,40],bg:[62,22,6]},s_pink:{a:[255,150,190],b:[230,90,160],bg:[60,16,40]},s_white:{a:[235,240,250],b:[170,180,200],bg:[30,34,44]},s_brown:{a:[215,150,95],b:[150,90,50],bg:[44,26,12]},s_green:{a:[110,225,140],b:[40,170,120],bg:[10,44,26]},s_grey:{a:[190,195,205],b:[120,125,140],bg:[28,30,36]},s_blue:{a:[100,180,255],b:[60,110,240],bg:[10,26,64]},s_violet:{a:[190,140,255],b:[130,80,230],bg:[34,16,64]},s_rain:{a:[130,190,230],b:[70,120,190],bg:[14,30,50]},s_ocean:{a:[64,224,208],b:[108,124,255],bg:[14,28,70]},s_wind:{a:[190,230,225],b:[110,170,180],bg:[16,40,42]},s_fan:{a:[170,190,210],b:[100,120,150],bg:[22,28,38]},alarm:{a:[255,150,70],b:[255,84,120],bg:[64,20,30]},sound:{a:[64,224,208],b:[108,124,255],bg:[14,28,70]},light:{a:[255,220,100],b:[255,150,40],bg:[64,38,6]},nlight:{a:[255,110,70],b:[210,40,40],bg:[60,12,8]},time:{a:[100,205,255],b:[70,120,255],bg:[10,26,64]},date:{a:[255,110,100],b:[255,160,90],bg:[60,14,20]},region:{a:[90,225,165],b:[40,175,225],bg:[8,46,42]},bed:{a:[160,140,255],b:[96,76,230],bg:[24,18,70]},about:{a:[110,225,140],b:[60,180,200],bg:[14,36,30]}};
 let UID=0;const WARN='#E5703E',OFFC='#6b6670';
 function theme(key,s){const ph=phase(s),w=ph.w,ws=w*w*(3-2*w),P0=PAL[key],night=ph.p==='night',amb=NA.map(v=>v*.85);
  const a=mix(P0.a,amb,ws),b=mix(P0.b,amb.map(v=>v*.75),ws),bg=mix(P0.bg,BK,ws),t=mix(WH,amb,ws),id='u'+(UID++);
@@ -273,6 +275,14 @@ function picker(s,m,pc,title,on,sub,subCol,fine){const a=t12(m);let h=rimT(m,pc,
   if(sub)h+=T(C,324,28,sub,subCol||pc.s,400);return h}
 const pillsRow=(pc,pg)=>PG.map((_,i)=>{const cx=C+(i-(PG.length-1)/2)*16,w=i==pg?14:6;return `<rect x="${cx-w/2}" y="378" width="${w}" height="6" rx="3" fill="${i==pg?pc.t:pc.trk}"/>`}).join('');
 
+function life(ph,ws,night,col){let o='';const m=RM?'':null;
+ const cloud=(y,sc,dur,begin,op)=>`<g opacity="${op}"><g>${RM?'':`<animateTransform attributeName="transform" type="translate" from="-150 ${y}" to="620 ${y}" dur="${dur}s" begin="-${begin}s" repeatCount="indefinite"/>`}<g transform="translate(${RM?160:0} ${RM?y:0}) scale(${sc})" fill="#fff"><ellipse rx="48" ry="15"/><circle cx="-17" cy="-12" r="19"/><circle cx="10" cy="-19" r="23"/><circle cx="35" cy="-7" r="15"/></g></g></g>`;
+ if(ph.p==='day'||ph.p==='wind'){const k=1-ws;o+=cloud(378,1,84,30,(.2*k).toFixed(3))+cloud(94,.7,118,70,(.15*k).toFixed(3))+cloud(300,1.3,150,110,(.1*k).toFixed(3))}
+ if(ph.p==='wind'||(ph.p==='day'&&ws>0)){const g=Math.min(1,ws*1.6);const ff=(x,y,d,b)=>`<g transform="translate(${x} ${y})"><circle r="8" fill="${col}" opacity="${(.18*g).toFixed(3)}"/><circle r="2.6" fill="${col}" opacity="${(.8*g).toFixed(3)}">${RM?'':`<animate attributeName="opacity" values="${(.2*g).toFixed(2)};${(.95*g).toFixed(2)};${(.2*g).toFixed(2)}" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/>`}</circle>${RM?'':`<animateMotion path="M0 0C34 -26 70 22 104 -8S174 -34 206 0C170 30 128 -20 96 6S34 30 0 0Z" dur="${d*4}s" begin="-${b*3}s" repeatCount="indefinite"/>`}</g>`;
+  o+=ff(70,360,6,1)+ff(330,370,7,3)+ff(150,70,5,2)+ff(300,100,8,4)+ff(40,230,6,5)+ff(410,250,7,2)}
+ if(night){const st=(x,y,r,d,b)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${col}" opacity=".12">${RM?'':`<animate attributeName="opacity" values=".08;.38;.08" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/>`}</circle>`;
+  o+=st(118,84,1.8,5,1)+st(352,96,1.4,7,3)+st(62,246,1.6,6,2)+st(404,262,1.8,8,5)+st(300,60,1.3,9,4)+st(86,380,1.5,7,6)+st(380,372,1.4,6,1)}
+ return o}
 const ringGrad=id=>`<defs><linearGradient id="${id}" x1=".2" y1="0" x2=".8" y2="1">${RM?'':'<animateTransform attributeName="gradientTransform" type="rotate" values="-20 .5 .5;20 .5 .5;-20 .5 .5" dur="6s" repeatCount="indefinite"/>'}<stop offset="0" stop-color="#ffb24d"/><stop offset=".55" stop-color="#ff7a59"/><stop offset="1" stop-color="#e8506a"/></linearGradient></defs>`;
 function draw(n,s){let h='';
 if(n==='clock'){const ph=phase(s),w=ph.w,ws=w*w*(3-2*w),night=ph.p==='night',dawn=s.sunT!=null,nx=next(s),id='u'+(UID++),aw=s.aw!==undefined?s.aw:(s.awake?1:0);let tc,sc,hc,wc=WARN;
@@ -281,6 +291,7 @@ if(n==='clock'){const ph=phase(s),w=ph.w,ws=w*w*(3-2*w),night=ph.p==='night',daw
  else{const[c1,c2]=sky(s.now),k=.55+.45*s.dayB/100,top=mix(c1,BK,ws).map(v=>v*k),bot=mix(c2,BK,ws).map(v=>v*k),am=NA.map(v=>v*.85);
   h+=`<defs><linearGradient id="${id}" x1=".2" y1="0" x2=".8" y2="1">${RM?'':'<animateTransform attributeName="gradientTransform" type="rotate" values="-16 .5 .5;16 .5 .5;-16 .5 .5" dur="18s" repeatCount="indefinite"/>'}<stop offset="0" stop-color="${hex(top)}"/><stop offset="1" stop-color="${hex(bot)}"/></linearGradient></defs><circle cx="${C}" cy="${C}" r="233" fill="url(#${id})"/>`;
   tc=hex(mix(WH,am,ws));sc=hex(mix(mix(WH,top,.12),am.map(v=>v*.78),ws));hc=sc;wc=ws<.6?tc:WARN}
+ if(!dawn)h+=life(ph,ws,night,night?tc:'#ffe8a8');
  if(!dawn&&(ph.p==='day'||(ph.p==='wind'&&ph.w<.5)))h+=T(C,128,28,'Tue, Nov 12',sc,500);
  const m=dawn?wrap(420+Math.round(s.sunT)):s.now;
  h+=TM(C,208,124,m,tc,300,28);
@@ -301,10 +312,16 @@ if(n==='sound'){const k=SOUNDS[s.snd],pc=theme('s_'+k[1],s);h+=pc.defs;
      h+=b.d0+(sel?`<circle cx="${x}" cy="${y}" r="52" fill="none" stroke="${pc.t}" stroke-width="4"/>`:'')+`<circle cx="${x}" cy="${y}" r="44" fill="${b.g}"/><circle cx="${x-13}" cy="${y-15}" r="11" fill="#fff" opacity=".22"/>`+ico(it[2],x,y,'#15101c',1.15)}
     h+=T(C,206,26,pp?'Nature':'Noise',pc.s,400)+T(C,242,30,k[0],pc.t,500)+`<rect x="${C-18}" y="270" width="${pp?6:14}" height="6" rx="3" fill="${pp?pc.trk:pc.t}"/><rect x="${C-18+(pp?10:18)}" y="270" width="${pp?14:6}" height="6" rx="3" fill="${pp?pc.t:pc.trk}"/>`}
   else if(s.pick==='tmr'){for(let i=0;i<5;i++){const[x,y]=P(i*72,150),sel=i===s.ti;h+=`<circle cx="${x}" cy="${y}" r="50" fill="${sel?pc.g:pc.trk}"/>`+(i<4?T(x,y,38,TIMER[i][1],sel?'#15101c':pc.t,sel?500:400):ico('moon',x,y,sel?'#15101c':pc.t,1.3))}
-    h+=T(C,222,28,'Sleep timer',pc.t,500)+T(C,258,26,s.ti<4?'minutes':'all night',pc.s,400)}
+    h+=T(C,214,28,'Sleep timer',pc.t,500)+T(C,252,26,s.ti<4?'Plays again before dawn':'Plays all night',pc.s,400)}
   else{let bars='';for(let i=0;i<4;i++){const bh=[18,30,24,14][i];for(const sg of[-1,1]){const x=C+sg*(52+i*17)-5;bars+=`<rect ${s.play?`class="eq" style="animation-delay:${(i*.13).toFixed(2)}s"`:''} x="${x}" y="${218-bh/2}" width="10" height="${bh}" rx="5" fill="${s.play?pc.a:pc.trk}"/>`}}
     h+=rimL(s.vol,0,100,pc)+`<rect x="${C-125}" y="112" width="250" height="56" rx="28" fill="${pc.trk}" opacity=".7"/><circle cx="${C-98}" cy="140" r="16" fill="${pc.g}"/>`+T(C+6,140,28,k[0],pc.t,500)+ico('chv',C+104,140,pc.s)
      +bars+playIco(C,218,s.play,pc.t)+`<rect x="${C-125}" y="268" width="250" height="56" rx="28" fill="${pc.trk}" opacity=".7"/>`+ico('moon',C-92,296,pc.a)+T(C,296,28,TIMER[s.ti][0],pc.t,400)+ico('chv',C+104,296,pc.s)}}
+if(n==='focus'){const f=s.fo,pc=theme('focus',s),brk=f.ph>0,tot=(f.ph===0?f.len:f.ph===1?5:15)*60,mm=Math.floor(f.left/60),ss=f.left%60,fr=1-f.left/tot,live=f.run||f.left!==tot;
+  h+=pc.defs;
+  if(!f.run)h+=rimL(f.len,5,60,pc);
+  else h+=`<circle cx="${C}" cy="${C}" r="${RR}" fill="none" stroke="${pc.trk}" stroke-width="6"/>`+arc(RR,0,Math.max(fr*360,.4),brk?pc.s:pc.a,8);
+  let dd='';for(let i=0;i<4;i++){const dn=brk?i<f.rd:i<f.rd-1,cu=!brk&&i===f.rd-1;dd+=`<circle cx="${C-33+i*22}" cy="338" r="7" fill="${dn?pc.t:cu?pc.a:pc.trk}"/>`}
+  h+=T(C,118,30,brk?(f.ph===2?'Long break':'Break'):'Focus',pc.a,500)+T(C,206,96,mm+':'+String(ss).padStart(2,'0'),pc.t,300)+T(C,290,28,f.run?'Tap to pause':live?'Paused':'Tap to start',pc.s,400)+dd}
 if(n==='light'){const m=s.lt.m,pc=theme(m?'light':'nlight',s),l=s.lt.l[m],on=s.lt.on;
   h+=pc.defs+rimL(l,5,100,pc)+T(C,112,30,'Lamp',pc.a,500)+T(C,200,76,on?l+'%':'Off',on?pc.t:OFFC,300)
    +`<rect x="${C-125}" y="265" width="250" height="56" rx="28" fill="${pc.trk}" opacity=".6"/><rect x="${m?C:C-125}" y="265" width="125" height="56" rx="28" fill="${pc.g}"/>`+ico('moon',C-62,293,m?pc.s:'#2a0d06')+ico('sun',C+62,293,m?'#2a1a04':pc.s)}
@@ -338,11 +355,12 @@ if(n==='dialfig'){const pc=theme('alarm',s);h+=pc.defs+rimT(405,pc,true)+T(C,176
 return h}
 //</draw>
 
-const LG={clock:[['Tap','Wake the face'],['Swipe up / down','Tomorrow / Week'],['Swipe left / right','Sound / Lamp'],['Hold 1.5 s','Settings']],
+const LG={clock:[['Tap','Wake the face'],['Swipe up / down','Tomorrow / Week'],['Swipe left / right','Sound, Focus / Lamp'],['Hold 1.5 s','Settings']],
 tmr:[['Drag a dot','Outer dot minutes, inner dot hours'],['Hold','Skip tomorrow, or bring it back'],['Swipe down','Back to the clock']],
 week:[['Tap a day','Open that day'],['Swipe up','Back to the clock']],
 day:[['Drag a dot','Outer dot minutes, inner dot hours'],['Hold','Turn the day on or off'],['Swipe sideways','Next or previous day'],['Swipe up','Back to the week']],
-sound:[['Tap the top pill','Pick a sound: 8 noise, 8 nature'],['Tap the icon','Play or pause (real sound in this demo)'],['Tap the lower pill','Pick a sleep timer'],['Drag the dot','Volume'],['Swipe right','Back to the clock']],
+sound:[['Tap the top pill','Pick a sound: 8 noise, 8 nature'],['Tap the icon','Play or pause (real sound in this demo)'],['Tap the lower pill','Pick a sleep timer'],['Drag the dot','Volume'],['Swipe left','Focus timer'],['Swipe right','Back to the clock']],
+focus:[['Tap','Start or pause'],['Drag the dot','Focus length, 5 to 60 minutes'],['Hold','Reset the timer'],['Swipe right','Back to sound']],
 light:[['Drag the dot','Brightness'],['Tap the number','On or off'],['Tap the pill','Night light or reading light'],['Swipe left','Back to the clock']],
 ring:[['Tap anywhere','Snooze 9 minutes'],['Hold 2 seconds','Turn the alarm off']],
 set:[['Drag the dot','Change the value'],['Tap','Pick a date line, set seconds, sync the phone, or test the alarm'],['Swipe sideways','Next page'],['Swipe down','Back to the clock']]};
@@ -361,7 +379,9 @@ function states(){const L=[],add=(n,f)=>{const s=fresh();f&&f(s);L.push([n,s])};
  for(const m of [0,1])for(const on of [true,false])for(const l of [5,100])add('light',s=>{s.lt.m=m;s.lt.on=on;s.lt.l[m]=l});
  for(const z of [0,1,2,3])add('ring',s=>{s.snz=z});add('ring',s=>{s.done=true});add('ring',s=>{s.hold=.6});
  for(let p=0;p<PG.length;p++)for(let r=0;r<REG.length;r++)add('set',s=>{s.pg=p;s.rg=r;s.dat={m:r%12,d:28,y:2099};s.dayB=100;s.ns=1380;s.ld=100;s.clk=779});
- for(const df of [0,1,2])add('set',s=>{s.pg=1;s.df=df;s.dat={m:df*5+1,d:df===1?28:7,y:2099}});for(const ns of [1350,1230,60,1439,1260])for(const al of [405,300,720,540])add('set',s=>{s.pg=3;s.ns=ns;s.days[2].min=al});add('set',s=>{s.pg=6;s.test=true});for(const sc of [0,7,30,59])add('set',s=>{s.pg=0;s.secMode=true;s.sec=sc});for(const b of [0,1,2,3])add('set',s=>{s.pg=3;s.bt=b});for(const now of [1394,1290])for(let p=0;p<PG.length;p++)add('set',s=>{s.pg=p;s.now=now});for(const now of [1394,1290])for(const n of ['tmr','week','day','sound','light'])add(n,s=>{s.now=now});for(const v of [30,65,100])add('set',s=>{s.pg=5;s.ld=v});for(const v of [10,55,100])add('set',s=>{s.pg=4;s.dayB=v});add('dialfig');return L}
+ for(const df of [0,1,2])add('set',s=>{s.pg=1;s.df=df;s.dat={m:df*5+1,d:df===1?28:7,y:2099}});for(const ns of [1350,1230,60,1439,1260])for(const al of [405,300,720,540])add('set',s=>{s.pg=3;s.ns=ns;s.days[2].min=al});add('set',s=>{s.pg=6;s.test=true});for(const sc of [0,7,30,59])add('set',s=>{s.pg=0;s.secMode=true;s.sec=sc});for(const b of [0,1,2,3])add('set',s=>{s.pg=3;s.bt=b});for(const now of [1394,1290])for(let p=0;p<PG.length;p++)add('set',s=>{s.pg=p;s.now=now});for(const now of [1394,1290])for(const n of ['tmr','week','day','sound','light'])add(n,s=>{s.now=now});for(const v of [30,65,100])add('set',s=>{s.pg=5;s.ld=v});for(const v of [10,55,100])add('set',s=>{s.pg=4;s.dayB=v}); for(const len of [5,25,50,60])for(const ph of [0,1,2])for(const left of [1,59,len*60-1,(ph?300:len*60)]){if(left>0)add('focus',s=>{s.fo.len=len;s.fo.ph=ph;s.fo.rd=ph===1?2:ph===2?4:1;s.fo.left=left;s.fo.run=left%2===1})}
+ for(const now of [1260,1410])add('focus',s=>{s.now=now});
+ add('dialfig');return L}
 function layoutCheck(){const g=$('chk'),svg=$('dev'),sr=svg.getBoundingClientRect(),k=588/sr.width,issues=[],seen={};let boxes=0,all=states();
  for(const[n,s]of all){g.innerHTML=draw(n,s);const els=[...g.querySelectorAll('[data-k]')],R=[],ys=[];
   for(const e of els){const r=e.getBoundingClientRect();let x0=(r.left-sr.left)*k-61,x1=(r.right-sr.left)*k-61,y0=(r.top-sr.top)*k-61,y1=(r.bottom-sr.top)*k-61;
@@ -425,6 +445,11 @@ function todLabel(){const ph=phase(S);$('todl').textContent=f12(S.now);return ph
 let holdWas=false;function render(){if(S.hold>0){const k=1-.07*S.hold;cur.setAttribute('transform',`translate(${C*(1-k)} ${C*(1-k)}) scale(${k})`);holdWas=true}else if(holdWas){cur.removeAttribute('transform');holdWas=false}audioSync();cur.innerHTML=draw(S.scr,S);sync();$('lg').innerHTML=LG[S.scr].map(r=>`<div><b>${r[0]}</b><span>${r[1]}</span></div>`).join('');$('tod').value=S.now;todLabel()}
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;let anim=0,idleT,awT,busy=false;
 let btT=[];function startBT(){btT.forEach(clearTimeout);S.bt=1;fb('Searching for your phone for about 2 minutes');btT=[setTimeout(()=>{S.bt=2;fb('Confirm the code on your phone');if(S.scr==='set')render()},2200),setTimeout(()=>{S.bt=3;S.sec=0;fb('Time synced from your phone. Bluetooth is off again.');if(S.scr==='set')render()},4600)]}
+function focusAudio(){try{if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();AC.resume&&AC.resume()}catch(e){}}
+function chime(n){try{focusAudio();[0,.28,.56].slice(0,n).forEach((d,i)=>{const o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=[784,988,1319][i];g.gain.setValueAtTime(0,AC.currentTime+d);g.gain.linearRampToValueAtTime(.18,AC.currentTime+d+.03);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d+.7);o.connect(g);g.connect(AC.destination);o.start(AC.currentTime+d);o.stop(AC.currentTime+d+.8)})}catch(e){}}
+function focusTick(){const f=S.fo;if(!f.run)return;f.left--;if(f.left<=0){if(f.ph===0){f.ph=f.rd>=4?2:1;f.left=(f.ph===2?15:5)*60;chime(2);fb(f.ph===2?'Focus done. Long break':'Focus done. Take 5')}else{const wasLong=f.ph===2;f.ph=0;f.rd=wasLong?1:f.rd+1;f.left=f.len*60;if(wasLong)f.run=false;chime(3);fb(wasLong?'Cycle complete':'Break over. Focus round '+f.rd)}}if(!busy&&!G)render()}
+setInterval(focusTick,1000);
+window.focusFast=()=>{S.fo.left=Math.min(S.fo.left,3)};
 setInterval(()=>{if(S.scr==='set'&&PG[S.pg]==='Time'&&!S.secMode&&!busy&&!G){S.sec++;if(S.sec>=60){S.sec=0;S.clk=wrap(S.clk+1);S.now=S.clk}render()}},1000);
 function nav(to,d,msg){S.secMode=false;old.innerHTML=cur.innerHTML;S.test=false;S.pick=null;S.scr=to;if(msg)fb(msg);render();cancelAnimationFrame(anim);if(RM||!d){old.innerHTML='';cur.removeAttribute('transform');return}
  const t0=performance.now();(function st(t){const p=Math.min(1,(t-t0)/340),q=p-1,e=1+2.2*q*q*q+1.2*q*q;cur.setAttribute('transform',`translate(${d[0]*466*(1-e)} ${d[1]*466*(1-e)})`);old.setAttribute('transform',`translate(${-d[0]*466*e} ${-d[1]*466*e})`);old.setAttribute('opacity',1-e);if(p<1)anim=requestAnimationFrame(st);else{old.innerHTML='';old.removeAttribute('transform');old.removeAttribute('opacity');cur.removeAttribute('transform')}})(t0)}
@@ -443,6 +468,7 @@ function stepVal(dir){const g=PG[S.pg];
  else if(g==='Region'){S.rg=(S.rg+(dir>0?1:REG.length-1))%REG.length;fb(REG[S.rg][0])}
  render()}
 function linInfo(){const s=S.scr;
+ if(s==='focus'){if(S.fo.run||S.fo.ph||S.fo.left!==S.fo.len*60&&false)return null;return{lo:5,hi:60,get:()=>S.fo.len,set:v=>{S.fo.len=v;S.fo.left=v*60;fb('Focus '+v+' minutes')}}}
  if(s==='sound')return{lo:0,hi:100,get:()=>S.vol,set:v=>{S.vol=v;fb('Volume '+v+'%')}};
  if(s==='light')return{lo:5,hi:100,get:()=>S.lt.l[S.lt.m],set:v=>{S.lt.on=true;S.lt.l[S.lt.m]=v;fb('Brightness '+v+'%')}};
  if(s==='set'&&PG[S.pg]==='Brightness')return{lo:10,hi:100,get:()=>S.dayB,set:v=>{S.dayB=v;fb('Daytime brightness '+v+'%')}};
@@ -465,6 +491,7 @@ function tap(x,y){const r=Math.hypot(x-C,y-C),s=S.scr;
  else if(s==='ring'){if(S.done)return;if(S.snz>0){S.snz--;S.msg='Snoozed · rings 7:09 AM';return nav('clock',null,'Snoozed for 9 minutes')}return fb('No snoozes left. Hold to stop')}
  else if(s==='tmr'){if((S.one??usual(S))==null)fb('Drag a dot to set one');else fb(S.skip?'Hold to bring it back':'Hold to skip tomorrow')}
  else if(s==='day'){fb(S.days[S.sel].on?'Hold to turn this day off':'Hold to turn this day on')}
+ else if(s==='focus'){const f=S.fo;f.run=!f.run;if(f.run)focusAudio();fb(f.run?(f.ph?'Break running':'Focus running'):'Paused');ripple(C,C)}
  else if(s==='sound'){
   if(S.pick==='snd'){for(let i=0;i<8;i++){const[bx,by]=P(i*45,150);if(Math.hypot(x-bx,y-by)<=56){S.snd=(S.pp||0)*8+i;S.play=true;fb(SOUNDS[S.snd][0])}}S.pick=null}
   else if(S.pick==='tmr'){for(let i=0;i<5;i++){const[bx,by]=P(i*72,150);if(Math.hypot(x-bx,y-by)<=58){S.ti=i;fb('Sleep timer: '+TIMER[i][0])}}S.pick=null}
@@ -480,12 +507,15 @@ function swipe(d){const s=S.scr;
  if(s==='week'&&d==='up')return nav('clock',[0,1],'Back to the clock');
  if(s==='day'){if(d==='up')return nav('week',[0,1],'Saved');if(d==='left'||d==='right'){const t=S.days[S.sel].min;S.sel=(S.sel+(d==='left'?1:6))%7;if(!S.days[S.sel].on)S.days[S.sel].min=t;return nav('day',[d==='left'?1:-1,0],DF[S.sel])}}
  if(s==='sound'&&S.pick){if(S.pick==='snd'&&(d==='left'||d==='right')){S.pp=S.pp?0:1;fb(S.pp?'Nature sounds':'Noise colours')}else{S.pick=null;fb('Closed')}return render()}
+ if(s==='sound'&&d==='left')return nav('focus',[1,0],'Focus timer');
+ if(s==='focus'&&d==='right')return nav('sound',[-1,0],'Sleep sound');
  if(s==='sound'&&d==='right')return nav('clock',[-1,0],'Back to the clock');
  if(s==='light'&&d==='left')return nav('clock',[1,0],'Back to the clock');
  if(s==='set'){if(d==='down')return nav('clock',[0,-1],'Settings closed');if(d==='left'||d==='right'){S.pg=(S.pg+(d==='left'?1:PG.length-1))%PG.length;return nav('set',[d==='left'?1:-1,0],PG[S.pg])}}
  fb('Nothing in that direction')}
 function onHold(){const s=S.scr;
  if(s==='ring'){S.hold=0;S.done=true;fb('Alarm off');render();setTimeout(()=>{S.done=false;S.snz=3;S.msg='';nav('clock',null,'Good morning')},1900)}
+ else if(s==='focus'){S.hold=0;S.fo.run=false;S.fo.ph=0;S.fo.rd=1;S.fo.left=S.fo.len*60;fb('Timer reset');ripple(C,C);render()}
  else if(s==='tmr'){S.hold=0;S.skip=!S.skip;fb(S.skip?'Tomorrow\u2019s alarm skipped':'Tomorrow\u2019s alarm is back');ripple(C,C);render()}
  else if(s==='day'){S.hold=0;const d=S.days[S.sel];d.on=!d.on;fb(DF[S.sel]+' alarm '+(d.on?'on':'off'));ripple(C,C);render()}
  else if(s==='clock'&&S.scr==='clock'){S.hold=0;S.pg=0;S.clk=S.now;nav('set',[0,1],'Settings: the time is first, so a daylight saving fix is one tap')}
@@ -499,8 +529,9 @@ dev.addEventListener('pointerdown',e=>{if(busy)return;const[x,y]=pt(e),r=Math.hy
  const ks=knobs();if(ks){let best=null,bd=57;for(const k of ks){const[kx,ky]=P(k.a,k.r),dd=Math.hypot(x-kx,y-ky);if(dd<bd){bd=dd;best=k}}if(best){g.grab=true;g.kt=best.t;g.unit=best.u||30;g.v0=best.t==='lin'?linInfo().get():0}}
  let hm=0;const s=S.scr;
  if(s==='ring'&&!S.done)hm=2000;else if(s==='clock'&&!S.awakeLock)hm=1500;
+ else if(s==='focus'&&!g.grab&&r<150&&(S.fo.run||S.fo.ph||S.fo.rd>1||S.fo.left!==S.fo.len*60))hm=1000;
  else if(((s==='tmr'&&(S.one??usual(S))!=null)||s==='day')&&!g.grab&&r<150)hm=1000;
- if(hm)(function lp(){if(G!==g||g.moved)return;const el=performance.now()-g.t,p=el/hm;if((s==='ring'||s==='tmr'||s==='day'||s==='clock')&&el>450){S.hold=Math.min(1,(el-450)/(hm-450));render()}if(p>=1){g.held=true;return onHold()}requestAnimationFrame(lp)})()});
+ if(hm)(function lp(){if(G!==g||g.moved)return;const el=performance.now()-g.t,p=el/hm;if((s==='ring'||s==='tmr'||s==='day'||s==='clock'||s==='focus')&&el>450){S.hold=Math.min(1,(el-450)/(hm-450));render()}if(p>=1){g.held=true;return onHold()}requestAnimationFrame(lp)})()});
 dev.addEventListener('pointermove',e=>{if(!G)return;const[x,y]=pt(e);
  if(!G.moved&&Math.hypot(x-G.x,y-G.y)>16){G.moved=true;stopRep();if(S.hold){S.hold=0;render()}
   if(G.grab&&performance.now()-G.t<90)G.grab=false;
@@ -516,11 +547,14 @@ $('tod').oninput=e=>{if(busy)return;S.now=+e.target.value;S.clk=S.now;S.awake=fa
 $('bRing').onclick=()=>{if(busy)return;S.done=false;S.hold=0;S.sunT=null;nav('ring',null,'7:00 AM. Tap to snooze, hold to stop')};
 $('bReset').onclick=()=>{if(busy)return;S=fresh();nav('clock',null,'Reset')};
 function stage(t){return t<-15?'deep red':t<-5?'amber':t<0?'warm white':'daylight'}
-$('bMorn').onclick=()=>{if(busy)return;busy=true;S.awake=false;S.play=true;S.msg='';S.lt.on=false;S.now=390;S.sunT=-30;nav('clock',null,'6:30 AM. Dawn begins with deep red');const t0=performance.now(),D=RM?2000:12000;
- (function st(t){const p=Math.min(1,(t-t0)/D),m=-30+40*p;S.sunT=m;const nz=Math.max(0,Math.round((1-(m+30)/2)*100));S.fade=nz/100;if(nz===0){S.play=false;S.fade=1}
+$('bMorn').onclick=()=>{if(busy)return;busy=true;S.awake=false;S.aw=0;S.msg='';S.lt.on=false;S.play=false;S.fade=0;S.sunT=null;
+ const N=TIMER[S.ti][1]||0,tS=N?-30-N:-30,tot=10-tS,ss=x=>{x=clamp(x,0,1);return x*x*(3-2*x)};S.now=wrap(420+tS);nav('clock',null,N?'Your '+N+' minute sleep timer also plays '+N+' minutes before the sunrise, fading in so it feels like it has been on':'Dawn begins');const t0=performance.now(),D=RM?2500:Math.max(12000,tot*260);
+ (function st(t){const p=Math.min(1,(t-t0)/D),m=tS+tot*p;let note='';
+  if(m<-30){S.sunT=null;S.now=wrap(420+Math.round(m));if(N){const f=ss((m-tS)/Math.min(N,10));S.fade=f;S.play=f>0;note=' · sound fading in '+Math.round(f*100)+'%'}}
+  else{S.sunT=m;const f=1-ss((m+30)/3);S.fade=f;if(f<=0.001){S.play=false;S.fade=1}else S.play=N>0;note=m<-27?' · sound fading out '+Math.round(f*100)+'%':''}
   if(m>=0&&S.scr==='clock')nav('ring',null,null);else render();
-  fb(f12(420+Math.round(m))+' · '+stage(m)+' · light '+Math.round(sunK(m)*100)+'% · white noise '+nz+'%'+(m>=0?' · alarm sounding':''));
-  if(p<1)requestAnimationFrame(st);else{busy=false;S.sunT=null;S.snz=3;fb('+10 min: bright daylight hold, then the light fades. Tap to snooze, hold to stop');render()}})(t0)};
+  fb(f12(420+Math.round(m))+' · '+(m<-30?'before the sunrise':stage(m))+(m>=-30?' · light '+Math.round(sunK(m)*100)+'%':'')+note+(m>=0?' · alarm sounding':''));
+  if(p<1)requestAnimationFrame(st);else{busy=false;S.sunT=null;S.fade=1;S.snz=3;fb('+10 min: bright daylight hold, then the light fades. Tap to snooze, hold to stop');render()}})(t0)};
 let big=true;$('bSize').onclick=e=>{big=!big;dev.style.maxWidth=big?'440px':'232px';e.target.textContent=big?'Real size':'Enlarge';$('szl').textContent=big?'Shown enlarged.':'About real size on most screens: a 44 mm display.'};
 const demo=fresh();demo.awake=true;demo.play=true;demo.lt.on=true;
 document.querySelectorAll('[data-mini]').forEach(b=>{const n=b.dataset.mini,st=n==='clock'?fresh():demo;b.insertAdjacentHTML('afterbegin',`<svg viewBox="0 0 466 466" aria-hidden="true"><circle cx="233" cy="233" r="232" fill="#000" stroke="${n==='clock'?'#8a5e30':'#262a36'}" stroke-width="3"/>${draw(n,st)}</svg>`);

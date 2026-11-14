@@ -326,3 +326,24 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
   2. The Time page sets **seconds**: tap the seconds line to pause, drag the dot, tap to start at the beep.
 - **Why it is still safe:** the clock works fully without Bluetooth; the Bluetooth code runs off the alarm path (D-002) and can be removed without touching it; the "no server, no account" goal is untouched.
 - **Open:** which phone (iPhone, Android) decides which phone-side option to build.
+
+## D-044 — Sleep sound is mirrored before the dawn
+- **Date:** 2026-11-14 · **Status:** Proposed (owner: "white noise to fade in 30 min before the alarm so it feels like it has been on … and a smooth fade out when the sun sequence starts") · **Reqs:** R10, R47
+- **Decision:** If the sleep sound was started that evening with a timer of N minutes, it plays again for N minutes ending where the dawn begins (alarm − 30 min). It fades in smoothly over the first min(N, 10) minutes and fades out over 3 minutes as the sunrise starts (smoothstep, no steps). The "All night" timer has no pre-window. Sound off the evening before means no morning sound.
+- **Why:** the room sounds the same as when you fell asleep, so the sound ends gently before the light begins. The alarm path is unchanged: the sound is a command from `alarm_engine` to `audio_out`, and the alarm tone never depends on it.
+- **Open:** the "only after you used it that evening" rule is my reading; owner to confirm or choose every night.
+
+## D-045 — A quiet living sky on the clock
+- **Date:** 2026-11-14 · **Status:** Proposed (owner: "add a lively moving element on the home screen") · **Reqs:** R6
+- **Decision:** Slow drifting clouds by day, a few fireflies in the wind-down and faint twinkling stars at night, drawn behind the text, never carrying information, off with reduced motion, absent in the dawn and in the dimmest night. Never more than a few percent of pixels change per frame (panel and power budget; bench check UX-B3).
+
+## D-046 — Apple-style typography
+- **Date:** 2026-11-14 · **Status:** Proposed (owner: "use Apple style typography") · supersedes the typeface part of D-028 (the automatic layout check stays)
+- **Decision:** Concept page uses the system font (SF Pro on Apple devices, Inter elsewhere). Apple's SF fonts may be used only on Apple platforms, so the **device firmware uses Inter** (SIL Open Font Licence), which is drawn for the same job and has the same proportions. Weights: Light for numerals, Regular for text, Medium for emphasis. Ubuntu font files and licence are no longer needed.
+- **Consequence:** Phase 3 builds Inter into LVGL fonts and repeats `layoutCheck()` on the real strings. 496 states, 2,932 boxes, 0 issues in the concept.
+
+## D-047 — Focus timer (Pomodoro) beside Sound
+- **Date:** 2026-11-14 · **Status:** Proposed (owner: "add a pomodoro timer / timer menu somewhere intentional") · **Reqs:** R48
+- **Decision:** A **Focus** screen is the fourth sideways neighbour: Lamp | Clock | Sound | Focus (swipe left from Sound; swipe right goes back). Sleep things sit by the clock, day things at the far end. Tap starts and pauses; drag the dot sets the focus length (5 to 60 min, default 25); hold 1 s resets. Cycle: focus, 5 min break, four rounds, then a 15 min long break and stop. Four dots show the round; the ring fills as time passes. Soft two-note chime at the end of focus, three notes at the end of a break. Same visual and gesture language as every other screen.
+- **Alarm safety:** the timer is UI-side only (core 0). An alarm always takes over the screen; the timer pauses its chime and carries on later. It never delays or replaces an alarm (D-002).
+- **Why here:** one gesture away from nothing else; not in settings (settings are for things you change once), not on the home screen (kept to three text lines).
