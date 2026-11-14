@@ -9,7 +9,7 @@ It is controlled by touch on a 1.75" round screen, needs no network or phone, an
 Reference product for feel and features: Dreamie by Hello Ambient (helloambient.com). Differences are in [REQUIREMENTS.md](REQUIREMENTS.md#reference-product-dreamie-helloambientcom).
 
 ## Current phase
-**Phase 2: UX & gesture design.** Done, waiting for owner approval. Phases 0 and 1 are approved. Details in [STATUS.md](STATUS.md).
+**Phase 3: Core firmware.** In progress: the tested core logic is done; hardware integration and the UI follow. Phases 0, 1 and 2 are approved. Details in [STATUS.md](STATUS.md).
 
 ## Hardware (fixed)
 - Waveshare ESP32-S3-Touch-AMOLED-1.75: ESP32-S3R8, 466×466 CO5300 AMOLED, CST9217 touch, QMI8658 IMU, PCF85063 RTC, AXP2101 PMIC, audio codec + ES7210 mics, TF slot
@@ -33,14 +33,14 @@ Reference product for feel and features: Dreamie by Hello Ambient (helloambient.
 | [BLUETOOTH.md](BLUETOOTH.md) | Optional phone time sync, how it works and the phone-side options | Phase 2 |
 | [LONGEVITY.md](LONGEVITY.md) | Long-life, offline plan: time, daylight saving, wear, updates | Phase 2 |
 | `licenses/` | Third-party licence texts (Ubuntu Font Licence) | Phase 2 |
-| RELIABILITY.md | FMEA, watchdog design | Phase 3 |
-| TEST_PLAN.md | Test cases T-xx ↔ requirements | Phase 3 |
+| [RELIABILITY.md](RELIABILITY.md) | What happens when a part fails, and the watchdog design | Phase 3 |
+| [TEST_PLAN.md](TEST_PLAN.md) | Test cases T-xx ↔ requirements, with results | Phase 3 |
 | ENCLOSURE.md | Enclosure design, print and assembly | Phase 4 |
 
 Interface concept: `/mockups/ux-concept.html` (open in a browser; also published as a private page, link in UX.md). PCB: `/pcb/halo-driver`. Code: `/firmware` (`bringup` and `dialtest` hardware test apps now, the product firmware from Phase 3) · CAD: `/enclosure` (from Phase 4).
 
 ## Build & flash
-The product firmware starts in Phase 3. A hardware **bring-up test** exists now in `/firmware/bringup` (see its README).
+The product firmware is in `/firmware/clock` (Phase 3). Host tests: `cd firmware/clock/test && make test`. Build: `cd firmware/clock && idf.py build`. A hardware **bring-up test** exists now in `/firmware/bringup` (see its README).
 Toolchain: ESP-IDF **v5.5.6**, installed at `~/esp/esp-idf`.
 ```bash
 . ~/esp/esp-idf/export.sh

@@ -1,0 +1,6 @@
+build/
+sdkconfig
+sdkconfig.old
+managed_components/
+test/clock_tests
+test/clock_tests.dSYM/

@@ -1,17 +1,23 @@
 # Status
 
-Last updated: 2026-11-13
+Last updated: 2026-11-14
 
 | Phase | Name | State |
 |-------|------|-------|
 | 0 | Requirements & architecture | ✅ Done, approved 2026-11-12 |
 | 1 | Power & wiring | ✅ Done, approved 2026-11-13 |
-| 2 | UX & gesture design | ✅ Revised after owner feedback, **awaiting approval** |
-| 3 | Core firmware (MVP) | ⏳ Next |
+| 2 | UX & gesture design | ✅ Done, approved 2026-11-14 |
+| 3 | Core firmware (MVP) | 🔧 In progress: 3a done, 3b-1 builds |
 | 4 | 3D-printed enclosure | — |
 | 5 | Sleep sounds library | — |
 | 6 | Phone time sync over Bluetooth (optional) and the offline update kit | — |
 | 7 | Polish (power, assembly guide) | — |
+
+## Phase 3 progress (2026-11-14)
+- **3a, done:** the core logic in `firmware/clock/components/clockcore` with 518,574 host checks passing under sanitizers ([TEST_PLAN.md](TEST_PLAN.md)). 1,184 daylight-saving changes (2026-2099, 10 regions) match an independent library; 1,500 random schedules match a brute-force scan; settings survive a power cut at every byte; reboot during dawn or ringing resumes right; 7 injected bugs all caught.
+- **3b-1, builds (not flashed):** `firmware/clock` ESP-IDF project: alarm engine on core 1, NVS A/B storage, task watchdog, 64-bit time assert. 0x34310 bytes, 86 % of the app partition free.
+- **To do:** 3b-2 RTC task, ring and speaker tasks from the bring-up code; 3b-3 supervisor, boot-loop guard, safe mode, BOOT dismiss, battery rules; 3c the LVGL UI from UX.md with Inter fonts and the layout check on real strings. Then bench tests.
+- Reliability notes: [RELIABILITY.md](RELIABILITY.md).
 
 ## Phase 2 revision (2026-11-13)
 - **One way to edit.** Four gestures, four jobs: swipe goes, tap does, drag a dot changes, hold stops. No buttons (D-036). The dial lives on dots like clock hands (outer minutes, inner hours). Measured: a rim-band dial hijacked 60 % of sideways swipes; the dot design lost none in 1,249 random swipes.
@@ -35,7 +41,7 @@ Last updated: 2026-11-13
 - Not yet tested: battery, full 0.9 A ring current with fuse + capacitor + resistor, USB voltage under load.
 
 ## Waiting for owner
-1. **Approve Phase 2** (accepts D-024 as amended, D-025, D-028, D-031 to D-041).
+1. ~~Approve Phase 2~~ Approved 2026-11-14 (accepts D-024 as amended, D-025, D-028, D-031 to D-047; D-044 and D-047 are the latest).
 2. **Flash `/firmware/dialtest`** and try it (swipe near the rim, next to a dot, in the middle; grab a dot with and without a pause). Tell me anything that feels wrong (UX-B2). I could not flash it because the board was not plugged in.
 3. **Daylight saving:** US Eastern with automatic rules, a Manual option and a two-touch fix. OK? (not yet answered)
 4. **Battery:** order a 503450-class cell by the specification in HARDWARE.md §1 (answered yes).

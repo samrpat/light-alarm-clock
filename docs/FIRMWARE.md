@@ -88,6 +88,14 @@ The step levels and timings above are placeholders and become final in Phase 3. 
 
 Optional UI-side feature: the Focus timer (D-047) runs on core 0 and never touches the alarm path. The pre-dawn sleep sound (D-044) is a command from `alarm_engine` to `audio_out`.
 
+## 3a. Code layout (Phase 3, D-048)
+| Path | Role |
+|------|------|
+| `components/clockcore` | Pure C, tested on a computer: `civil` (dates), `tz` (POSIX rule zones), `sched` (week, skip, tomorrow, next alarm), `alarm_sm` (state machine), `dawn` (light and pre-dawn sound curves), `storage` (CRC, A/B records, schedule format, PCF85063, drift) |
+| `main/alarm_engine.c` | Core 1 task: loads storage, reads `time()`, steps the machine once a second, fills the snapshot in `hw.h` |
+| `main/store.c` | NVS: schedule A/B records, machine state, region string |
+| `test/` | Host tests and the independent daylight-saving data generator |
+
 ## 4. Longevity notes (D-030, D-031)
 
 - Wi-Fi is never initialised. Bluetooth is initialised only when the user taps Phone, and shut down after the sync or two minutes (D-043).

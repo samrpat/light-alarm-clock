@@ -5,15 +5,15 @@ Priority: **M** = must-have, **N** = nice-to-have.
 Every requirement maps to at least one test. Test IDs (`T-xx`) are placeholders until
 [TEST_PLAN.md](TEST_PLAN.md) is written in Phase 3.
 
-Last reviewed: 2026-11-13 (Phase 2)
+Last reviewed: 2026-11-14 (Phase 3 step 3a). `[~]` on a Phase 3 row now means the logic passes its host test (TEST_PLAN.md) and the hardware part is still to do.
 
 ## 1. Schedule
 
 | ID | Pri | Requirement | Phase | Test |
 |----|-----|-------------|-------|------|
-| R1 | M | `[ ]` Weekly schedule: for each of the 7 weekdays, a wake time (HH:MM, 1-minute resolution) and an on/off flag, set independently. | 3 | T-01 |
+| R1 | M | `[~]` Weekly schedule: for each of the 7 weekdays, a wake time (HH:MM, 1-minute resolution) and an on/off flag, set independently. | 3 | T-01 |
 | R2 | M | `[~]` Changing one weekday's time takes **≤ 3 touches** (swipe down, tap the day, drag the inner dot; a hold counts as one touch) and **≤ 10 s** from the clock face. Designed in UX.md §8; not yet built. | 2, 3 | T-02 |
-| R3 | M | `[ ]` One-off overrides: **Skip next alarm** and **Tomorrow only at HH:MM**. An override is used once, then cleared automatically. It can be cancelled before it fires. | 3 | T-03 |
+| R3 | M | `[~]` One-off overrides: **Skip next alarm** and **Tomorrow only at HH:MM**. An override is used once, then cleared automatically. It can be cancelled before it fires. | 3 | T-03 |
 | R4 | M | `[ ]` The clock face always shows the next alarm that will actually fire (or "No alarm set"): time only if it is within 24 hours, day and time otherwise, with skips and overrides reflected. | 2, 3 | T-04 |
 
 ## 2. Interaction
@@ -29,14 +29,14 @@ Last reviewed: 2026-11-13 (Phase 2)
 | R36 | M | `[ ]` The firmware boots, keeps time and rings with no battery and with no ring fitted. Optional parts (battery, ring, protection parts, level shifter, light sensor) each have a defined behaviour when missing (D-025). | 3 | T-36 |
 | R37 | M | `[~]` No text overlaps, none under 26 px, all inside the safe circle, in the UI typeface (D-046). `layoutCheck()` reports zero issues for every screen state (D-028). Passes on the concept page; repeats on the firmware strings in Phase 3. | 2, 3 | T-37 |
 | R38 | M | `[ ]` The device never needs a network, server, account or phone at any time in its life. Optional Bluetooth time sync is a convenience, off unless asked (D-030, D-043). | all | T-38 |
-| R39 | M | `[ ]` Dates are correct to 2099: 64-bit time, every leap day 2028–2056, the year 2038 (LONGEVITY.md §2). | 3 | T-39 |
+| R39 | M | `[~]` Dates are correct to 2099: 64-bit time, every leap day 2028–2056, the year 2038 (LONGEVITY.md §2). | 3 | T-39 |
 | R40 | M | `[ ]` The alarm still works if the screen, touch, speaker, ring or battery fails, or one copy of the program or settings is corrupt (LONGEVITY.md §6). | 3 | T-41, T-44 |
 | R41 | M | `[ ]` The firmware can be rebuilt and updated with no network: pinned toolchain, every library committed to the repository, a "long-life kit", and an SD-card update (LONGEVITY.md §5). | 7 | T-42 |
 | R42 | M | `[ ]` The battery is a replaceable consumable (a door, nothing glued), and the clock keeps working without it (LONGEVITY.md §4). | 4 | T-45 |
 | R43 | M | `[ ]` Nothing lights the sleeper: the ring is off from bedtime to the dawn, the screen is under 1 lux at the pillow, and the evening light is warm and capped (LIGHT.md §2, §4). | 3 | T-46 |
 | R44 | M | `[~]` A swipe starting anywhere, including right next to a dot, is never mistaken for a dial turn, and a deliberate grab always turns it (D-036). Host test: 1,249 random swipes, 0 mistaken. Still to do on the real panel with `/firmware/dialtest` (UX-B2). | 2, 3 | T-47 |
 | R45 | M | `[ ]` The colour language of UX.md §7 runs smoothly on the real panel (bench check UX-B3), with fades as the fallback. Alarm is always orange with a bell; bedtime is always violet with a moon. | 3 | T-48 |
-| R47 | M | `[ ]` If the sleep sound ran that evening with an N-minute timer, it plays again for N minutes ending at the dawn start, fading in smoothly (D-044). Not for "All night". | 3 | T-50 |
+| R47 | M | `[~]` If the sleep sound ran that evening with an N-minute timer, it plays again for N minutes ending at the dawn start, fading in smoothly (D-044). Not for "All night". | 3 | T-50 |
 | R48 | N | `[ ]` A Focus (Pomodoro) screen: focus length, break length and number of rounds set from a tap on the time (defaults 25 / 5 / 4); never affects an alarm (D-047). | 3 | T-51 |
 | R46 | M | `[ ]` The Time page sets hours, minutes and seconds; seconds are set with the clock paused and started by a tap (D-043). | 3 | T-49 |
 
@@ -45,35 +45,35 @@ Last reviewed: 2026-11-13 (Phase 2)
 | ID | Pri | Requirement | Phase | Test |
 |----|-----|-------------|-------|------|
 | R9 | M | `[ ]` White noise for falling asleep, with sleep timer (Off / 15 / 30 / 60 / 90 min / all night) and volume control. | 3 | T-09 |
-| R10 | M | `[ ]` Sleep sound fades out smoothly (about 3 minutes, no clicks or steps you can hear) when the sunrise begins. The timer end also fades (default 30 s). | 3 | T-10 |
+| R10 | M | `[~]` Sleep sound fades out smoothly (about 3 minutes, no clicks or steps you can hear) when the sunrise begins. The timer end also fades (default 30 s). | 3 | T-10 |
 | R11 | M | `[ ]` Sixteen sleep sounds made by the clock itself: noises (pink default, white, brown, green, grey, blue, violet, fan) and nature (rain, storm, ocean, stream, waterfall, wind, forest, fire), chosen from a visual picker. No recordings, no loop gap ([SOUND.md](SOUND.md), D-040). | 3 | T-11 |
 
 ## 4. Light
 
 | ID | Pri | Requirement | Phase | Test |
 |----|-----|-------------|-------|------|
-| R12 | M | `[ ]` Dawn: 30 minutes, fixed, exponential, deep red → amber → warm white at the alarm time → bright daylight hold for 10 minutes, then fade (LIGHT.md §3, D-033). Needs USB power; on battery the screen ramps instead. | 3 | T-12 |
+| R12 | M | `[~]` Dawn: 30 minutes, fixed, exponential, deep red → amber → warm white at the alarm time → bright daylight hold for 10 minutes, then fade (LIGHT.md §3, D-033). Needs USB power; on battery the screen ramps instead. | 3 | T-12 |
 | R13 | M | `[ ]` Reading light and night light with caps by time of day, and both switching off with the sleep timer or after 20 minutes at night (LIGHT.md §4). | 3 | T-13 |
-| R14 | M | `[ ]` Firmware enforces a hard LED current cap (value set in [POWER.md](POWER.md)), whatever the colour or mode. | 1, 3 | T-14 |
+| R14 | M | `[~]` Firmware enforces a hard LED current cap (value set in [POWER.md](POWER.md)), whatever the colour or mode. | 1, 3 | T-14 |
 
 ## 5. Alarm reliability (the alarm must never be missed)
 
 | ID | Pri | Requirement | Phase | Test |
 |----|-----|-------------|-------|------|
-| R15 | M | `[ ]` Time survives power loss: the PCF85063 RTC is the time source, and system time is restored from it at boot. Lost RTC integrity (oscillator-stop flag) is detected and shown as "Set time"; it never silently gives a wrong time. | 3 | T-15 |
+| R15 | M | `[~]` Time survives power loss: the PCF85063 RTC is the time source, and system time is restored from it at boot. Lost RTC integrity (oscillator-stop flag) is detected and shown as "Set time"; it never silently gives a wrong time. | 3 | T-15 |
 | R16 | M | `[ ]` The time can be set by hand to the second (pause, drag, tap to start at the beep), or synced from a phone over Bluetooth on request (D-043, BLUETOOTH.md). The clock learns its own drift when corrected. No Wi-Fi and no time server. | 3, 6 | T-16 |
-| R17 | M | `[ ]` Schedule is stored in NVS as an A/B pair of records, each with schema version, sequence number and CRC32. A bad record falls back to the other copy. If both are bad, the schedule is empty and the clock shows a persistent warning and chimes (D-015). Never a silent "no alarm". A new clock has no alarms until the user adds one. | 3 | T-17 |
+| R17 | M | `[~]` Schedule is stored in NVS as an A/B pair of records, each with schema version, sequence number and CRC32. A bad record falls back to the other copy. If both are bad, the schedule is empty and the clock shows a persistent warning and chimes (D-015). Never a silent "no alarm". A new clock has no alarms until the user adds one. | 3 | T-17 |
 | R18 | M | `[ ]` The alarm path does not depend on UI, touch, BLE or the I2C bus at the moment it fires. A UI crash or hang, or a BLE fault, cannot block or delay an alarm. | 3 | T-18 |
 | R19 | M | `[ ]` Watchdogs: task watchdog on every alarm-critical task, interrupt watchdog, a supervisor heartbeat for UI/BLE, and a boot-loop guard that enters an "alarm-only" safe mode. | 3 | T-19 |
-| R20 | M | `[ ]` Missed-alarm catch-up: if the device boots within the catch-up window (default 60 min) after an alarm that was never handled, the alarm fires at once. | 3 | T-20 |
-| R21 | M | `[ ]` Defined, tested behaviour for brownout, low battery, USB unplug/replug, and reboot during the sunrise or ringing window (the alarm resumes at the right escalation stage). | 1, 3 | T-21 |
-| R22 | M | `[ ]` Escalating alarm: light (sunrise) → soft sound → louder sound in steps, up to a configured maximum. The alarm volume has a floor that cannot be set to silent. | 3 | T-22 |
-| R23 | M | `[ ]` Snooze (default 9 min, max 3 snoozes, both configurable). Snooze is a tap anywhere. Dismiss is a 2 s hold with a filling rim, hard to trigger by accident. A BOOT-button hold (3 s) dismisses even if the touch/UI is dead. | 2, 3 | T-23 |
+| R20 | M | `[~]` Missed-alarm catch-up: if the device boots within the catch-up window (default 60 min) after an alarm that was never handled, the alarm fires at once. | 3 | T-20 |
+| R21 | M | `[~]` Defined, tested behaviour for brownout, low battery, USB unplug/replug, and reboot during the sunrise or ringing window (the alarm resumes at the right escalation stage). | 1, 3 | T-21 |
+| R22 | M | `[~]` Escalating alarm: light (sunrise) → soft sound → louder sound in steps, up to a configured maximum. The alarm volume has a floor that cannot be set to silent. | 3 | T-22 |
+| R23 | M | `[~]` Snooze (default 9 min, max 3 snoozes, both configurable). Snooze is a tap anywhere. Dismiss is a 2 s hold with a filling rim, hard to trigger by accident. A BOOT-button hold (3 s) dismisses even if the touch/UI is dead. | 2, 3 | T-23 |
 | R24 | M | `[ ]` Low-battery warning the night before: at bedtime, or when USB is unplugged after 20:00, warn if the predicted charge can't cover the night plus alarm. | 1, 3 | T-24 |
 | R25 | M | `[ ]` Battery reserve: as the battery nears the energy needed for the next alarm, shed load (white noise, then display, then sunrise brightness) so the alarm sound still fires. | 1, 3 | T-25 |
 | R26 | M | `[ ]` **Alarm test:** on the Alarm settings page, tap the bell to light the ring and play the alarm sound at the set volume for 6 s (D-039). A fuller self-test of ring, speaker and RTC runs at start-up. | 3 | T-26 |
 | R27 | M | `[ ]` The PWR button cannot switch the clock off by accident (PMIC long-press power-off set to the longest delay or disabled; power-off only through a confirmed UI action). | 1, 3 | T-27 |
-| R28 | M | `[ ]` Correct local time across regions and daylight saving with no network: rules stored in the clock for any year to 2099, a Manual region, and a `region.txt` SD-card file for other rules (LONGEVITY.md §3, D-031). A skipped hour rings at the next valid minute, a repeated hour rings once. Fixing the clock after a rule change takes 2 touches. | 3 | T-28, T-40 |
+| R28 | M | `[~]` Correct local time across regions and daylight saving with no network: rules stored in the clock for any year to 2099, a Manual region, and a `region.txt` SD-card file for other rules (LONGEVITY.md §3, D-031). A skipped hour rings at the next valid minute, a repeated hour rings once. Fixing the clock after a rule change takes 2 touches. | 3 | T-28, T-40 |
 
 ## 6. Power
 
