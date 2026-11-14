@@ -23,13 +23,15 @@ Last updated: 2026-11-13
 
 - **Round 4:** a vivid colour language (D-038), one Alarm page with tap-to-test, and bedtime separated from alarm time with no wake-time setting (D-039). Text check: 386 states, 2,299 boxes including the dots, 0 issues. Swipe test re-run: 983 swipes, 0 mistaken.
 
+- **Round 5 (D-040):** bigger clock, small alarm line, gradual dawn on the screen, hold to turn alarms on and off with visible feedback, eleven synthesised sounds ([SOUND.md](SOUND.md)), Lamp rename, Day brightness, Battery page, real mark counts on Region and Date. Checks: 401 states, 0 layout issues; 812 swipes, 0 mistaken.
+
 ## Hardware state (bring-up test, 2026-11-12)
 - `/firmware/bringup` runs on the real board: screen, touch, 7 I2C chips, ring (GRBW, smooth dithered sunrise), speaker.
 - Ring ran with a direct 3.3 V data line, short wires and a 300 mA cap.
 - Not yet tested: battery, full 0.9 A ring current with fuse + capacitor + resistor, USB voltage under load.
 
 ## Waiting for owner
-1. **Approve Phase 2** (accepts D-024 as amended, D-025, D-028, D-031 to D-039).
+1. **Approve Phase 2** (accepts D-024 as amended, D-025, D-028, D-031 to D-040).
 2. **Flash `/firmware/dialtest`** and try it (swipe near the rim, next to a dot, in the middle; grab a dot with and without a pause). Tell me anything that feels wrong (UX-B2). I could not flash it because the board was not plugged in.
 3. **Daylight saving:** US Eastern with automatic rules, a Manual option and a two-touch fix. OK? (not yet answered)
 4. **Battery:** order a 503450-class cell by the specification in HARDWARE.md §1 (answered yes).
@@ -37,7 +39,7 @@ Last updated: 2026-11-13
 Answered: 12-hour AM/PM · 5-minute steps · battery spec · no lux meter · drop the phone link and wireless updates (Phase 6 becomes the offline update and the long-life kit) · 30 years is a quality yardstick, not a promise.
 
 ## Early enclosure draft (2026-11-13, at the owner's request)
-- [ENCLOSURE.md](ENCLOSURE.md) draft and proposed D-029 (revised): pop-out back-panel stand leaning 15° back, made with a 3D printer and laser cutter, all electronics in the head, built for 30 years with replaceable wear parts. Phase 4 has not started. **Option D approved by the owner 2026-11-13.**
+- [ENCLOSURE.md](ENCLOSURE.md) draft and proposed D-029 (revised): pop-out back-panel stand leaning 15° back, made with a 3D printer and laser cutter, all electronics in the head, built for 30 years with replaceable wear parts. Phase 4 has not started. **Option D approved by the owner 2026-11-13.** Final case will be metal, so the design follows metal-ready rules (ENCLOSURE.md §12, proposed D-040).
 - Waiting for the owner: laser cutter materials, front halo or rear wall-wash, colours, board measurements E1–E6.
 
 ## Blockers

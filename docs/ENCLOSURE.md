@@ -80,7 +80,7 @@ The bottom of the head is not round. It has a flat facet cut at 15°, about 45 m
 ### Stand
 
 - **Shape:** the lower half of the back, a half-disc about 60 mm wide at the toe and 40 mm from hinge to toe, 5 mm thick. Printed in ASA with the hinge knuckles as part of it. A silicone strip on the toe.
-- **Hinge:** one M3 × 70 stainless screw is the pin, running across the back at mid-height through printed knuckles lined with brass tube (4 mm outside, 3 mm bore). A nylon-insert locknut sets the friction and can be re-tightened.
+- **Hinge:** two short M3 stainless shoulder screws, one from each side, turning in brass tube (4 mm outside, 3 mm bore) pressed into the knuckles. Each bore is under 25 mm deep, so it can be drilled in metal as well as printed (§12). A dab of thread-lock holds each screw; a wave washer on one side sets the friction.
 - **Stop block:** a small separate printed block, held by one screw, that the stand's knuckle lands on when open. The stop, not friction, carries the load. The stand opens about 50° to give a 15° lean. To change the lean, print another block (10°, 15° and 20° versions).
 - **Pop out:** a finger notch at the toe. A 6 × 2 mm magnet pair holds it shut. Pull with a fingernail and it swings to the stop.
 - **Print direction:** knuckles printed so the load runs along the layers.
@@ -152,7 +152,7 @@ Inserts: M3 × 5.7 mm brass heat-set (CNC Kitten or Ruthex style). Hole size as 
 |------|-----|-------|
 | M3 brass heat-set inserts | 20 (10 spare) | $5 |
 | M3 × 8 stainless socket-head screws | 20 (10 spare) | $4 |
-| M3 × 70 stainless screw plus nylon-insert locknut (hinge pin) | 1 | $2 |
+| M3 stainless shoulder screws, 4 mm shoulder × 20 mm, plus one wave washer (hinge) | 2 | $4 |
 | Brass tube, 4 mm outside, 3 mm bore, 100 mm | 1 | $3 |
 | Steel washers, about 100 g in total | — | $3 |
 | Cast opal acrylic, 3 mm, 100 × 100 mm | 1 | $4 |
@@ -185,6 +185,61 @@ Board size from a third-party listing (Core Electronics): **48.96 mm across × 1
 | C5 | Take out the battery, board and speaker, then put them back | 2.5 mm hex key only. Under 10 minutes. Nothing broken. |
 | C6 | Drop folded from 75 cm onto carpet | Still works. Any damage is to a reprintable part only. |
 | C7 | BOOT plunger in the dark, by feel | Found and pressed within 5 s |
+| C8 | Metal near the screen: wrap the plastic prototype's shell in aluminium foil (not the front), tied to ground and then not tied, and run the touch tests | No false or missed touches either way. A cheap early warning before paying for metal. |
+
+## 12. Metal-ready rules (D-040)
+
+The owner wants the final case in **metal**, made by CNC machining or metal 3D printing. The plastic print is the prototype. So every part is drawn once and must be makeable three ways: plastic print, CNC, metal print. The CAD has one switch, `material = plastic | metal`, that changes only the items in the last table below.
+
+### Shape rules that all three methods accept
+
+| Rule | Value | Reason |
+|------|-------|--------|
+| Each part is cut from two opposite sides only | front and back | Two CNC set-ups, no special fixtures. The head is round, so the shell can be turned on a lathe first. |
+| No undercuts, no hidden pockets, no enclosed voids | — | A cutter cannot reach them; a metal print traps powder in them. |
+| Inside corners of pockets | radius ≥ 2 mm (3 mm where it fits) | A 4 mm cutter leaves a 2 mm radius. Square inside corners cannot be milled. Parts that sit in pockets (battery tray, speaker) get matching rounded corners or corner reliefs. |
+| Pocket depth | ≤ 4 × the cutter width; the 12 mm rear bay uses a 4–6 mm cutter | Long thin cutters chatter and break. |
+| Walls | 2.5 mm everywhere, 1.5 mm minimum | Fine for ASA, aluminium and printed metal alike. |
+| Holes | standard drill sizes; depth ≤ 8 × diameter | Hence two short hinge bores, not one 70 mm bore. |
+| Grille and vent holes | round, 1.5–2 mm, straight through | Drilled in metal, printed in plastic. No fine slots. |
+| Outside edges | 0.5 mm chamfer or 1 mm radius | Comfort, and anodising is thin on sharp edges. |
+| Overhangs | ≥ 45° from flat, or a flat face that can be machined after | Needed for both plastic and metal printing. |
+| No snap-fits, no living hinges, no press-fit of printed plastic | — | Metal does not flex. Already ruled out for long life (§1). |
+| Text and marks | engraved 0.3 mm deep, strokes ≥ 0.5 mm | Works by cutter, laser or print. |
+
+### What a metal case changes
+
+| Topic | Effect | What the design does |
+|-------|--------|----------------------|
+| Radio | None. The radios are never used (D-030), so a closed metal shell costs nothing. | — |
+| Short circuits | A metal shell conducts. Anodising insulates but scratches through. | No circuit board, ring or battery ever touches the shell. The **board carrier, ring seat and battery tray stay plastic** in every version. 1.5 mm air gap or a plastic wall between any solder joint and metal. |
+| Touch screen | A metal bezel close to a capacitive screen can cause false or missed touches, more so if the metal is not grounded. | The acrylic diffuser ring already keeps metal about 9 mm from the glass edge. One screw ties the shell to the circuit ground. **Check C8.** |
+| Heat | Better. Aluminium spreads the ring's 4.5 W, so the vents matter less. | The ring seat is thin (1 mm plastic) so heat reaches the shell. The shell may feel warm during a sunrise; C3 also measures the outside (under 45 °C). |
+| Weight | Better. An aluminium shell weighs about 150 g more than ASA. | The steel washers become optional. The stability figures in §3 are redone for metal. |
+| Sound | A stiff shell rattles less, but hard contact buzzes. | The silicone speaker gasket stays. The stand closes onto a silicone strip, never metal on metal. |
+| Light | Bare metal inside the light gap tints the glow. | The plastic ring seat is white and is the reflector in every version. |
+| Battery | A swelling cell against metal is a hazard. | Plastic tray with 2 mm swell room (already there). No sharp metal edge faces the cell. |
+| Corrosion | Stainless screws and brass in aluminium are fine indoors. | Anodised or bead-blasted finish. No bare steel. |
+
+### Items the `material` switch changes
+
+| Item | Plastic prototype | Metal |
+|------|-------------------|-------|
+| Screw threads | Brass heat-set inserts, 4.0 mm holes | M3 tapped straight into the metal, 6 mm deep, 2.5 mm holes. The four back-cover threads get stainless thread inserts (Helicoil), since they are opened most often. |
+| Sliding fit (stand in recess, pins, plungers) | 0.25 mm gap | 0.10 mm gap |
+| Hinge bore | Printed, brass tube pressed in | Drilled and reamed to 4.0 mm, same brass tube |
+| Stop block | Separate printed block | Separate block, machined or printed metal. It stays separate so the lean angle can still be changed. |
+| Magnet seat | Pocket with a screw-on cap | Same. Aluminium is not magnetic, so both magnets stay; the steel washers must sit away from them. |
+| Shell | ASA or PETG | **Aluminium 6061-T6, anodised** (recommended: light, cheap to machine, stable for decades). Brass or stainless cost about 3× more to machine and weigh 3× as much. |
+
+### Extra rules for metal 3D printing (aluminium AlSi10Mg or 316L steel)
+
+- Holes come out small and rough: every threaded or fitted hole is printed 0.5 mm undersize, then drilled and tapped.
+- Faces that meet another part (back cover seat, hinge cheeks, diffuser seat) get 0.5 mm extra for a finishing cut.
+- The surface is grainy; bead-blast it. Fine detail under 0.5 mm is lost.
+- Order from a print service: the part shrinks and warps slightly, so tight fits are always machined after.
+
+**CNC or metal print?** For this shape, CNC in aluminium is the better fit: it is a simple round body with two open sides, and it gives clean threads and faces straight off the machine. Metal printing only wins if the shape gains details that cannot be milled, which these rules forbid anyway.
 
 ## 11. Open questions for the owner
 

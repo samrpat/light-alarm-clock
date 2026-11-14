@@ -290,3 +290,21 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
   2. **There is no wake-time setting.** The face's day starts at the alarm (if none is set, the last one, or 7:00 AM). The Sleep page becomes **Bedtime**: one moon dot, a violet night band ending at an orange bell that marks the alarm and cannot be moved there.
   3. Alarm = orange + bell, everywhere. Bedtime = violet + moon, everywhere.
 - **Why:** Two different "wake" numbers invited the question of which one rings. Now only the alarm can wake you.
+
+## D-040 — The case is designed for metal from the start
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "I will want this case in metal", "not only follow 3D printing design rules but for metal CNC or 3D printing") · refines D-029 · **Reqs:** R33
+- **Decision:** One set of drawings must be makeable as a plastic print (the prototype), by CNC and by metal printing. Rules: two-sided parts, no undercuts, inside radii ≥ 2 mm, 2.5 mm walls, drilled round holes, shallow hinge bores (two short shoulder screws replace the single 70 mm pin). A `material` switch changes only threads, fits and bores. The board carrier, ring seat and battery tray stay plastic so nothing electrical touches the shell. Recommended metal: anodised aluminium 6061, by CNC. Rules in ENCLOSURE.md §12.
+- **Why it is safe:** the radios are never used (D-030), so a metal shell blocks nothing.
+- **Risk:** a metal bezel can upset the touch screen; foil-wrap test C8 on the plastic prototype comes before any metal order.
+
+## D-040 — Round 5: clock face, gradual dawn, hold both ways, sounds, settings fixes
+- **Date:** 2026-11-13 · **Status:** Proposed (owner's list of 15 points) · amends D-024, D-036, D-037, D-039 · **Reqs:** R4, R9, R11, R12, R34
+- **Decisions:**
+  1. **Clock:** time 124 px; alarm line small with a bell, **time only** when the alarm is within 24 hours and day plus time otherwise; no pulsing circle; hint icons are lamp, speaker, calendar, bell and sliders (no two alike).
+  2. **Dawn on the screen:** the sunrise colour fades in behind the time on the ring's curve, ending as the ringing screen. No sudden switch.
+  3. **Hold both ways:** a day on or off, and skip or bring back, are all a 1 s hold. Considered keeping tap-to-turn-on (faster); rejected because one rule is easier to learn and a stray tap could add an unwanted alarm. Dragging a dot still turns a day on.
+  4. **Hold feedback without haptics:** the rim fills from the first 60 ms and the screen presses in to 93 % until done.
+  5. **Sounds:** eleven, all synthesised in the clock: pink (default), white, brown, green, grey, blue, violet, rain, ocean, wind, fan. Swipe up or down on Sound. Details in [SOUND.md](SOUND.md). Recordings on the SD card remain the fallback for ambient sounds.
+  6. **Settings:** "Day brightness" with "Night stays dim" (night level fixed at the lowest readable); the last page is Battery with the percentage large and voltage small; Region and Date rings show exactly as many marks as there are choices.
+  7. **Naming:** the Light screen is **Lamp**.
+- **DST over many years:** explained in LONGEVITY.md §3 (rules are formulas computed from the date; tested for every year to 2099).

@@ -38,6 +38,14 @@ This removes from the plan: Wi-Fi time sync, over-the-air updates, and the phone
 3. **A file on the SD card** named `region.txt` holding one time-zone string, for a rule the clock does not know. It is read at start-up when Region is set to Custom. Nothing else is needed.
 4. **Alarms are stored as wall-clock times** ("6:45"), so they keep their meaning across a change. A time that does not exist (spring forward) rings at the next valid minute, and a time that happens twice (fall back) rings once (D-003).
 
+### How the clock stays in step with the real calendar for decades
+
+- **A daylight saving rule is a formula, not a list of dates.** "The second Sunday of March at 2 AM" has an answer in every year. The clock works out the weekday of March 1 from the date, counts forward to the second Sunday, and gets that year's change date. No table of years is stored, so it never runs out.
+- **The only inputs are the date and the rule.** The date comes from the clock chip, which counts days by itself, and the firmware handles leap years (every fourth year in the range 2000 to 2099, with no exceptions inside that range).
+- **It is checked in advance.** A test on a computer runs every year from 2026 to 2099 for each region and compares the result with the same rule worked out by an independent library, plus the published change dates for the years already announced.
+- **What can still go wrong:** only a change in the law itself, such as the US ending daylight saving. Then you pick the new region or **Manual**, or drop a `region.txt` on the SD card. Nothing else drifts.
+- **The clock's own drift** (up to about a minute a month before it has learned its error) is separate, and is trimmed each time you correct the time.
+
 **Options considered**
 
 | Option | Verdict |

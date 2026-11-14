@@ -76,3 +76,9 @@
 - Vivid colour language (D-038): sky clock, a colour per place, glossy dots, motion; all colour drains in the wind-down and night stays dim amber.
 - One Alarm settings page with tap-to-test; no wake-time setting; Bedtime page with a moon dot and an orange alarm bell marker (D-039). Seven settings pages.
 - Layout check now covers the dots: 386 states, 2,299 boxes, 0 issues. Picker digits 80 px so a dot never touches them.
+- Owner wants the final case in metal. ENCLOSURE.md §12 adds metal-ready rules (CNC and metal printing), a `material` switch, and touch check C8; the hinge becomes two short shoulder screws. D-040 proposed.
+
+## 2026-11-13 — Phase 2 revision, round 5
+- D-040: clock face (time 124 px, small alarm line, day shown only beyond 24 h, no pulsing circle, distinct hint icons), gradual dawn on the screen, hold both ways with visible feedback, eleven synthesised sounds (new SOUND.md), Lamp rename, Day brightness, Battery page, real mark counts on Region and Date.
+- LONGEVITY.md: how daylight saving stays right for decades.
+- Concept page plays the sounds. Checks: 401 states, 2,401 boxes, 0 issues; 812 swipes, 0 mistaken.

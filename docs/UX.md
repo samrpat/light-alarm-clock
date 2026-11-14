@@ -1,7 +1,7 @@
 # UX specification
 
 Phase 2 (revised 2026-11-13, round 3) · Decisions: [D-011](DECISIONS.md), [D-015](DECISIONS.md), [D-016](DECISIONS.md), [D-024](DECISIONS.md), [D-028](DECISIONS.md), [D-032](DECISIONS.md), [D-036](DECISIONS.md) to [D-039](DECISIONS.md)
-Interactive concept (touch only, Ubuntu type, 386 checked screen states): `/mockups/ux-concept.html`, published at https://claude.ai/artifact/UGtnZ6MqkrSfuM5BShyG5a (private link).
+Interactive concept (touch only, Ubuntu type, 401 checked screen states): `/mockups/ux-concept.html`, published at https://claude.ai/artifact/UGtnZ6MqkrSfuM5BShyG5a (private link).
 Light and colour: [LIGHT.md](LIGHT.md). Offline and repairable: [LONGEVITY.md](LONGEVITY.md). A test app for the real touch screen: `/firmware/dialtest`.
 
 ## 1. Principles
@@ -13,11 +13,11 @@ Light and colour: [LIGHT.md](LIGHT.md). Offline and repairable: [LONGEVITY.md](L
    | **Swipe** | **Go** to a neighbour |
    | **Tap** | **Do** something: play, turn on, snooze, open, pick |
    | **Drag a dot** | **Change** a value. The only way to change one. |
-   | **Hold** | **Stop** something: turn off, skip, dismiss. Also opens settings. |
+   | **Hold** | **Switch an alarm**: a day on or off, skip tomorrow or bring it back, stop the ringing. Also opens settings. |
 
 2. **No buttons.** No arrows, no plus and minus, no tap zones. A value changes only by dragging its dot.
 3. **Sideways always means the next neighbour.** Light | Clock | Sound. Monday | Tuesday | … The settings pages. Up and down move between the waking screens (Week, Clock, Tomorrow).
-4. **An alarm can only be stopped on purpose.** Turning a day off, skipping tomorrow, cancelling a snooze or dismissing needs a **hold**. Turning on, snoozing and bringing back are taps.
+4. **Whether an alarm rings is only changed on purpose.** Turning a day on or off, skipping tomorrow or bringing it back, and stopping the ringing all need a **hold**. One rule both ways, so a stray tap can neither silence tomorrow nor add an alarm you did not want. Snooze stays a tap. With no vibration motor, a hold shows itself: the rim fills from the first moment and the whole screen presses in slightly until it completes.
 5. **Few words.** At most **four lines of text** on any screen (the week excepted). Icons and layout carry the meaning.
 6. **Nothing to confirm, nothing to save.** Every change applies at once. Any sub-screen returns to the clock after 20 s of no touch.
 7. **A touch is only ever one thing.** A dial turn starts only on a dot, after a brief hold, moving along the ring. Anything else is a swipe, a tap or ignored. This is measured, not assumed (§4.2).
@@ -112,7 +112,11 @@ Not a switch: the face changes continuously from wake to bedtime and winds down 
 ## 6. Screens (text budget in brackets)
 
 ### 6.1 Clock (home) [2–3 lines]
-The time (Ubuntu Light 104 px, colour follows the day), the alarm that will really ring next, and a status line only when something needs saying. A tap wakes the face for 5 s: four icons show the swipes (calendar above, bell below, sun left, speaker right) and a gear marks settings. The face's colour and brightness follow §7.
+- **The time is the hero:** Ubuntu Light 124 px. Above it the date (day only). Below it a small bell and the next alarm at 26 px.
+- **The alarm line shows only the time** ("6:45 AM") when the alarm is within the next 24 hours. The day appears ("Fri 6:45 AM") only when the next alarm is further away, because then it matters.
+- A status line appears only when something needs saying.
+- **Tapped (5 s):** five small icons: calendar above (Week), bell below (Tomorrow), **lamp** lower left, speaker lower right, and sliders for settings. Nothing pulses behind the text.
+- **Dawn:** the face does not jump to bright. From 30 minutes before the alarm the sunrise colour fades in behind the time on the same curve as the ring, and at the alarm it has become the ringing screen.
 
 ### 6.2 Tomorrow (swipe up) [title, time, one state word]
 ```
@@ -128,21 +132,21 @@ Two rings of twelve small dots, like a clock face, with two dots on them.
 
 | State | Under the time | Gestures |
 |-------|----------------|----------|
-| Usual | nothing | drag a dot to change tomorrow only · **hold centre 1 s = skip** |
+| Usual | nothing | drag a dot to change tomorrow only · **hold 1 s = skip** |
 | Changed | "Once only" (teal) | dragging back to the usual time clears it |
-| Skipped | "Skipped" (red), time struck through | **tap = bring it back** |
+| Skipped | "Skipped" (red), time struck through | **hold 1 s = bring it back** |
 | None | "Drag a dot to set one" (dots dim, at 7:00) | drag a dot |
 
 ### 6.3 Week (swipe down)
 Seven wedges (day, time or "off"), the next alarm in the middle. Tap a wedge to open that day (about 14 mm wide at the finger).
 
 ### 6.4 Day (tap a day on Week) [title, time, "Off" when off]
-Title is the day's name. Same two dots. **Tap centre = on, hold centre = off.** Swipe sideways for the next or previous day: a day that is off starts at the time you just set (carry-over).
+Title is the day's name. Same two dots. **Hold 1 s = on or off** (dragging a dot also turns the day on). Swipe sideways for the next or previous day: a day that is off starts at the time you just set (carry-over).
 
 ### 6.5 Sound (swipe left) [title, one pill]
-Ten bars show the volume. Drag the dot on the arc to set it. Tap the icon = play or pause. Tap the pill = sleep timer (15, 30, 60, 90, all night). Swipe up/down on this screen is reserved for choosing the sound (Phase 5). The sound fades out by itself when the timer ends or the dawn begins (R10).
+The title is the sound's name, and the screen takes its colour. Ten bars show the volume and dance while it plays. Drag the dot for volume. Tap the icon = play or pause. Tap the pill = sleep timer. **Swipe up or down = next sound**: seven noise colours (pink first) and four ambient sounds ([SOUND.md](SOUND.md)). A column of small marks at the left shows which one.
 
-### 6.6 Light (swipe right) [title, one number]
+### 6.6 Lamp (swipe right) [title, one number]
 A big percentage or "Off" and a two-icon switch (moon = night light, sun = reading light). Drag the dot for brightness. Tap the number = on/off. Tap the switch = change mode. Caps and colours follow the time of day (LIGHT.md §4).
 
 ### 6.7 Dawn and ringing [3 lines]
@@ -157,11 +161,11 @@ Swipe sideways between pages, drag a dot to change, swipe down to leave. A row o
 |---|------|--------|--------------|-------------|
 | 1 | **Time** | blue | A watch face: two rings, 60 fine ticks, the time | Drag the outer dot (minutes) and the inner dot (hours). Opens by itself after a power loss. |
 | 2 | **Date** | red | A calendar page: month, a big day number, year | Tap the line you want, then drag the dot |
-| 3 | **Region** | green | The region, its UTC offset, daylight saving on or off | Drag the dot: US Eastern (default), Central, Mountain, Pacific, Alaska, Hawaii; UK; Central Europe; **Manual**; Custom (SD card) |
+| 3 | **Region** | green | The region, its UTC offset, daylight saving on or off. **The ring has exactly one mark per region**, so the dot's position is the choice. (Date works the same: 12 marks for months, 31 for days.) | Drag the dot: US Eastern (default), Central, Mountain, Pacific, Alaska, Hawaii; UK; Central Europe; **Manual**; Custom (SD card) |
 | 4 | **Bedtime** | violet | A violet band of night on the clock ring, starting at a moon dot, with the 3-hour wind-down fading in before it. The band ends at an **orange bell: your alarm**. Text: bedtime, "Wind down 7:30 PM", "Alarm 6:45 AM". | Drag the moon (15-minute steps, default 10:30 PM). The bell cannot be moved here. |
-| 5 | **Brightness** | gold | An orb that grows and glows | Drag the dot (default 60 %) |
+| 5 | **Day brightness** | gold | An orb that grows and glows, and the words "Night stays dim" | Drag the dot (default 60 %). It sets the daytime face only. At night the face is always at the lowest level at which the clock is still readable (set once on the real panel, UX-B1). |
 | 6 | **Alarm** | orange | A bell with sound waves, the volume, "Tap to test" | Drag the dot for volume (30–100 %, default 70 %). **Tap the bell to test:** the ring lights and the alarm sound plays at that volume for 6 s. Tap again to stop. |
-| 7 | **About** | mint | A battery ring, the version | Nothing |
+| 7 | **Battery** | mint | A ring that shows the charge, **the percentage large, the voltage small**, and the version | Nothing |
 
 - **Bedtime and alarm are different things and look different.** The **alarm** is when the clock wakes you: orange, a bell, set on the Tomorrow and Week screens. **Bedtime** is when the face goes dark: violet, a moon, set here. There is **no "wake time" setting**. The face treats your alarm as the start of the day (if no alarm is set, the last one, or 7:00 AM).
 - The old Preview page and Alarm volume page are one page: the dot changes, the tap does.
@@ -180,8 +184,8 @@ Swipe sideways between pages, drag a dot to change, swipe down to leave. A row o
 |-------|--------|-----|
 | Clock | A living sky, full screen: peach at dawn, blue through the day, gold and rose toward evening | The time of day at a glance |
 | Tomorrow, Week, Day, Alarm | Sunrise orange to coral | Everything about waking |
-| Sound | Teal to indigo | Calm, water |
-| Light | Gold (reading) or ember red (night light) | The colour of the light itself |
+| Sound | One colour per sound: pink, white, brown, green, grey, blue, violet, and four for rain, ocean, wind, fan | You can tell the sound by its colour |
+| Lamp | Gold (reading) or ember red (night light) | The colour of the light itself |
 | Bedtime | Violet | Night |
 | Ringing | A bright sunrise, full screen, dark text | Impossible to miss |
 
@@ -204,11 +208,12 @@ Swipe sideways between pages, drag a dot to change, swipe down to leave. A row o
 | Wake an hour earlier tomorrow | **2** | swipe up · drag the inner dot back one step |
 | Wake 15 minutes earlier tomorrow | **2** | swipe up · drag the outer dot back three steps |
 | Skip tomorrow | **2** | swipe up · hold |
-| Undo a skip | **2** | swipe up · tap |
+| Undo a skip | **2** | swipe up · hold |
 | Move every Wednesday an hour | **3** | swipe down · tap Wed · drag the inner dot |
 | Turn a day off | **3** | swipe down · tap the day · hold |
 | Fix the clock after a daylight saving change | **2** | hold the clock · drag the inner dot one step |
-| Start white noise | **2** | swipe left · tap |
+| Start the sleep sound | **2** | swipe left · tap |
+| Change the sound | **2** | swipe left · swipe up |
 | Night light on | **2** | swipe right · tap |
 | Snooze | **1** | tap anywhere |
 | Stop the alarm | **1** | hold 2 s |
@@ -251,7 +256,7 @@ One status line, highest priority first: **Set time** · Alarm timed out · Alar
 
 **Rules.** Every text and icon box inside the safe circle (radius 209 px). No two boxes overlap (3 px padding). No text under 26 px. At most four text lines per screen (the week excepted). A string that does not fit is shortened, never shrunk.
 
-**The automatic check.** `layoutCheck()` in the concept page draws **386 screen states**, now including the dots, (every screen, every day name, the widest times, every status line, every region name, every settings page), measures every box in the loaded Ubuntu font and reports anything outside the circle, overlapping, under 26 px, or over four lines. **Result on 2026-11-13: 2,299 boxes, 0 issues.**
+**The automatic check.** `layoutCheck()` in the concept page draws **401 screen states**, now including the dots, (every screen, every day name, the widest times, every status line, every region name, every settings page), measures every box in the loaded Ubuntu font and reports anything outside the circle, overlapping, under 26 px, or over four lines. **Result on 2026-11-13: 2,401 boxes, 0 issues.**
 
 ## 12. Acceptance checks
 

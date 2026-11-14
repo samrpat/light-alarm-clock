@@ -14,7 +14,7 @@ Last reviewed: 2026-11-13 (Phase 2)
 | R1 | M | `[ ]` Weekly schedule: for each of the 7 weekdays, a wake time (HH:MM, 1-minute resolution) and an on/off flag, set independently. | 3 | T-01 |
 | R2 | M | `[~]` Changing one weekday's time takes **≤ 3 touches** (swipe down, tap the day, drag the inner dot; a hold counts as one touch) and **≤ 10 s** from the clock face. Designed in UX.md §8; not yet built. | 2, 3 | T-02 |
 | R3 | M | `[ ]` One-off overrides: **Skip next alarm** and **Tomorrow only at HH:MM**. An override is used once, then cleared automatically. It can be cancelled before it fires. | 3 | T-03 |
-| R4 | M | `[ ]` The clock face always shows the next alarm that will actually fire, overrides included (for example "Skipping Tue → next Wed 06:45"), or "No alarm set". | 2, 3 | T-04 |
+| R4 | M | `[ ]` The clock face always shows the next alarm that will actually fire (or "No alarm set"): time only if it is within 24 hours, day and time otherwise, with skips and overrides reflected. | 2, 3 | T-04 |
 
 ## 2. Interaction
 
@@ -24,7 +24,7 @@ Last reviewed: 2026-11-13 (Phase 2)
 | R6 | M | `[~]` The face follows the day (UX.md §7, D-032, D-038, D-039): full colour from the alarm until 3 hours before bedtime, a wind-down in which colour, blue and brightness drain away, then a dim amber night face that shifts every minute. Bedtime is the only setting (default 10:30 PM); the alarm is the start of the day. | 2, 3 | T-06 |
 | R7 | — | ~~IMU gestures (pick-up to wake, flip to snooze).~~ **Dropped** by D-011: the clock is stationary. | — | — |
 | R8 | N | `[ ]` Sound and Light remember their last volume, timer, brightness and colour mode, so starting either is 2 gestures. This replaces the scenes idea taken from Dreamie (D-024, D-023). | 2, 3 | T-08 |
-| R34 | M | `[ ]` Anything that can stop an alarm (turn a day off, skip tomorrow, dismiss, cancel a snooze or sunrise) needs a **hold**. Anything that only makes it ring (turn on, snooze, bring back) is a tap (D-024). | 2, 3 | T-34 |
+| R34 | M | `[ ]` Whether an alarm rings is changed only by a **hold**: a day on or off, skip tomorrow or bring it back, dismiss, cancel a snooze or sunrise. Snooze is a tap. A hold shows progress from the first moment (rim fill and the screen pressing in), since there is no vibration (D-040). | 2, 3 | T-34 |
 | R35 | M | `[ ]` Every sub-screen returns to the clock after 20 s without a touch (settings 30 s). Every change is saved the moment it is made (D-024). | 2, 3 | T-35 |
 | R36 | M | `[ ]` The firmware boots, keeps time and rings with no battery and with no ring fitted. Optional parts (battery, ring, protection parts, level shifter, light sensor) each have a defined behaviour when missing (D-025). | 3 | T-36 |
 | R37 | M | `[~]` No text overlaps, none under 26 px, all inside the safe circle, in Ubuntu. `layoutCheck()` reports zero issues for every screen state (D-028). Passes on the concept page; repeats on the firmware strings in Phase 3. | 2, 3 | T-37 |
@@ -43,7 +43,7 @@ Last reviewed: 2026-11-13 (Phase 2)
 |----|-----|-------------|-------|------|
 | R9 | M | `[ ]` White noise for falling asleep, with sleep timer (Off / 15 / 30 / 60 / 90 min / all night) and volume control. | 3 | T-09 |
 | R10 | M | `[ ]` White noise fades out smoothly (default 120 s, no clicks or steps you can hear) when the sunrise or the alarm begins. The timer end also fades (default 30 s). | 3 | T-10 |
-| R11 | N | `[ ]` More sleep sounds (rain, fan, pink/brown noise, ocean), stored on flash or TF card, loop with no gap. | 5 | T-11 |
+| R11 | M | `[ ]` Eleven sleep sounds made by the clock itself: pink (default), white, brown, green, grey, blue and violet noise; rain, ocean, wind, fan. No recordings, no loop gap ([SOUND.md](SOUND.md), D-040). | 3 | T-11 |
 
 ## 4. Light
 
