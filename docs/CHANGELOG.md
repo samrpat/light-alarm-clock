@@ -105,3 +105,4 @@
 - Phase 2 approved by the owner; D-031 to D-047 accepted with it. Owner answers: iPhone; pre-dawn sound only when the sleep sound was used.
 - Phase 3, step 3a: `firmware/clock/components/clockcore` (calendar, time zones, schedule, alarm state machine, dawn curve, storage records, RTC decode, drift) with 518,574 host checks, 0 failed. Step 3b-1: ESP-IDF project with the alarm engine on core 1 and NVS A/B storage; it builds (not flashed).
 - Added TEST_PLAN.md and RELIABILITY.md. D-048 proposed. Requirement rows whose logic now passes are marked `[~]`.
+- Step 3b-2: ring task, alarm chime, clock-chip restore and set, and a bench console added to `firmware/clock`; builds, not yet flashed.

@@ -16,7 +16,8 @@ Last updated: 2026-11-14
 ## Phase 3 progress (2026-11-14)
 - **3a, done:** the core logic in `firmware/clock/components/clockcore` with 518,574 host checks passing under sanitizers ([TEST_PLAN.md](TEST_PLAN.md)). 1,184 daylight-saving changes (2026-2099, 10 regions) match an independent library; 1,500 random schedules match a brute-force scan; settings survive a power cut at every byte; reboot during dawn or ringing resumes right; 7 injected bugs all caught.
 - **3b-1, builds (not flashed):** `firmware/clock` ESP-IDF project: alarm engine on core 1, NVS A/B storage, task watchdog, 64-bit time assert. 0x34310 bytes, 86 % of the app partition free.
-- **To do:** 3b-2 RTC task, ring and speaker tasks from the bring-up code; 3b-3 supervisor, boot-loop guard, safe mode, BOOT dismiss, battery rules; 3c the LVGL UI from UX.md with Inter fonts and the layout check on real strings. Then bench tests.
+- **3b-2, builds (not flashed):** RTC restore and set, ring task (tested dawn curve, dithering, 300 mA cap for the unfused rig), alarm chime in four loudness steps, and a bench console on the USB port (`time`, `alarm`, `in 90`, `snooze`, `dismiss`, `status`). 0xBC790 bytes, 50 % of the app partition free. The screen stays dark until 3c.
+- **To do:** 3b-3 supervisor, boot-loop guard, safe mode, BOOT dismiss, battery rules; 3c the LVGL UI from UX.md with Inter fonts and the layout check on real strings. Then bench tests.
 - Reliability notes: [RELIABILITY.md](RELIABILITY.md).
 
 ## Phase 2 revision (2026-11-13)

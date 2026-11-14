@@ -93,6 +93,7 @@ Optional UI-side feature: the Focus timer (D-047) runs on core 0 and never touch
 |------|------|
 | `components/clockcore` | Pure C, tested on a computer: `civil` (dates), `tz` (POSIX rule zones), `sched` (week, skip, tomorrow, next alarm), `alarm_sm` (state machine), `dawn` (light and pre-dawn sound curves), `storage` (CRC, A/B records, schedule format, PCF85063, drift) |
 | `main/alarm_engine.c` | Core 1 task: loads storage, reads `time()`, steps the machine once a second, fills the snapshot in `hw.h` |
+| `main/light_fx.c`, `audio_out.c`, `rtc.c`, `console.c` | Ring (dawn curve, dithering, current cap), alarm chime, PCF85063 restore and set, bench console |
 | `main/store.c` | NVS: schedule A/B records, machine state, region string |
 | `test/` | Host tests and the independent daylight-saving data generator |
 

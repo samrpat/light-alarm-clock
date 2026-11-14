@@ -16,3 +16,10 @@ extern alarm_snapshot_t g_alarm;
 typedef enum { CMD_SNOOZE = 1, CMD_DISMISS, CMD_TIME_SET, CMD_SCHED_CHANGED } alarm_cmd_t;
 void alarm_engine_start(void);                 /* core 1 */
 void alarm_post(alarm_cmd_t cmd);              /* from UI, input and the BOOT button: never blocks */
+
+void light_fx_start(void);                     /* core 1 */
+void audio_out_start(void);                    /* core 1 */
+void rtc_load(void);                           /* boot: restore the system clock from the PCF85063 */
+bool rtc_set(int64_t utc);                     /* set by hand: system clock, chip, and tell the engine */
+extern bool g_time_trusted;
+void console_start(void);                      /* bench console on the USB port (temporary until the UI) */
