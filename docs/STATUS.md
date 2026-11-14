@@ -21,13 +21,15 @@ Last updated: 2026-11-13
 - Concept page: https://claude.ai/artifact/UGtnZ6MqkrSfuM5BShyG5a (private link). Text check: 283 states, 0 issues.
 - Board test app `/firmware/dialtest` (compiles, not yet flashed): feel the dots and check swipes on the real glass.
 
+- **Round 4:** a vivid colour language (D-038), one Alarm page with tap-to-test, and bedtime separated from alarm time with no wake-time setting (D-039). Text check: 386 states, 2,299 boxes including the dots, 0 issues. Swipe test re-run: 983 swipes, 0 mistaken.
+
 ## Hardware state (bring-up test, 2026-11-12)
 - `/firmware/bringup` runs on the real board: screen, touch, 7 I2C chips, ring (GRBW, smooth dithered sunrise), speaker.
 - Ring ran with a direct 3.3 V data line, short wires and a 300 mA cap.
 - Not yet tested: battery, full 0.9 A ring current with fuse + capacitor + resistor, USB voltage under load.
 
 ## Waiting for owner
-1. **Approve Phase 2** (accepts D-024 as amended, D-025, D-028, D-030 to D-037).
+1. **Approve Phase 2** (accepts D-024 as amended, D-025, D-028, D-031 to D-039).
 2. **Flash `/firmware/dialtest`** and try it (swipe near the rim, next to a dot, in the middle; grab a dot with and without a pause). Tell me anything that feels wrong (UX-B2). I could not flash it because the board was not plugged in.
 3. **Daylight saving:** US Eastern with automatic rules, a Manual option and a two-touch fix. OK? (not yet answered)
 4. **Battery:** order a 503450-class cell by the specification in HARDWARE.md §1 (answered yes).

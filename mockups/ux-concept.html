@@ -15,7 +15,7 @@ body{background:var(--night);color:var(--ink);font-family:var(--ui);font-weight:
 .wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:88px;padding-block:56px 72px}
 h1,h2{font-family:var(--ui);font-weight:300;text-wrap:balance;margin:0;line-height:1.1}
 h1{font-size:clamp(38px,5.6vw,64px);letter-spacing:-.01em}
-h1 em{color:var(--amber);font-style:normal;font-weight:400}
+h1 em{font-style:normal;font-weight:400;background:linear-gradient(90deg,#ffb347,#ff5e8a 55%,#8f7bff);-webkit-background-clip:text;background-clip:text;color:transparent}
 h2{font-size:clamp(28px,3.4vw,40px)}
 p{margin:0}
 .eyebrow{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);font-weight:400}
@@ -26,7 +26,7 @@ p{margin:0}
 button{font:inherit;font-weight:400;font-size:15px;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:999px;padding:9px 18px;cursor:pointer}
 button:hover{border-color:var(--ink3)}
 button:focus-visible,.mini:focus-visible,input:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
-button.go{background:var(--amber);border-color:var(--amber);color:#2a1806;font-weight:500}
+button.go{background:linear-gradient(90deg,#ffb347,#ff6f61);border-color:transparent;color:#2a0d06;font-weight:500}
 .stage{display:flex;flex-direction:column;align-items:center;gap:14px;min-width:0}
 .devwrap{position:relative;width:100%;max-width:440px;display:flex;justify-content:center}
 .glow{position:absolute;inset:-4%;border-radius:50%;filter:blur(56px);opacity:0;background:#000;pointer-events:none}
@@ -72,6 +72,15 @@ section{display:flex;flex-direction:column;gap:28px}
 .prin div{display:flex;flex-direction:column;gap:8px;min-width:0}
 .prin h3{font-weight:500;font-size:18px;margin:0}
 .prin p{color:var(--ink2);font-size:16px}
+.eq{animation:eq .9s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes eq{from{transform:scaleY(.45)}to{transform:scaleY(1)}}
+.br{animation:br 2.6s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
+@keyframes br{from{transform:scale(.94)}to{transform:scale(1.06)}}
+.wig{animation:wig .28s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 0}
+@keyframes wig{from{transform:rotate(-13deg)}to{transform:rotate(13deg)}}
+.spin{animation:spin 24s linear infinite;transform-origin:233px 233px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.eq,.br,.wig,.spin{animation:none}}
 .note{font-size:14px;color:var(--ink3);border-top:1px solid var(--line);padding-top:20px;max-width:60em}
 @media (max-width:820px){.hero,.two{grid-template-columns:minmax(0,1fr)}.wrap{gap:64px;padding-block:32px 56px}.tlrow{grid-template-columns:minmax(0,1fr)}}
 </style>
@@ -81,7 +90,7 @@ section{display:flex;flex-direction:column;gap:28px}
     <div class="hero-copy">
       <p class="eyebrow">Interface concept · 44 mm round touchscreen · touch only</p>
       <h1>A clock that follows <em>your day</em> until you sleep.</h1>
-      <p class="lede">Few words, and each gesture has one job: swipe to go, tap to do, drag the dot to change, hold to stop. The face changes colour and brightness through the day, winds down toward bedtime, and ends as a dim amber clock. Drag the time slider below the device to watch it.</p>
+      <p class="lede">Every place has its own colour: sky for the clock, sunrise for alarms, sea for sound, gold for light. Colour belongs to the day. As bedtime nears it drains away, and the night clock is a dim amber. Drag the time slider below the device to watch it.</p>
       <div class="btns">
         <button class="go" id="bMorn">Play a morning</button>
         <button id="bRing">Ring the alarm</button>
@@ -105,7 +114,7 @@ section{display:flex;flex-direction:column;gap:28px}
           <g id="chk" opacity="0" pointer-events="none"></g>
         </svg>
       </div>
-      <div class="tod"><label for="tod">Time of day</label><input type="range" id="tod" min="300" max="1439" step="5" value="1394"><output id="todl" for="tod"></output></div>
+      <div class="tod"><label for="tod">Time of day</label><input type="range" id="tod" min="300" max="1439" step="5" value="870"><output id="todl" for="tod"></output></div>
       <div id="fb" aria-live="polite">Drag the slider, or swipe up on the clock</div>
       <div class="legend" id="lg"></div>
     </div>
@@ -172,16 +181,16 @@ section{display:flex;flex-direction:column;gap:28px}
 
   <section>
     <p class="eyebrow">A face that follows your day</p>
-    <h2>Bright and cool by day. Warm and fading toward bed.</h2>
+    <h2>Sky colours by day. Fading to amber for bed.</h2>
     <div class="four" id="dayFour"></div>
-    <p class="lede">After you wake the colour moves from gold through cool white at noon to amber. Three hours before bedtime the face winds down: the blue drains out, the brightness falls on a smooth curve, the date fades, and at bedtime it is the dim amber night clock. Two settings drive it: when you go to bed and when you wake.</p>
+    <p class="lede">From your alarm onward the face is a living sky: peach at dawn, blue through the day, gold and rose toward evening. Three hours before bedtime the colour and brightness drain away on a smooth curve, and at bedtime it is the dim amber night clock. One setting drives it: your bedtime. The morning end is your alarm.</p>
   </section>
 
   <section>
     <p class="eyebrow">Settings</p>
-    <h2>Each setting looks like the thing it sets.</h2>
+    <h2>Seven settings, each a picture of what it sets.</h2>
     <div class="four" id="setGrid"></div>
-    <p class="lede">Sleep is a band of night on the clock ring, with the three-hour wind-down fading in before it: drag the moon and the sun. Brightness is an orb that grows as you drag. Volume is sound waves. The date is a calendar page. Preview is a tiny sunrise you hold. Every page shows the real value, in at most four lines.</p>
+    <p class="lede">Bedtime is a violet band of night on the clock ring, with the wind-down fading in before it. It ends at an orange bell: that is your alarm, set on the alarm screens and never here. The Alarm page has one job each for the dot and the tap: drag for volume, tap the bell to test the light and sound.</p>
   </section>
 
   <section>
@@ -201,13 +210,13 @@ section{display:flex;flex-direction:column;gap:28px}
     <h2>No Wi-Fi, no servers, no updates needed.</h2>
     <div class="prin">
       <div><h3>It never calls out</h3><p>The time is set by hand once. Daylight saving is a rule stored inside the clock, with a one-tap fix if the law ever changes.</p></div>
-      <div><h3>Few settings</h3><p>Eight pages, and four of them you touch once: time, date, region and sleep.</p></div>
+      <div><h3>Few settings</h3><p>Seven pages, and four of them you touch once: time, date, region and bedtime.</p></div>
       <div><h3>The alarm outlives the screen</h3><p>If the display ever fails, the light and sound still run, and a button on the back still turns the alarm off.</p></div>
       <div><h3>Repairable</h3><p>The battery is a swappable part, and the firmware and tools are kept offline so it can be rebuilt decades from now.</p></div>
     </div>
   </section>
 
-  <p class="note">Concept prototype. Colours, glow and timing are simulated in the browser, and the real LED ring and AMOLED panel will look different. The date is fixed at Tuesday, Nov 12 and type is Ubuntu.</p>
+  <p class="note">Concept prototype. Colours, glow and timing are simulated in the browser, and the real LED ring and AMOLED panel will look different. The date is fixed at Tuesday, Nov 12 and type is Ubuntu. Wake time is not a setting: the face treats your alarm as the start of the day.</p>
 </div>
 
 <script>
@@ -217,89 +226,96 @@ const DN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],DF=['Monday','Tuesday','Wed
 const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const TIMER=[['15 min',15],['30 min',30],['1 hour',60],['90 min',90],['All night',0]];
 const REG=[['US Eastern','Daylight saving on','UTC−5'],['US Central','Daylight saving on','UTC−6'],['US Mountain','Daylight saving on','UTC−7'],['US Pacific','Daylight saving on','UTC−8'],['US Alaska','Daylight saving on','UTC−9'],['US Hawaii','No daylight saving','UTC−10'],['UK','Daylight saving on','UTC±0'],['Central Europe','Daylight saving on','UTC+1'],['Manual','You change the clock','—']];
-const PG=['Time','Date','Region','Sleep','Brightness','Alarm volume','Preview alarm','About'];
-const WARN='#E5703E',OK='#5FC9A8',OFFC='#5a4c40';
+const PG=['Time','Date','Region','Bedtime','Brightness','Alarm','About'];
+
 
 //<draw>
 const wrap=m=>((m%1440)+1440)%1440,clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 function t12(m){m=wrap(m);const h=Math.floor(m/60);return{h:((h+11)%12)+1,mm:String(m%60).padStart(2,'0'),ap:h<12?'AM':'PM'}}
 const f12=m=>{const t=t12(m);return t.h+':'+t.mm+' '+t.ap};
-function fresh(){return{scr:'clock',now:1394,awake:false,days:[0,1,2,3,4,5,6].map(i=>({on:i<5,min:i<5?405:510})),sel:2,skip:false,one:null,vol:40,play:false,ti:1,lt:{on:false,m:0,l:[20,60]},snz:3,hold:0,done:false,sunT:null,msg:'',pg:0,df:0,clk:1394,dat:{m:10,d:12,y:2026},rg:0,dayB:60,ns:1350,ne:420,ld:70}}
+function fresh(){return{scr:'clock',now:870,awake:false,days:[0,1,2,3,4,5,6].map(i=>({on:i<5,min:i<5?405:510})),sel:2,skip:false,one:null,vol:40,play:false,ti:1,lt:{on:false,m:0,l:[20,60]},snz:3,hold:0,done:false,sunT:null,msg:'',pg:0,df:0,clk:870,dat:{m:10,d:12,y:2026},rg:0,dayB:60,ns:1350,ld:70,test:false}}
 const mix=(a,b,k)=>a.map((v,i)=>v+(b[i]-v)*k);
 const hex=c=>'#'+c.map(v=>clamp(Math.round(v),0,255).toString(16).padStart(2,'0')).join('');
-const KF=[[360,[255,193,120]],[480,[255,224,178]],[600,[255,238,214]],[720,[228,238,255]],[900,[255,238,218]],[1080,[255,208,150]]],NA=[224,128,28];
-function sky(m){m=wrap(m);if(m<=KF[0][0])return KF[0][1];for(let i=1;i<KF.length;i++)if(m<=KF[i][0]){const[a,ca]=KF[i-1],[b,cb]=KF[i];return mix(ca,cb,(m-a)/(b-a))}return KF[KF.length-1][1]}
-function phase(s){const span=wrap(s.ns-s.ne),since=wrap(s.now-s.ne);if(since<span){const left=span-since;return left>180?{p:'day',w:0,f:since/span}:{p:'wind',w:1-left/180,f:since/span}}return{p:'night',w:1,f:1}}
-function face(s,active){const ph=phase(s),w=ph.w,ws=w*w*(3-2*w),base=ph.p==='night'?NA:mix(sky(s.now),NA,ws);
- const dayVis=.55+.45*s.dayB/100,nightVis=.5;let vis=ph.p==='night'?nightVis:nightVis*Math.pow(dayVis/nightVis,1-w);if(active&&ph.p!=='day')vis=Math.max(vis,.85);
- const t=base.map(v=>v*vis);return{t:hex(t),s:hex(t.map(v=>v*.72)),h:hex(t.map(v=>v*.5)),ph,ws,vis}}
+const NA=[224,128,28],BK=[0,0,0],WH=[255,255,255];
+const SKY=[[360,[255,170,120],[150,70,160]],[540,[110,190,255],[50,110,230]],[780,[80,200,255],[40,120,255]],[1020,[255,180,90],[255,95,110]],[1170,[240,100,140],[70,40,140]]];
+function sky(m){m=wrap(m);if(m<=SKY[0][0])return[SKY[0][1],SKY[0][2]];for(let i=1;i<SKY.length;i++)if(m<=SKY[i][0]){const A=SKY[i-1],B=SKY[i],k=(m-A[0])/(B[0]-A[0]);return[mix(A[1],B[1],k),mix(A[2],B[2],k)]}const L=SKY[SKY.length-1];return[L[1],L[2]]}
+const usual=s=>s.days[2].on?s.days[2].min:null;
+function wakeMin(s){const u=usual(s);if(u!=null)return u;const d=s.days.find(d=>d.on);return d?d.min:420}
+function phase(s){const wk=wakeMin(s),span=wrap(s.ns-wk),since=wrap(s.now-wk);if(since<span){const left=span-since;return left>180?{p:'day',w:0}:{p:'wind',w:1-left/180}}return{p:'night',w:1}}
+const PAL={alarm:{a:[255,150,70],b:[255,84,120],bg:[64,20,30]},sound:{a:[64,224,208],b:[108,124,255],bg:[14,28,70]},light:{a:[255,220,100],b:[255,150,40],bg:[64,38,6]},nlight:{a:[255,110,70],b:[210,40,40],bg:[60,12,8]},time:{a:[100,205,255],b:[70,120,255],bg:[10,26,64]},date:{a:[255,110,100],b:[255,160,90],bg:[60,14,20]},region:{a:[90,225,165],b:[40,175,225],bg:[8,46,42]},bed:{a:[160,140,255],b:[96,76,230],bg:[24,18,70]},about:{a:[110,225,140],b:[60,180,200],bg:[14,36,30]}};
+let UID=0;const WARN='#E5703E',OFFC='#6b6670';
+function theme(key,s){const ph=phase(s),w=ph.w,ws=w*w*(3-2*w),P0=PAL[key],night=ph.p==='night',amb=NA.map(v=>v*.85);
+ const a=mix(P0.a,amb,ws),b=mix(P0.b,amb.map(v=>v*.75),ws),bg=mix(P0.bg,BK,ws),t=mix(WH,amb,ws),id='u'+(UID++);
+ return{id,ws,night,defs:`<defs><linearGradient id="${id}a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${hex(a)}"/><stop offset="1" stop-color="${hex(b)}"/></linearGradient><radialGradient id="${id}b" cx=".5" cy=".4" r=".62"><stop offset="0" stop-color="${hex(bg)}"/><stop offset="1" stop-color="${hex(bg.map(v=>v*.2))}"/></radialGradient></defs><circle cx="${C}" cy="${C}" r="233" fill="url(#${id}b)"/>`,
+  g:`url(#${id}a)`,a:hex(a),b:hex(b),t:hex(t),s:hex(mix(t,a,.45)),h:hex(mix(a,bg,.4)),trk:hex(mix(bg,t,.2)),alarm:hex(mix(PAL.alarm.a,amb,ws))}}
 const P=(a,r)=>[C+r*Math.sin(a*Math.PI/180),C-r*Math.cos(a*Math.PI/180)];
 function T(x,y,sz,t,c,w,extra){return `<text data-k="1" x="${x}" y="${(y+.35*sz).toFixed(1)}" font-size="${sz}" fill="${c}" text-anchor="middle" font-weight="${w||400}" ${extra||''}>${t}</text>`}
 function TM(x,y,sz,m,c,w,apSz){const t=t12(m);return `<text data-k="1" x="${x}" y="${(y+.35*sz).toFixed(1)}" font-size="${sz}" fill="${c}" text-anchor="middle" font-weight="${w}">${t.h}:${t.mm}<tspan font-size="${apSz}" dx="${Math.round(sz/14)}">${t.ap}</tspan></text>`}
-function arc(r,a0,a1,col,w,op){if(a1-a0>=359.9)return `<circle cx="${C}" cy="${C}" r="${r}" fill="none" stroke="${col}" stroke-width="${w}"/>`;if(a1-a0<=.1)return '';const[x0,y0]=P(a0,r),[x1,y1]=P(a1,r);return `<path d="M${x0} ${y0}A${r} ${r} 0 ${a1-a0>180?1:0} 1 ${x1} ${y1}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" opacity="${op==null?1:op}"/>`}
-function wedge(a0,a1,r0,r1,fill,st){const[a,b]=P(a0,r1),[c,d]=P(a1,r1),[e,g]=P(a1,r0),[h,k]=P(a0,r0);return `<path d="M${a} ${b}A${r1} ${r1} 0 0 1 ${c} ${d}L${e} ${g}A${r0} ${r0} 0 0 0 ${h} ${k}Z" fill="${fill}" stroke="${st}" stroke-width="1"/>`}
-function chev(x,y,up,col){return `<path data-k="1" d="M${x-20} ${y+(up?8:-8)}L${x} ${y+(up?-8:8)}L${x+20} ${y+(up?8:-8)}" fill="none" stroke="${col}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>`}
-const chevs=(xs,y1,y2,col)=>xs.map(x=>chev(x,y1,1,col)+chev(x,y2,0,col)).join('');
-function ico(n,x,y,col){const p={cal:'<rect x="-15" y="-13" width="30" height="28" rx="4"/><path d="M-15 -3H15M-7 -18V-9M7 -18V-9"/>',bell:'<path d="M0 -15C-9 -15 -11 -5 -11 2L-15 9H15L11 2C11 -5 9 -15 0 -15ZM-5 13A5 5 0 0 0 5 13"/>',sun:'<circle r="6"/><path d="M0 -17V-11M0 11V17M-17 0H-11M11 0H17M-12 -12L-8 -8M8 8L12 12M-12 12L-8 8M8 -8L12 -12"/>',spk:'<path d="M-15 -6H-8L2 -14V14L-8 6H-15Z"/><path d="M8 -7A10 10 0 0 1 8 7M13 -12A17 17 0 0 1 13 12"/>',moon:'<path d="M6 -15A15 15 0 1 0 15 7A12 12 0 0 1 6 -15Z"/>',gear:'<circle r="5"/><path d="M0 -16V-11M0 11V16M-16 0H-11M11 0H16M-11 -11L-8 -8M8 8L11 11M-11 11L-8 8M8 -8L11 -11"/>'}[n];return `<g data-k="1" transform="translate(${x} ${y})" fill="none" stroke="${col}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${p}</g>`}
-function playIco(x,y,on,col){return on?`<g data-k="1" transform="translate(${x} ${y})" fill="${col}"><rect x="-14" y="-18" width="9" height="36" rx="2"/><rect x="5" y="-18" width="9" height="36" rx="2"/></g>`:`<path data-k="1" transform="translate(${x} ${y})" d="M-12 -19L19 0L-12 19Z" fill="${col}"/>`}
+function arcAt(cx,cy,r,a0,a1,col,w,op){if(a1-a0>=359.9)return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${col}" stroke-width="${w}" opacity="${op==null?1:op}"/>`;if(a1-a0<=.1)return '';const q=a=>[cx+r*Math.sin(a*Math.PI/180),cy-r*Math.cos(a*Math.PI/180)],[x0,y0]=q(a0),[x1,y1]=q(a1);return `<path d="M${x0} ${y0}A${r} ${r} 0 ${a1-a0>180?1:0} 1 ${x1} ${y1}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" opacity="${op==null?1:op}"/>`}
+const arc=(r,a0,a1,col,w,op)=>arcAt(C,C,r,a0,a1,col,w,op);
+function wedge(a0,a1,r0,r1,fill,op){const[a,b]=P(a0,r1),[c,d]=P(a1,r1),[e,g]=P(a1,r0),[h,k]=P(a0,r0);return `<path d="M${a} ${b}A${r1} ${r1} 0 0 1 ${c} ${d}L${e} ${g}A${r0} ${r0} 0 0 0 ${h} ${k}Z" fill="${fill}" opacity="${op}"/>`}
+function ico(n,x,y,col,sc,raw,cls){const p={cal:'<rect x="-15" y="-13" width="30" height="28" rx="4"/><path d="M-15 -3H15M-7 -18V-9M7 -18V-9"/>',bell:'<path d="M0 -15C-9 -15 -11 -5 -11 2L-15 9H15L11 2C11 -5 9 -15 0 -15ZM-5 13A5 5 0 0 0 5 13"/>',sun:'<circle r="6"/><path d="M0 -17V-11M0 11V17M-17 0H-11M11 0H17M-12 -12L-8 -8M8 8L12 12M-12 12L-8 8M8 -8L12 -12"/>',spk:'<path d="M-15 -6H-8L2 -14V14L-8 6H-15Z"/><path d="M8 -7A10 10 0 0 1 8 7M13 -12A17 17 0 0 1 13 12"/>',moon:'<path d="M6 -15A15 15 0 1 0 15 7A12 12 0 0 1 6 -15Z"/>',gear:'<circle r="5"/><path d="M0 -16V-11M0 11V16M-16 0H-11M11 0H16M-11 -11L-8 -8M8 8L11 11M-11 11L-8 8M8 -8L11 -11"/>'}[n];
+ return `<g ${raw?'':'data-k="1" '}transform="translate(${x} ${y}) scale(${sc||1})"><g ${cls?`class="${cls}"`:''} fill="none" stroke="${col}" stroke-width="${3/(sc||1)+.6}" stroke-linecap="round" stroke-linejoin="round">${p}</g></g>`}
+function playIco(x,y,on,col){return on?`<g data-k="1" transform="translate(${x} ${y})" fill="${col}"><rect x="-14" y="-18" width="9" height="36" rx="3"/><rect x="5" y="-18" width="9" height="36" rx="3"/></g>`:`<path data-k="1" transform="translate(${x} ${y})" d="M-12 -19L19 0L-12 19Z" fill="${col}" stroke="${col}" stroke-width="4" stroke-linejoin="round"/>`}
 var DRAG='';const RR=188,RH=148;
+function dot(x,y,r,pc,on){if(on===false)return `<circle cx="${x}" cy="${y}" r="${r}" fill="${OFFC}" stroke="#000" stroke-width="3"/>`;return `<circle class="br" cx="${x}" cy="${y}" r="${r+10}" fill="${pc.a}" opacity=".3"/><circle data-k="d" cx="${x}" cy="${y}" r="${r}" fill="${pc.g}" stroke="#000" stroke-width="3"/><circle cx="${x-r*.3}" cy="${y-r*.32}" r="${r*.26}" fill="#fff" opacity=".45"/>`}
 function rimT(m,pc,on,fine){m=wrap(m);const am=(m%60)*6,ah=(Math.floor(m/60)%12)*30+(m%60)*.5,[x,y]=P(am,RR),[hx,hy]=P(ah,RH);let d='';for(let i=0;i<12;i++){const[px,py]=P(i*30,RR),[qx,qy]=P(i*30,RH);d+=`<circle cx="${px}" cy="${py}" r="${i===0?4.5:3}" fill="${pc.h}"/><circle cx="${qx}" cy="${qy}" r="${i===0?3.5:2.5}" fill="${pc.h}"/>`}
  if(fine)for(let i=0;i<60;i++){if(i%5===0)continue;const[x0,y0]=P(i*6,RR-8),[x1,y1]=P(i*6,RR-3);d+=`<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="${pc.h}" stroke-width="1.5" opacity=".7"/>`}
- const rm=DRAG==='min'?27:21,rh=DRAG==='hr'?21:16;
- return `<circle cx="${C}" cy="${C}" r="${RR}" fill="none" stroke="${pc.h}" stroke-width="2" opacity=".5"/><circle cx="${C}" cy="${C}" r="${RH}" fill="none" stroke="${pc.h}" stroke-width="2" opacity=".35"/>${d}<circle cx="${hx}" cy="${hy}" r="${rh}" fill="${on?pc.s:OFFC}" stroke="#000" stroke-width="3"/><circle cx="${x}" cy="${y}" r="${rm}" fill="${on?pc.t:OFFC}" stroke="#000" stroke-width="3"/>`}
-function rimL(v,lo,hi,pc){const a=-135+270*(v-lo)/(hi-lo),[x,y]=P(a,RR);return arc(RR,-135,135,pc.h,2,.5)+arc(RR,-135,a,pc.s,4,.9)+`<circle cx="${x}" cy="${y}" r="${DRAG==="lin"?27:21}" fill="${pc.t}" stroke="#000" stroke-width="3"/>`}
-function rimS(v,pc){const[x,y]=P((v%12)*30,RR);let d='';for(let i=0;i<12;i++){const[px,py]=P(i*30,RR);d+=`<circle cx="${px}" cy="${py}" r="3" fill="${pc.h}"/>`}return `<circle cx="${C}" cy="${C}" r="${RR}" fill="none" stroke="${pc.h}" stroke-width="2" opacity=".5"/>${d}<circle cx="${x}" cy="${y}" r="${DRAG==="step"?27:21}" fill="${pc.t}" stroke="#000" stroke-width="3"/>`}
-function pill(x,y,w,h,col){return `<rect x="${x-w/2}" y="${y-h/2}" width="${w}" height="${h}" rx="${h/2}" fill="none" stroke="${col}" stroke-width="2"/>`}
-const usual=s=>s.days[2].on?s.days[2].min:null;
+ return `<circle cx="${C}" cy="${C}" r="${RR}" fill="none" stroke="${pc.trk}" stroke-width="3"/><circle cx="${C}" cy="${C}" r="${RH}" fill="none" stroke="${pc.trk}" stroke-width="3" opacity=".7"/>${d}`+dot(hx,hy,DRAG==='hr'?21:16,pc,on)+dot(x,y,DRAG==='min'?27:21,pc,on)}
+function rimL(v,lo,hi,pc){const a=-135+270*(v-lo)/(hi-lo),[x,y]=P(a,RR);return arc(RR,-135,135,pc.trk,6)+arc(RR,-135,Math.max(a,-134.8),pc.a,8)+dot(x,y,DRAG==='lin'?27:21,pc)}
+function rimS(v,pc){const[x,y]=P((v%12)*30,RR);let d='';for(let i=0;i<12;i++){const[px,py]=P(i*30,RR);d+=`<circle cx="${px}" cy="${py}" r="3" fill="${pc.h}"/>`}return `<circle cx="${C}" cy="${C}" r="${RR}" fill="none" stroke="${pc.trk}" stroke-width="3"/>${d}`+dot(x,y,DRAG==='step'?27:21,pc)}
 function next(s){const t=s.one??usual(s);if(t!=null&&!s.skip)return{i:2,min:t};for(let k=2;k<=7;k++){const i=(1+k)%7;if(s.days[i].on)return{i,min:s.days[i].min,sk:t!=null&&s.skip}}return{none:1,sk:t!=null&&s.skip}}
-function picker(s,m,pc,title,on,sub,subCol,fine){const a=t12(m);let h=rimT(m,pc,on,fine)+T(C,140,30,title,pc.s,400);
-  h+=T(152,218,92,a.h,on?pc.t:OFFC,300)+T(C,214,76,':',on?pc.s:OFFC,300)+T(314,218,92,a.mm,on?pc.t:OFFC,300)+T(C,282,30,a.ap,on?pc.s:OFFC,400);
-  if(sub)h+=T(C,324,28,sub,subCol||pc.h,400);return h}
+function picker(s,m,pc,title,on,sub,subCol,fine){const a=t12(m);let h=rimT(m,pc,on,fine)+T(C,140,30,title,pc.a,500);
+  h+=T(160,218,80,a.h,on?pc.t:OFFC,300)+T(C,214,66,':',on?pc.s:OFFC,300)+T(306,218,80,a.mm,on?pc.t:OFFC,300)+T(C,282,30,a.ap,on?pc.a:OFFC,500);
+  if(sub)h+=T(C,324,28,sub,subCol||pc.s,400);return h}
+const pillsRow=(pc,pg)=>PG.map((_,i)=>{const cx=C+(i-(PG.length-1)/2)*16,w=i==pg?14:6;return `<rect x="${cx-w/2}" y="378" width="${w}" height="6" rx="3" fill="${i==pg?pc.t:pc.trk}"/>`}).join('');
 
-function draw(n,s){let h='';const pc=face(s,true);
-if(n==='clock'){const f=face(s,s.awake),ph=f.ph,nx=next(s),dimOff=0;
- if(ph.p==='day'||(ph.p==='wind'&&ph.w<.5))h+=T(C,140,30,'Tue, Nov 12',f.s,400);
- const m=s.sunT!=null?wrap(420+Math.round(s.sunT)):s.now;
- h+=TM(C,213,104,m,f.t,300,30);
- h+=T(C,290,34,s.sunT!=null?'Sunrise · alarm 7:00 AM':nx.none?'No alarm set':DN[nx.i]+' '+f12(nx.min),f.s,400);
+function draw(n,s){let h='';
+if(n==='clock'){const ph=phase(s),w=ph.w,ws=w*w*(3-2*w),night=ph.p==='night',dawn=s.sunT!=null,nx=next(s),id='u'+(UID++);let tc,sc,hc,wc=WARN;
+ if(night||dawn){const vis=(s.awake||dawn)?.85:.5,am=NA.map(v=>v*vis);tc=hex(am);sc=hex(am.map(v=>v*.72));hc=hex(am.map(v=>v*.5))}
+ else{const[c1,c2]=sky(s.now),k=.55+.45*s.dayB/100,top=mix(c1,BK,ws).map(v=>v*k),bot=mix(c2,BK,ws).map(v=>v*k),am=NA.map(v=>v*.85);
+  h+=`<defs><linearGradient id="${id}" x1=".2" y1="0" x2=".8" y2="1">${RM?'':'<animateTransform attributeName="gradientTransform" type="rotate" values="-16 .5 .5;16 .5 .5;-16 .5 .5" dur="18s" repeatCount="indefinite"/>'}<stop offset="0" stop-color="${hex(top)}"/><stop offset="1" stop-color="${hex(bot)}"/></linearGradient></defs><circle cx="${C}" cy="${C}" r="233" fill="url(#${id})"/><circle class="br" cx="${C}" cy="205" r="150" fill="#fff" opacity="${(.12*(1-ws)).toFixed(3)}"/>`;
+  tc=hex(mix(WH,am,ws));sc=hex(mix(mix(WH,top,.12),am.map(v=>v*.78),ws));hc=sc;wc=ws<.6?tc:WARN}
+ if(!dawn&&(ph.p==='day'||(ph.p==='wind'&&ph.w<.5)))h+=T(C,140,30,'Tue, Nov 12',sc,500);
+ const m=dawn?wrap(420+Math.round(s.sunT)):s.now;
+ h+=TM(C,213,104,m,tc,300,30);
+ if(dawn)h+=T(C,290,32,'Sunrise',sc,400);else if(nx.none)h+=T(C,290,34,'No alarm set',sc,400);else h+=ico('bell',112,289,sc)+T(C+20,290,34,DN[nx.i]+' '+f12(nx.min),sc,400);
  const st=s.msg||(nx.sk?'Wed skipped':'');
- if(st)h+=T(C,336,28,st,WARN,400);else if(s.awake&&s.sunT==null)h+=ico('gear',C,340,f.h);
- if(s.awake&&s.sunT==null)h+=ico('cal',C,52,f.h)+ico('bell',C,414,f.h)+ico('sun',44,C,f.h)+ico('spk',422,C,f.h)}
-if(n==='tmr'){const u=usual(s),t=s.one??u;
- if(t==null)h+=picker(s,420,pc,'Tomorrow',false,'Drag a dot to set one',pc.h);
- else{const sub=s.skip?'Skipped':s.one!=null?'Once only':'';h+=picker(s,t,pc,'Tomorrow',!s.skip,sub,s.skip?WARN:OK);if(s.skip)h+=`<line x1="90" y1="218" x2="376" y2="218" stroke="${WARN}" stroke-width="5" stroke-linecap="round"/>`}}
-if(n==='week'){const nx=next(s);for(let i=0;i<7;i++){const a0=i*360/7-180/7+1,a1=a0+360/7-2,d=s.days[i],[x,y]=P((a0+a1)/2,148);
-  h+=wedge(a0,a1,98,222,d.on?'#1f150b':'#0d0c0b',d.on?'#3d2815':'#1b1917')+T(x,y-15,28,DN[i],d.on?pc.t:OFFC,500)+T(x,y+16,26,d.on?f12(d.min).replace(' ',''):'off',d.on?pc.s:'#6a5a4a',400)}
- h+=`<circle cx="${C}" cy="${C}" r="92" fill="#0b0b0b" stroke="#2a2420"/>`+(nx.none?T(C,233,34,'None',pc.t,500):T(C,214,34,DN[nx.i],pc.t,500)+T(C,254,30,f12(nx.min),pc.s,400))}
-if(n==='day'){const d=s.days[s.sel];h+=picker(s,d.min,pc,DF[s.sel],d.on,d.on?'':'Off',pc.h)}
-if(n==='sound'){let bars='';for(let i=0;i<10;i++){const bh=10+i*3.2,x=C-99+i*22;bars+=`<rect x="${x}" y="${176-bh}" width="14" height="${bh}" rx="4" fill="${i<s.vol/10?pc.t:'#2a211a'}"/>`}
- h+=rimL(s.vol,0,100,pc)+T(C,118,30,'Sound',pc.s,400)+bars+playIco(C,222,s.play,pc.t)+pill(C,293,250,56,pc.h)+ico('moon',C-62,293,pc.s)+T(C+28,293,30,TIMER[s.ti][0],pc.s,400)}
-if(n==='light'){const l=s.lt.l[s.lt.m],m=s.lt.m,on=s.lt.on;
- h+=rimL(l,5,100,pc)+T(C,118,30,'Light',pc.s,400)+T(C,200,72,on?l+'%':'Off',on?pc.t:OFFC,300)
-  +`<rect x="${m?C:C-125}" y="265" width="125" height="56" rx="28" fill="${pc.h}" opacity=".5"/>`+pill(C,293,250,56,pc.h)+ico('moon',C-62,293,m?pc.h:pc.t)+ico('sun',C+62,293,m?pc.t:pc.h)}
-if(n==='ring'){if(s.done)h+=T(C,233,56,'Good morning','#fff0dc',300);
- else{h+=TM(C,185,112,420,'#fff0dc',300,30)+T(C,262,30,s.snz?'Tap to snooze':'No snoozes left','#e8cfae',400)+T(C,308,28,'Hold to stop','#a8927a',400);
-  for(let k=0;k<3;k++)h+=`<circle cx="${C-20+k*20}" cy="350" r="5" fill="${k<s.snz?'#fff0dc':'#4a3d32'}"/>`;if(s.hold>0)h+=arc(222,0,360*s.hold,'#fff0dc',8)}}
-if(n==='set'){const g=PG[s.pg];
-  const dots=PG.map((_,i)=>{const cx=C+(i-(PG.length-1)/2)*16,w=i==s.pg?14:6;return `<rect x="${cx-w/2}" y="401" width="${w}" height="6" rx="3" fill="${i==s.pg?pc.t:'#3a3129'}"/>`}).join('');
-  if(g==='Time')h=picker(s,s.clk,pc,g,true,'',null,true);
-  if(g==='Date'){const d=s.dat,cc=i=>s.df===i?pc.t:pc.s,ul=[[C-44,C+44,180],[C-66,C+66,296],[C-56,C+56,352]][s.df];
-   h=rimS(s.df===0?d.m:s.df===1?d.d:d.y,pc)+T(C,150,44,MON[d.m],cc(0),400)+T(C,236,110,d.d,cc(1),300)+T(C,326,44,d.y,cc(2),300)+`<line x1="${ul[0]}" y1="${ul[2]}" x2="${ul[1]}" y2="${ul[2]}" stroke="${pc.t}" stroke-width="3" stroke-linecap="round"/>`}
-  if(g==='Region')h=rimS(s.rg,pc)+T(C,128,30,g,pc.s,400)+T(C,206,46,REG[s.rg][0],pc.t,300)+T(C,262,38,REG[s.rg][2],pc.s,300)+T(C,318,28,REG[s.rg][1],pc.h,400);
-  if(g==='Sleep'){const bed=wrap(s.ns),wk=wrap(s.ne),ang=m=>(Math.floor(m/60)%12)*30+(m%60)*.5,ab=ang(bed),aw=ang(wk),dur=wrap(wk-bed),span=Math.min(359,dur*.5);let band='';
-    for(let i=0;i<18;i++)band+=arc(RR,ab-90+i*5,ab-90+i*5+5.6,pc.s,10,(i+1)/18*.5);
-    band+=arc(RR,ab,ab+span,pc.h,10,.9);
-    const[bx,by]=P(ab,RR),[wx,wy]=P(aw,RR),dk='#1a1008',rb=DRAG==='bed'?27:21,rw=DRAG==='wake'?27:21;
-    const hrs=Math.floor(dur/60)+' h'+(dur%60?' '+String(dur%60).padStart(2,'0')+' min':'');
-    h=band+`<circle cx="${bx}" cy="${by}" r="${rb}" fill="${pc.t}" stroke="#000" stroke-width="3"/>`+ico('moon',bx,by,dk).replace('data-k="1" ','')+`<circle cx="${wx}" cy="${wy}" r="${rw}" fill="${pc.t}" stroke="#000" stroke-width="3"/>`+ico('sun',wx,wy,dk).replace('data-k="1" ','')
-     +T(C,118,30,g,pc.s,400)+ico('moon',C-110,176,pc.s)+T(C+24,176,40,f12(bed),pc.t,300)+ico('sun',C-110,236,pc.s)+T(C+24,236,40,f12(wk),pc.t,300)+T(C,296,28,hrs,pc.h,400)}
-  if(g==='Brightness'){const v=(s.dayB-10)/90,r=30+42*v;h=rimL(s.dayB,10,100,pc)+`<circle cx="${C}" cy="215" r="${r+18}" fill="${pc.t}" opacity="${.08+.12*v}"/><circle cx="${C}" cy="215" r="${r+9}" fill="${pc.t}" opacity="${.14+.16*v}"/><circle cx="${C}" cy="215" r="${r}" fill="${pc.t}" opacity="${.35+.6*v}"/>`+T(C,104,30,g,pc.s,400)+T(C,338,46,s.dayB+'%',pc.t,300)}
-  if(g==='Alarm volume'){const n=Math.round(1+(s.ld-30)/70*4);let w='';for(let i=1;i<=5;i++){const r=34+i*24,a0=90-38,a1=90+38,[x0,y0]=[C-34+r*Math.sin(a0*Math.PI/180),215-r*Math.cos(a0*Math.PI/180)],[x1,y1]=[C-34+r*Math.sin(a1*Math.PI/180),215-r*Math.cos(a1*Math.PI/180)];w+=`<path d="M${x0} ${y0}A${r} ${r} 0 0 1 ${x1} ${y1}" fill="none" stroke="${i<=n?pc.t:'#2a211a'}" stroke-width="7" stroke-linecap="round"/>`}
-    h=rimL(s.ld,30,100,pc)+w+`<g transform="translate(${C-58} 215) scale(2.3)" fill="none" stroke="${pc.t}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M-15 -6H-8L2 -14V14L-8 6H-15Z"/></g>`+T(C,104,30,g,pc.s,400)+T(C,338,46,s.ld+'%',pc.t,300)}
-  if(g==='Preview alarm'){h=`<defs><linearGradient id="dg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ffeedd"/><stop offset=".3" stop-color="#ff9a3c"/><stop offset=".65" stop-color="#8a1a05"/><stop offset="1" stop-color="#1a0500"/></linearGradient></defs><circle cx="${C}" cy="212" r="88" fill="url(#dg)" opacity=".92"/><circle cx="${C}" cy="212" r="88" fill="none" stroke="${pc.h}" stroke-width="2"/>`+T(C,104,30,g,pc.s,400)+T(C,336,46,'Hold',pc.t,300)+(s.hold>0?arc(222,0,360*s.hold,'#fff0dc',8):'')}
-  if(g==='About'){h=arc(122,-135,135,pc.h,4,.5)+arc(122,-135,-135+270*.82,pc.t,4,1)+T(C,100,30,g,pc.s,400)+T(C,206,64,'v0.1',pc.t,300)+T(C,274,28,'Battery 82%',pc.h,400)}
-  h+=dots}
-if(n==='dialfig'){h+=rimT(405,pc,true)+T(C,176,28,'Outer dot: minutes',pc.s,400)+T(C,220,28,'Inner dot: hours',pc.s,400)+T(C,264,28,'Clockwise: later',pc.s,400)}
+ if(st)h+=T(C,336,28,st,wc,500);else if(s.awake&&!dawn)h+=ico('gear',C,340,hc);
+ if(s.awake&&!dawn)h+=ico('cal',C,52,hc)+ico('bell',C,414,hc)+ico('sun',44,C,hc)+ico('spk',422,C,hc)}
+if(n==='tmr'){const pc=theme('alarm',s),u=usual(s),t=s.one??u;h+=pc.defs;
+ if(t==null)h+=picker(s,420,pc,'Tomorrow',false,'Drag a dot to set one',pc.s);
+ else{const sub=s.skip?'Skipped':s.one!=null?'Once only':'';h+=picker(s,t,pc,'Tomorrow',!s.skip,sub,s.skip?WARN:pc.s);if(s.skip)h+=`<line x1="106" y1="218" x2="360" y2="218" stroke="${WARN}" stroke-width="5" stroke-linecap="round"/>`}}
+if(n==='week'){const pc=theme('alarm',s),nx=next(s);h+=pc.defs;for(let i=0;i<7;i++){const a0=i*360/7-180/7+1.5,a1=a0+360/7-3,d=s.days[i],[x,y]=P((a0+a1)/2,148),dk=pc.night?pc.t:'#2a0a12';
+   h+=(d.on?wedge(a0,a1,98,222,pc.night?'#2a1a0a':pc.g,pc.night?1:.95):wedge(a0,a1,98,222,pc.trk,.55))+T(x,y-15,28,DN[i],d.on?dk:pc.h,500)+T(x,y+16,26,d.on?f12(d.min).replace(' ',''):'off',d.on?dk:pc.h,d.on?500:400)}
+  h+=`<circle cx="${C}" cy="${C}" r="90" fill="#000" opacity=".55"/>`+(nx.none?T(C,233,34,'None',pc.t,500):T(C,214,34,DN[nx.i],pc.t,500)+T(C,254,30,f12(nx.min),pc.a,500))}
+if(n==='day'){const pc=theme('alarm',s),d=s.days[s.sel];h+=pc.defs+picker(s,d.min,pc,DF[s.sel],d.on,d.on?'':'Off',pc.h)}
+if(n==='sound'){const pc=theme('sound',s);let bars='';for(let i=0;i<10;i++){const bh=12+i*3.6,x=C-104+i*22,lit=i<s.vol/10;bars+=`<rect ${lit&&s.play?`class="eq" style="animation-delay:${(i*.11).toFixed(2)}s"`:''} x="${x}" y="${180-bh}" width="14" height="${bh}" rx="5" fill="${lit?pc.g:pc.trk}"/>`}
+  h+=pc.defs+rimL(s.vol,0,100,pc)+T(C,112,30,'Sound',pc.a,500)+bars+playIco(C,224,s.play,pc.t)+`<rect x="${C-125}" y="265" width="250" height="56" rx="28" fill="${pc.trk}" opacity=".6"/>`+ico('moon',C-64,293,pc.a)+T(C+26,293,30,TIMER[s.ti][0],pc.t,400)}
+if(n==='light'){const m=s.lt.m,pc=theme(m?'light':'nlight',s),l=s.lt.l[m],on=s.lt.on;
+  h+=pc.defs+(on?`<circle class="br" cx="${C}" cy="196" r="${64+46*l/100}" fill="${pc.a}" opacity="${(.12+.2*l/100).toFixed(2)}"/>`:'')+rimL(l,5,100,pc)+T(C,112,30,'Light',pc.a,500)+T(C,200,76,on?l+'%':'Off',on?pc.t:OFFC,300)
+   +`<rect x="${C-125}" y="265" width="250" height="56" rx="28" fill="${pc.trk}" opacity=".6"/><rect x="${m?C:C-125}" y="265" width="125" height="56" rx="28" fill="${pc.g}"/>`+ico('moon',C-62,293,m?pc.s:'#2a0d06')+ico('sun',C+62,293,m?'#2a1a04':pc.s)}
+if(n==='ring'){const id='u'+(UID++),dk='#2b0d05',d2='#6a2a12';h+=`<defs><linearGradient id="${id}" x1=".2" y1="0" x2=".8" y2="1">${RM?'':'<animateTransform attributeName="gradientTransform" type="rotate" values="-20 .5 .5;20 .5 .5;-20 .5 .5" dur="6s" repeatCount="indefinite"/>'}<stop offset="0" stop-color="#ffe89a"/><stop offset=".55" stop-color="#ffb24d"/><stop offset="1" stop-color="#ff6f61"/></linearGradient></defs><circle cx="${C}" cy="${C}" r="233" fill="url(#${id})"/>`;
+ if(s.done){let rays='';for(let i=0;i<12;i++){const[x0,y0]=P(i*30,120),[x1,y1]=P(i*30,210);rays+=`<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".35"/>`}h+=`<g class="spin">${rays}</g>`+T(C,222,40,'Good',dk,500)+T(C,266,40,'morning',dk,500)}
+ else{h+=`<circle class="br" cx="${C}" cy="185" r="140" fill="#fff" opacity=".22"/>`+TM(C,185,112,420,dk,400,30)+T(C,262,30,s.snz?'Tap to snooze':'No snoozes left',dk,500)+T(C,308,28,'Hold to stop',d2,400);
+  for(let k=0;k<3;k++)h+=`<circle cx="${C-20+k*20}" cy="350" r="6" fill="${dk}" opacity="${k<s.snz?1:.25}"/>`;if(s.hold>0)h+=arc(222,0,360*s.hold,dk,10)}}
+if(n==='set'){const g=PG[s.pg],pc=theme({Time:'time',Date:'date',Region:'region',Bedtime:'bed',Brightness:'light',Alarm:'alarm',About:'about'}[g],s);h=pc.defs;
+  if(g==='Time')h+=picker(s,s.clk,pc,g,true,'',null,true);
+  if(g==='Date'){const d=s.dat,ul=[[C-44,C+44,180],[C-66,C+66,296],[C-56,C+56,352]][s.df];
+   h+=rimS(s.df===0?d.m:s.df===1?d.d:d.y,pc)+T(C,150,44,MON[d.m],s.df===0?pc.a:pc.s,500)+T(C,236,110,d.d,pc.t,300)+T(C,326,44,d.y,s.df===2?pc.a:pc.s,300)+`<line x1="${ul[0]}" y1="${ul[2]}" x2="${ul[1]}" y2="${ul[2]}" stroke="${pc.a}" stroke-width="4" stroke-linecap="round"/>`}
+  if(g==='Region')h+=rimS(s.rg,pc)+T(C,128,30,g,pc.a,500)+T(C,206,46,REG[s.rg][0],pc.t,300)+T(C,262,38,REG[s.rg][2],pc.s,300)+T(C,318,28,REG[s.rg][1],pc.h,400);
+  if(g==='Bedtime'){const bed=wrap(s.ns),wk=wakeMin(s),ang=m=>(Math.floor(m/60)%12)*30+(m%60)*.5,ab=ang(bed),dur=wrap(wk-bed),span=Math.min(359,dur*.5);let band='';
+    for(let i=0;i<18;i++)band+=arc(RR,ab-90+i*5,ab-90+i*5+5.6,pc.a,10,(i+1)/18*.45);
+    band+=arc(RR,ab,ab+span,pc.a,12,1);
+    const[bx,by]=P(ab,RR),[wx,wy]=P(ab+span,RR);
+    h+=`<circle cx="${C}" cy="${C}" r="${RR}" fill="none" stroke="${pc.trk}" stroke-width="3"/>`+band+`<circle cx="${wx}" cy="${wy}" r="18" fill="#000" stroke="${pc.alarm}" stroke-width="3"/>`+ico('bell',wx,wy,pc.alarm,.75,true)+dot(bx,by,DRAG==='bed'?27:21,pc)+ico('moon',bx,by,'#140c33',.8,true)
+     +T(C,128,30,g,pc.a,500)+T(C,204,56,f12(bed),pc.t,300)+T(C,266,28,'Wind down '+f12(bed-180),pc.s,400)+T(C,310,28,'Alarm '+f12(wk),pc.alarm,500)}
+  if(g==='Brightness'){const v=(s.dayB-10)/90,r=30+42*v;h+=rimL(s.dayB,10,100,pc)+`<circle class="br" cx="${C}" cy="215" r="${r+26}" fill="${pc.a}" opacity="${(.1+.14*v).toFixed(2)}"/><circle cx="${C}" cy="215" r="${r+11}" fill="${pc.a}" opacity="${(.16+.2*v).toFixed(2)}"/><circle cx="${C}" cy="215" r="${r}" fill="${pc.g}"/>`+T(C,104,30,g,pc.a,500)+T(C,338,46,s.dayB+'%',pc.t,300)}
+  if(g==='Alarm'){const nW=Math.round(1+(s.ld-30)/70*2);let wv='';for(let i=1;i<=3;i++){const r=44+i*20,c=i<=nW?pc.a:pc.trk;wv+=arcAt(C,196,r,62,118,c,7)+arcAt(C,196,r,242,298,c,7)}
+    h+=rimL(s.ld,30,100,pc)+wv+ico('bell',C,196,pc.t,2.6,false,s.test?'wig':'')+T(C,104,30,g,pc.a,500)+T(C,296,46,s.ld+'%',pc.t,300)+T(C,340,26,s.test?'Tap to stop':'Tap to test',pc.s,400)}
+  if(g==='About')h+=arc(122,-135,135,pc.trk,6)+arc(122,-135,-135+270*.82,pc.a,8)+T(C,150,30,g,pc.a,500)+T(C,212,60,'v0.1',pc.t,300)+T(C,274,28,'Battery 82%',pc.s,400);
+  h+=pillsRow(pc,s.pg)}
+if(n==='dialfig'){const pc=theme('alarm',s);h+=pc.defs+rimT(405,pc,true)+T(C,176,28,'Outer dot: minutes',pc.t,400)+T(C,220,28,'Inner dot: hours',pc.t,400)+T(C,264,28,'Clockwise: later',pc.a,500)}
 return h}
 //</draw>
 
@@ -310,7 +326,7 @@ day:[['Drag a dot','Outer dot minutes, inner dot hours'],['Tap centre','Turn the
 sound:[['Drag the dot','Volume'],['Tap the icon','Play or pause'],['Tap the pill','Sleep timer'],['Swipe right','Back to the clock']],
 light:[['Drag the dot','Brightness'],['Tap the number','On or off'],['Tap the pill','Night light or reading light'],['Swipe left','Back to the clock']],
 ring:[['Tap anywhere','Snooze 9 minutes'],['Hold 2 seconds','Turn the alarm off']],
-set:[['Drag the dot','Change the value'],['Tap a number','Pick which (date)'],['Swipe sideways','Next page'],['Swipe down','Back to the clock']]};
+set:[['Drag the dot','Change the value'],['Tap','Pick a date line, or test the alarm'],['Swipe sideways','Next page'],['Swipe down','Back to the clock']]};
 
 //<check>
 function states(){const L=[],add=(n,f)=>{const s=fresh();f&&f(s);L.push([n,s])};
@@ -321,21 +337,21 @@ function states(){const L=[],add=(n,f)=>{const s=fresh();f&&f(s);L.push([n,s])};
  for(const m of [0,425,1255,779,60,1439])for(const f of [s=>{},s=>{s.one=m},s=>{s.skip=true},s=>{s.days[2].on=false}])add('tmr',s=>{s.days[2].min=m;f(s)});
  add('tmr',s=>{s.one=500;s.days[2].on=false});
  add('week');add('week',s=>{s.days.forEach(d=>d.on=true);s.days.forEach((d,i)=>d.min=(i*140+1000)%1440)});add('week',s=>{s.days.forEach(d=>d.on=false)});add('week',s=>{s.days.forEach((d,i)=>{d.on=true;d.min=1439-i*61})});
- for(let i=0;i<7;i++)for(const on of [true,false])for(const m of [425,1255,719,60])add('day',s=>{s.sel=i;s.days[i].on=on;s.days[i].min=m});
+ for(let i=0;i<7;i++)for(const on of [true,false])for(const m of [425,1255,719,60,180,585,765,195,555,1410])add('day',s=>{s.sel=i;s.days[i].on=on;s.days[i].min=m});
  for(let ti=0;ti<5;ti++)for(const pl of [true,false])for(const v of [0,100])add('sound',s=>{s.ti=ti;s.play=pl;s.vol=v});
  for(const m of [0,1])for(const on of [true,false])for(const l of [5,100])add('light',s=>{s.lt.m=m;s.lt.on=on;s.lt.l[m]=l});
  for(const z of [0,1,2,3])add('ring',s=>{s.snz=z});add('ring',s=>{s.done=true});add('ring',s=>{s.hold=.6});
- for(let p=0;p<PG.length;p++)for(let r=0;r<REG.length;r++)add('set',s=>{s.pg=p;s.rg=r;s.dat={m:r%12,d:28,y:2099};s.dayB=100;s.ns=1380;s.ne=1000;s.ld=100;s.clk=779});
- for(const df of [0,1,2])add('set',s=>{s.pg=1;s.df=df;s.dat={m:df*5+1,d:df===1?28:7,y:2099}});for(const ns of [1350,1230,180,1439,1260])for(const ne of [420,100,720,1000,540,480]){const d=wrap(ne-ns);if(d>=240&&d<=720)add('set',s=>{s.pg=3;s.ns=ns;s.ne=ne})}for(const v of [30,65,100])add('set',s=>{s.pg=5;s.ld=v});for(const v of [10,55,100])add('set',s=>{s.pg=4;s.dayB=v});add('dialfig');return L}
+ for(let p=0;p<PG.length;p++)for(let r=0;r<REG.length;r++)add('set',s=>{s.pg=p;s.rg=r;s.dat={m:r%12,d:28,y:2099};s.dayB=100;s.ns=1380;s.ld=100;s.clk=779});
+ for(const df of [0,1,2])add('set',s=>{s.pg=1;s.df=df;s.dat={m:df*5+1,d:df===1?28:7,y:2099}});for(const ns of [1350,1230,60,1439,1260])for(const al of [405,300,720,540])add('set',s=>{s.pg=3;s.ns=ns;s.days[2].min=al});add('set',s=>{s.pg=5;s.test=true});for(const now of [1394,1290])for(let p=0;p<PG.length;p++)add('set',s=>{s.pg=p;s.now=now});for(const now of [1394,1290])for(const n of ['tmr','week','day','sound','light'])add(n,s=>{s.now=now});for(const v of [30,65,100])add('set',s=>{s.pg=5;s.ld=v});for(const v of [10,55,100])add('set',s=>{s.pg=4;s.dayB=v});add('dialfig');return L}
 function layoutCheck(){const g=$('chk'),svg=$('dev'),sr=svg.getBoundingClientRect(),k=588/sr.width,issues=[],seen={};let boxes=0,all=states();
  for(const[n,s]of all){g.innerHTML=draw(n,s);const els=[...g.querySelectorAll('[data-k]')],R=[],ys=[];
   for(const e of els){const r=e.getBoundingClientRect();let x0=(r.left-sr.left)*k-61,x1=(r.right-sr.left)*k-61,y0=(r.top-sr.top)*k-61,y1=(r.bottom-sr.top)*k-61;
    const tag=e.tagName.toLowerCase();if(tag==='text'){const cy=(y0+y1)/2,hh=(y1-y0)*.4;y0=cy-hh;y1=cy+hh;ys.push(cy);const fs=+e.getAttribute('font-size');if(fs<MINFONT)issues.push(n+': font '+fs+'px "'+e.textContent+'"')}
-   R.push({x0,x1,y0,y1,t:(e.textContent||tag).trim().slice(0,22)});boxes++}
+   R.push({x0,x1,y0,y1,dot:e.getAttribute('data-k')==='d',t:(e.textContent||tag).trim().slice(0,22)});boxes++}
   ys.sort((a,b)=>a-b);let lines=ys.length?1:0;for(let i=1;i<ys.length;i++)if(ys[i]-ys[i-1]>14)lines++;if(lines>MAXLINES&&n!=='week'&&n!=='dialfig'){const key=n+'|lines|'+lines;if(!seen[key]){seen[key]=1;issues.push(n+': '+lines+' text lines (max '+MAXLINES+') '+JSON.stringify([s.now,s.pg,s.msg]))}}
   const lab=n+' '+JSON.stringify([s.now,s.awake,s.msg,s.pg,s.rg,s.sel,s.skip,s.one,s.ti,s.hold,s.done]);
-  for(const r of R){for(const[x,y]of[[r.x0,r.y0],[r.x1,r.y0],[r.x0,r.y1],[r.x1,r.y1]])if(Math.hypot(x-C,y-C)>SAFE){const key=n+'|out|'+r.t;if(!seen[key]){seen[key]=1;issues.push(n+': outside safe circle "'+r.t+'" ('+Math.round(Math.hypot(x-C,y-C))+'px) '+lab)}break}}
-  for(let i=0;i<R.length;i++)for(let j=i+1;j<R.length;j++){const a=R[i],b=R[j];if(a.x0<b.x1+3&&b.x0<a.x1+3&&a.y0<b.y1+3&&b.y0<a.y1+3){const key=n+'|ov|'+a.t+'|'+b.t;if(!seen[key]){seen[key]=1;issues.push(n+': overlap "'+a.t+'" with "'+b.t+'" '+lab)}}}}
+  for(const r of R){if(r.dot)continue;for(const[x,y]of[[r.x0,r.y0],[r.x1,r.y0],[r.x0,r.y1],[r.x1,r.y1]])if(Math.hypot(x-C,y-C)>SAFE){const key=n+'|out|'+r.t;if(!seen[key]){seen[key]=1;issues.push(n+': outside safe circle "'+r.t+'" ('+Math.round(Math.hypot(x-C,y-C))+'px) '+lab)}break}}
+  for(let i=0;i<R.length;i++)for(let j=i+1;j<R.length;j++){const a=R[i],b=R[j];if(a.dot&&b.dot)continue;if(a.x0<b.x1+3&&b.x0<a.x1+3&&a.y0<b.y1+3&&b.y0<a.y1+3){const key=n+'|ov|'+a.t+'|'+b.t;if(!seen[key]){seen[key]=1;issues.push(n+': overlap "'+a.t+'" with "'+b.t+'" '+lab)}}}}
  g.innerHTML='';return{states:all.length,boxes,issues}}
 //</check>
 
@@ -346,12 +362,12 @@ const SK=[[-30,[0,0,0]],[-27,[34,0,0]],[-15,[150,8,0]],[-10,[236,66,8]],[-5,[255
 function sunCol(t){t=clamp(t,-30,10);for(let i=1;i<SK.length;i++)if(t<=SK[i][0]){const[a,ca]=SK[i-1],[b,cb]=SK[i];return 'rgb('+mix(ca,cb,(t-a)/(b-a)).map(Math.round).join(',')+')'}return 'rgb(255,236,208)'}
 const sunK=t=>clamp(Math.pow((t+30)/40,1.6),0,1);
 function glow(col,k){[...leds.children].forEach(c=>{c.setAttribute('fill',k>0?col:'#26272a');c.setAttribute('opacity',k>0?.35+.65*k:1)});$('glow').style.background=col;$('glow').style.opacity=k>0?(.12+.5*k):0}
-function sync(){if(S.scr==='ring'&&S.sunT==null)glow('#ffe9cc',1);else if(S.sunT!=null)glow(sunCol(S.sunT),sunK(S.sunT));else if(S.lt.on)glow(S.lt.m?'#ffb46a':'#ff3a10',S.lt.l[S.lt.m]/100);else glow('#000',0)}
+function sync(){if(S.scr==='ring'&&S.sunT==null)glow('#ffe9cc',1);else if(S.test&&S.scr==='set')glow('#ffc070',S.ld/100);else if(S.sunT!=null)glow(sunCol(S.sunT),sunK(S.sunT));else if(S.lt.on)glow(S.lt.m?'#ffb46a':'#ff3a10',S.lt.l[S.lt.m]/100);else glow('#000',0)}
 function todLabel(){const ph=phase(S);$('todl').textContent=f12(S.now);return ph}
 function render(){cur.innerHTML=draw(S.scr,S);sync();$('lg').innerHTML=LG[S.scr].map(r=>`<div><b>${r[0]}</b><span>${r[1]}</span></div>`).join('');$('tod').value=S.now;todLabel()}
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;let anim=0,idleT,awT,busy=false;
-function nav(to,d,msg){old.innerHTML=cur.innerHTML;S.scr=to;if(msg)fb(msg);render();cancelAnimationFrame(anim);if(RM||!d){old.innerHTML='';cur.removeAttribute('transform');return}
- const t0=performance.now();(function st(t){const p=Math.min(1,(t-t0)/240),e=1-Math.pow(1-p,3);cur.setAttribute('transform',`translate(${d[0]*466*(1-e)} ${d[1]*466*(1-e)})`);old.setAttribute('transform',`translate(${-d[0]*466*e} ${-d[1]*466*e})`);old.setAttribute('opacity',1-e);if(p<1)anim=requestAnimationFrame(st);else{old.innerHTML='';old.removeAttribute('transform');old.removeAttribute('opacity');cur.removeAttribute('transform')}})(t0)}
+function nav(to,d,msg){old.innerHTML=cur.innerHTML;S.test=false;S.scr=to;if(msg)fb(msg);render();cancelAnimationFrame(anim);if(RM||!d){old.innerHTML='';cur.removeAttribute('transform');return}
+ const t0=performance.now();(function st(t){const p=Math.min(1,(t-t0)/340),q=p-1,e=1+2.2*q*q*q+1.2*q*q;cur.setAttribute('transform',`translate(${d[0]*466*(1-e)} ${d[1]*466*(1-e)})`);old.setAttribute('transform',`translate(${-d[0]*466*e} ${-d[1]*466*e})`);old.setAttribute('opacity',1-e);if(p<1)anim=requestAnimationFrame(st);else{old.innerHTML='';old.removeAttribute('transform');old.removeAttribute('opacity');cur.removeAttribute('transform')}})(t0)}
 function idle(){clearTimeout(idleT);if(S.scr!=='clock'&&S.scr!=='ring'&&!busy)idleT=setTimeout(()=>{if(S.scr!=='clock'&&S.scr!=='ring'&&!busy)nav('clock',null,'Back to the clock after 20 seconds, changes kept')},S.scr==='set'?30000:20000)}
 function wake(){S.awake=true;clearTimeout(awT);awT=setTimeout(()=>{S.awake=false;if(S.scr==='clock'&&!busy)render()},5000)}
 function ripple(x,y){const c=document.createElementNS(NS,'circle');c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('fill','#fff');$('fx').appendChild(c);const t0=performance.now();(function st(t){const p=Math.min(1,(t-t0)/380);c.setAttribute('r',12+30*p);c.setAttribute('opacity',.22*(1-p));p<1?requestAnimationFrame(st):c.remove()})(t0)}
@@ -369,19 +385,19 @@ function linInfo(){const s=S.scr;
  if(s==='sound')return{lo:0,hi:100,get:()=>S.vol,set:v=>{S.vol=v;fb('Volume '+v+'%')}};
  if(s==='light')return{lo:5,hi:100,get:()=>S.lt.l[S.lt.m],set:v=>{S.lt.on=true;S.lt.l[S.lt.m]=v;fb('Brightness '+v+'%')}};
  if(s==='set'&&PG[S.pg]==='Brightness')return{lo:10,hi:100,get:()=>S.dayB,set:v=>{S.dayB=v;fb('Daytime brightness '+v+'%')}};
- if(s==='set'&&PG[S.pg]==='Alarm volume')return{lo:30,hi:100,get:()=>S.ld,set:v=>{S.ld=v;fb('Alarm volume '+v+'%')}};
+ if(s==='set'&&PG[S.pg]==='Alarm')return{lo:30,hi:100,get:()=>S.ld,set:v=>{S.ld=v;fb('Alarm volume '+v+'%')}};
  return null}
 function knobs(){const s=S.scr;let m=null;
  if(s==='tmr')m=S.one??usual(S)??420;else if(s==='day')m=S.days[S.sel].min;
  else if(s==='set'){const g=PG[S.pg];if(g==='Time')m=S.clk}
  if(m!=null){m=wrap(m);return[{t:'min',a:(m%60)*6,r:RR},{t:'hr',a:(Math.floor(m/60)%12)*30+(m%60)*.5,r:RH}]}
- if(s==='set'&&PG[S.pg]==='Sleep'){const ang=q=>(Math.floor(wrap(q)/60)%12)*30+(wrap(q)%60)*.5;return[{t:'bed',a:ang(S.ns),r:RR},{t:'wake',a:ang(S.ne),r:RR}]}
+ if(s==='set'&&PG[S.pg]==='Bedtime'){const q=wrap(S.ns);return[{t:'bed',a:(Math.floor(q/60)%12)*30+(q%60)*.5,r:RR}]}
  const li=linInfo();if(li)return[{t:'lin',a:-135+270*(li.get()-li.lo)/(li.hi-li.lo),r:RR}];
  if(s==='set'){const g=PG[S.pg];if(g==='Date')return[{t:'step',a:((S.df===0?S.dat.m:S.df===1?S.dat.d:S.dat.y)%12)*30,r:RR}];if(g==='Region')return[{t:'step',a:(S.rg%12)*30,r:RR}]}
  return null}
 function dialMove(g){
  if(g.kt==='lin'){const li=linInfo(),v=clamp(Math.round((g.v0+g.acc*(li.hi-li.lo)/270)/5)*5,li.lo,li.hi);if(v!==li.get()){li.set(v);render()}}
- else{const unit=(g.kt==='bed'||g.kt==='wake')?7.5:30,st=Math.round(g.acc/unit);if(st!==g.applied){const n=st-g.applied;g.applied=st;if(g.kt==='bed'){S.ns=wrap(S.ns+n*15);const d=wrap(S.ne-S.ns);if(d<240)S.ns=wrap(S.ne-240);else if(d>720)S.ns=wrap(S.ne-720);fb('Bedtime '+f12(S.ns));render()}else if(g.kt==='wake'){S.ne=wrap(S.ne+n*15);const d=wrap(S.ne-S.ns);if(d<240)S.ne=wrap(S.ns+240);else if(d>720)S.ne=wrap(S.ns+720);fb('Wake '+f12(S.ne));render()}else if(g.kt==='min')adjTime(n*5);else if(g.kt==='hr')adjTime(n*60);else for(let i=0;i<Math.abs(n);i++)stepVal(n>0?1:-1)}}}
+ else{const unit=g.kt==='bed'?7.5:30,st=Math.round(g.acc/unit);if(st!==g.applied){const n=st-g.applied;g.applied=st;if(g.kt==='bed'){S.ns=wrap(S.ns+n*15);const wk=wakeMin(S),d=wrap(wk-S.ns);if(d<240)S.ns=wrap(wk-240);else if(d>720)S.ns=wrap(wk-720);fb('Bedtime '+f12(S.ns)+' · wind down from '+f12(S.ns-180));render()}else if(g.kt==='min')adjTime(n*5);else if(g.kt==='hr')adjTime(n*60);else for(let i=0;i<Math.abs(n);i++)stepVal(n>0?1:-1)}}}
 function tap(x,y){const r=Math.hypot(x-C,y-C),s=S.scr;
  if(s==='clock'){wake();S.msg='';fb('Tap: the face wakes and shows the way')}
  else if(s==='week'){if(r>98){let a=Math.atan2(x-C,C-y)*180/Math.PI;a=(a+360+180/7)%360;S.sel=Math.floor(a/(360/7));return nav('day',[0,-1],'Editing every '+DF[S.sel])}fb('Tap a day to edit it')}
@@ -390,7 +406,7 @@ function tap(x,y){const r=Math.hypot(x-C,y-C),s=S.scr;
  else if(s==='day'){const d=S.days[S.sel];if(!d.on){d.on=true;fb(DF[S.sel]+' alarm on')}else fb('Hold to turn this day off')}
  else if(s==='sound'){if(y<250){S.play=!S.play;fb(S.play?'White noise playing':'Paused')}else{S.ti=(S.ti+1)%5;fb('Sleep timer: '+TIMER[S.ti][0])}}
  else if(s==='light'){if(y<250){S.lt.on=!S.lt.on;fb(S.lt.on?'Light on':'Light off')}else{S.lt.m^=1;S.lt.on=true;fb(S.lt.m?'Reading light':'Night light')}}
- else if(s==='set'){const g=PG[S.pg];if(g==='Date'){S.df=y<200?0:y<290?1:2;fb(['Month','Day','Year'][S.df])}else fb('Swipe sideways for more settings')}
+ else if(s==='set'){const g=PG[S.pg];if(g==='Date'){S.df=y<200?0:y<290?1:2;fb(['Month','Day','Year'][S.df])}else if(g==='Alarm'&&r<125){S.test=!S.test;clearTimeout(window.testT);if(S.test){fb('Testing: the light and the alarm sound at '+S.ld+'%');window.testT=setTimeout(()=>{S.test=false;if(!busy)render()},6000)}else fb('Test stopped')}else fb('Swipe sideways for more settings')}
  render()}
 function swipe(d){const s=S.scr;
  if(s==='clock'){if(d==='up')return nav('tmr',[0,1],'Tomorrow’s alarm');if(d==='down')return nav('week',[0,-1],'Weekly schedule');if(d==='left')return nav('sound',[1,0],'Sleep sound');return nav('light',[-1,0],'Light')}
@@ -406,7 +422,7 @@ function onHold(){const s=S.scr;
  else if(s==='tmr'){S.hold=0;S.skip=true;fb('Tomorrow’s alarm skipped');render()}
  else if(s==='day'){S.hold=0;S.days[S.sel].on=false;fb(DF[S.sel]+' alarm off');render()}
  else if(s==='clock'){S.hold=0;S.pg=0;S.clk=S.now;nav('set',[0,1],'Settings: the time is first, so a daylight saving fix is one tap')}
- else if(s==='set'&&PG[S.pg]==='Preview alarm'){S.hold=0;fb('Preview: a 60 second run-through, shown here as the morning');render();$('bMorn').click()}}
+}
 
 const dev=$('dev');let G=null,rep=null;
 function pt(e){const b=dev.getBoundingClientRect();return[(e.clientX-b.left)*588/b.width-61,(e.clientY-b.top)*588/b.height-61]}
@@ -417,7 +433,6 @@ dev.addEventListener('pointerdown',e=>{if(busy)return;const[x,y]=pt(e),r=Math.hy
  let hm=0;const s=S.scr;
  if(s==='ring'&&!S.done)hm=2000;else if(s==='clock')hm=1500;
  else if(((s==='tmr'&&!S.skip&&(S.one??usual(S))!=null)||(s==='day'&&S.days[S.sel].on))&&!g.grab&&r<150)hm=1000;
- else if(s==='set'&&PG[S.pg]==='Preview alarm')hm=1500;
  if(hm)(function lp(){if(G!==g||g.moved)return;const p=(performance.now()-g.t)/hm;if((s==='ring'||s==='tmr'||s==='day'||s==='clock'||s==='set')&&p>.12){S.hold=Math.min(1,(p-.12)/.88);render()}if(p>=1){g.held=true;return onHold()}requestAnimationFrame(lp)})()});
 dev.addEventListener('pointermove',e=>{if(!G)return;const[x,y]=pt(e);
  if(!G.moved&&Math.hypot(x-G.x,y-G.y)>16){G.moved=true;stopRep();if(S.hold){S.hold=0;render()}

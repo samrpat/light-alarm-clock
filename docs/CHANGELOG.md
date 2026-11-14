@@ -70,3 +70,9 @@
 - Settings redesigned as eight pictures (D-037): Time, Date, Region, Sleep (a band of night on the clock ring), Brightness, Alarm volume, Preview alarm, About. Bedtime and Wake merged into Sleep.
 - Added `/firmware/dialtest`, a test app for the real touch screen (compiles, not yet flashed).
 - Owner answers: battery spec yes (D-035 accepted), phone link and OTA dropped (D-030 accepted), 30 years is a yardstick not a promise (wording softened in LONGEVITY.md and elsewhere).
+
+## 2026-11-13 — Phase 2 revision, round 4
+- Restored D-030 to D-035 after a parallel session overwrote the decision log.
+- Vivid colour language (D-038): sky clock, a colour per place, glossy dots, motion; all colour drains in the wind-down and night stays dim amber.
+- One Alarm settings page with tap-to-test; no wake-time setting; Bedtime page with a moon dot and an orange alarm bell marker (D-039). Seven settings pages.
+- Layout check now covers the dots: 386 states, 2,299 boxes, 0 issues. Picker digits 80 px so a dot never touches them.

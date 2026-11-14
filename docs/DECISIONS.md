@@ -277,3 +277,16 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
 - **Date:** 2026-11-13 · **Status:** Proposed (owner: "make the settings more polished and design-award worthy, be creative") · supersedes the page list of D-032 · **Reqs:** R5, R37
 - **Decision:** Eight pages, each shaped like its subject: a watch face for Time, a calendar page for Date, the region and its UTC offset, a **band of night on the clock ring** for Sleep (moon to sun, with the wind-down fading in), a glowing orb for Brightness, sound waves for Alarm volume, a tiny sunrise for Preview, a battery ring for About. Bedtime and Wake merge into Sleep (4 to 12 hours). The real value is always shown, at most four lines of text, dots grow while held.
 - **Why:** The picture is the control, so a page needs no explanation and no second control.
+
+## D-038 — A vivid colour language: every place has a colour, and colour belongs to the day
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "make it less boring... like the design team that makes Apple apps") · extends D-032 · **Reqs:** R6, R45
+- **Decision:** The clock is a full-screen living sky. Alarms are sunrise orange, Sound teal to indigo, Light gold or ember red, Bedtime violet, each settings page its own colour, Ringing a bright sunrise. Glossy dots with breathing halos, dancing sound bars, sprung slides. In the 3-hour wind-down all colour drains, and at night every screen is dim amber on black, so the sleep rules of LIGHT.md still hold. It is an original language, not a copy of any Apple screen or asset.
+- **Risks:** frame rate on the ESP32-S3 is unverified (pre-rendered gradients in PSRAM; bench check UX-B3; fallback is fades). A bright day face wears the AMOLED more, so it shifts each minute too.
+
+## D-039 — One Alarm page with tap-to-test; bedtime is not wake time
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "alarm preview and alarm sound is weird", "create distinction between bed/wakeup time vs alarm time") · amends D-037 · **Reqs:** R6, R26
+- **Decision:**
+  1. **Alarm** replaces the Alarm volume and Preview pages: drag the dot for volume, tap the bell to test light and sound for 6 s. Seven settings pages.
+  2. **There is no wake-time setting.** The face's day starts at the alarm (if none is set, the last one, or 7:00 AM). The Sleep page becomes **Bedtime**: one moon dot, a violet night band ending at an orange bell that marks the alarm and cannot be moved there.
+  3. Alarm = orange + bell, everywhere. Bedtime = violet + moon, everywhere.
+- **Why:** Two different "wake" numbers invited the question of which one rings. Now only the alarm can wake you.

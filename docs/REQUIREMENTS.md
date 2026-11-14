@@ -21,7 +21,7 @@ Last reviewed: 2026-11-13 (Phase 2)
 | ID | Pri | Requirement | Phase | Test |
 |----|-----|-------------|-------|------|
 | R5 | M | `[ ]` Four gestures, four jobs (swipe goes, tap does, drag a dot changes, hold stops). No buttons. Values change only by dragging a dot. Text ≥ 26 px, at most four text lines per screen, and a swipe can start anywhere (UX.md §1–3, D-036). | 2 | T-05 |
-| R6 | M | `[~]` The face follows the day (UX.md §7, D-032): colour and brightness change from wake, wind down over the 3 hours before bedtime, and end as the dim amber night face (blue under 15 %, dimmed through the panel, shifts every minute, no white until the alarm rings). Wake and bedtime are settable (default 7:00 AM and 10:30 PM). | 2, 3 | T-06 |
+| R6 | M | `[~]` The face follows the day (UX.md §7, D-032, D-038, D-039): full colour from the alarm until 3 hours before bedtime, a wind-down in which colour, blue and brightness drain away, then a dim amber night face that shifts every minute. Bedtime is the only setting (default 10:30 PM); the alarm is the start of the day. | 2, 3 | T-06 |
 | R7 | — | ~~IMU gestures (pick-up to wake, flip to snooze).~~ **Dropped** by D-011: the clock is stationary. | — | — |
 | R8 | N | `[ ]` Sound and Light remember their last volume, timer, brightness and colour mode, so starting either is 2 gestures. This replaces the scenes idea taken from Dreamie (D-024, D-023). | 2, 3 | T-08 |
 | R34 | M | `[ ]` Anything that can stop an alarm (turn a day off, skip tomorrow, dismiss, cancel a snooze or sunrise) needs a **hold**. Anything that only makes it ring (turn on, snooze, bring back) is a tap (D-024). | 2, 3 | T-34 |
@@ -35,6 +35,7 @@ Last reviewed: 2026-11-13 (Phase 2)
 | R42 | M | `[ ]` The battery is a replaceable consumable (a door, nothing glued), and the clock keeps working without it (LONGEVITY.md §4). | 4 | T-45 |
 | R43 | M | `[ ]` Nothing lights the sleeper: the ring is off from bedtime to the dawn, the screen is under 1 lux at the pillow, and the evening light is warm and capped (LIGHT.md §2, §4). | 3 | T-46 |
 | R44 | M | `[~]` A swipe starting anywhere, including right next to a dot, is never mistaken for a dial turn, and a deliberate grab always turns it (D-036). Host test: 1,249 random swipes, 0 mistaken. Still to do on the real panel with `/firmware/dialtest` (UX-B2). | 2, 3 | T-47 |
+| R45 | M | `[ ]` The colour language of UX.md §7 runs smoothly on the real panel (bench check UX-B3), with fades as the fallback. Alarm is always orange with a bell; bedtime is always violet with a moon. | 3 | T-48 |
 
 ## 3. Sound
 
@@ -67,7 +68,7 @@ Last reviewed: 2026-11-13 (Phase 2)
 | R23 | M | `[ ]` Snooze (default 9 min, max 3 snoozes, both configurable). Snooze is a tap anywhere. Dismiss is a 2 s hold with a filling rim, hard to trigger by accident. A BOOT-button hold (3 s) dismisses even if the touch/UI is dead. | 2, 3 | T-23 |
 | R24 | M | `[ ]` Low-battery warning the night before: at bedtime, or when USB is unplugged after 20:00, warn if the predicted charge can't cover the night plus alarm. | 1, 3 | T-24 |
 | R25 | M | `[ ]` Battery reserve: as the battery nears the energy needed for the next alarm, shed load (white noise, then display, then sunrise brightness) so the alarm sound still fires. | 1, 3 | T-25 |
-| R26 | M | `[ ]` Self-test / **Preview alarm**: a compressed 60 s run of sunrise → sound escalation → snooze/dismiss, plus an LED, speaker and RTC check. | 3 | T-26 |
+| R26 | M | `[ ]` **Alarm test:** on the Alarm settings page, tap the bell to light the ring and play the alarm sound at the set volume for 6 s (D-039). A fuller self-test of ring, speaker and RTC runs at start-up. | 3 | T-26 |
 | R27 | M | `[ ]` The PWR button cannot switch the clock off by accident (PMIC long-press power-off set to the longest delay or disabled; power-off only through a confirmed UI action). | 1, 3 | T-27 |
 | R28 | M | `[ ]` Correct local time across regions and daylight saving with no network: rules stored in the clock for any year to 2099, a Manual region, and a `region.txt` SD-card file for other rules (LONGEVITY.md §3, D-031). A skipped hour rings at the next valid minute, a repeated hour rings once. Fixing the clock after a rule change takes 2 touches. | 3 | T-28, T-40 |
 
