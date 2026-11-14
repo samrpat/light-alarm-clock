@@ -144,8 +144,8 @@ static void t_sm(void) {
     o = tick(&r, T - 1, nxt, EV_NONE); CHECK(o.state == SM_SUNRISE && o.dawn_t_s == -1 && o.sound_stage == 0);
     o = tick(&r, T, nxt, EV_NONE); CHECK(o.state == SM_RINGING && o.sound_stage == 1);
     nxt = T + 86400;
-    o = tick(&r, T + 59, nxt, 0); CHECK(o.sound_stage == 1); o = tick(&r, T + 60, nxt, 0); CHECK(o.sound_stage == 2);
-    o = tick(&r, T + 120, nxt, 0); CHECK(o.sound_stage == 3); o = tick(&r, T + 180, nxt, 0); CHECK(o.sound_stage == 4); o = tick(&r, T + 900, nxt, 0); CHECK(o.sound_stage == 4);
+    o = tick(&r, T + 59, nxt, 0); CHECK(o.sound_stage == 1 && o.ring_elapsed_s == 59); o = tick(&r, T + 60, nxt, 0); CHECK(o.sound_stage == 2);
+    o = tick(&r, T + 120, nxt, 0); CHECK(o.sound_stage == 3 && o.dawn_t_s == 120); o = tick(&r, T + 180, nxt, 0); CHECK(o.sound_stage == 4); o = tick(&r, T + 900, nxt, 0); CHECK(o.sound_stage == 4 && o.dawn_t_s == 600);
     o = tick(&r, T + 1000, nxt, EV_SNOOZE); CHECK(o.state == SM_SNOOZED && o.sound_stage == 0 && o.light_on && o.snoozes_left == 2);
     o = tick(&r, T + 1539, nxt, 0); CHECK(o.state == SM_SNOOZED); o = tick(&r, T + 1540, nxt, 0); CHECK(o.state == SM_RINGING && o.sound_stage == 1);
     tick(&r, T + 1600, nxt, EV_SNOOZE); tick(&r, T + 2200, nxt, 0); o = tick(&r, T + 2200, nxt, EV_SNOOZE); CHECK(o.state == SM_SNOOZED && o.snoozes_left == 0);
@@ -165,6 +165,21 @@ static void t_sm(void) {
     nxt = T + 86400; for (int64_t t = T - 800; t < T + 100; t++) { o = tick(&r, t, nxt, 0); CHECK(o.state == SM_IDLE && o.sound_stage == 0); }
     /* alarm switched off or skipped during the dawn cancels it (hold) */
     sm_init(&r.sm); nxt = T; tick(&r, T - 1500, nxt, 0); o = tick(&r, T - 1400, T + 86400, 0); CHECK(o.ended && !o.light_on);
+    /* the schedule changes during the dawn: an earlier alarm must take over and ring (found on the board, 2026-11-14) */
+    sm_init(&r.sm); T = 1200000; tick(&r, T - 1500, T, 0);
+    o = tick(&r, T - 1000, T - 700, 0); CHECK(o.state == SM_SUNRISE && r.sm.armed == T - 700 && o.dawn_t_s == -300);
+    o = tick(&r, T - 701, T - 700, 0); CHECK(o.state == SM_SUNRISE);
+    o = tick(&r, T - 700, T + 86400, 0); CHECK(o.state == SM_RINGING && o.sound_stage == 1);
+    sm_init(&r.sm); tick(&r, T - 1500, T, 0); o = tick(&r, T - 1000, T + 3600, 0); CHECK(o.ended && o.state == SM_IDLE && !o.light_on);   /* moved later: dawn cancelled */
+    sm_init(&r.sm); tick(&r, T - 1500, T, 0); o = tick(&r, T - 1000, T - 1, 0); CHECK(o.state == SM_RINGING || o.state == SM_SUNRISE);
+    /* a cancelled dawn must not block a NEW, EARLIER alarm (found on the board, second bug) */
+    sm_init(&r.sm); tick(&r, T - 1500, T, 0); o = tick(&r, T - 1000, T + 3600, 0); CHECK(o.ended);        /* dawn of T cancelled: handled = T */
+    o = tick(&r, T - 990, T - 800, 0); o = tick(&r, T - 989, T - 800, 0); CHECK(o.state == SM_SUNRISE && r.sm.armed == T - 800);
+    o = tick(&r, T - 800, T + 86400, 0); CHECK(o.state == SM_RINGING);
+    sm_init(&r.sm); tick(&r, T - 1500, T, 0); tick(&r, T - 1000, T, EV_DISMISS); o = tick(&r, T - 900, T, 0); CHECK(o.state == SM_IDLE && r.sm.armed == 0);   /* the same occurrence does not return */
+    /* editing the schedule re-opens an occurrence that was dismissed early (the engine marks its day skipped) */
+    sm_init(&r.sm); tick(&r, T - 1500, T, 0); o = tick(&r, T - 1000, T, EV_DISMISS); CHECK(o.ended && o.ended_occ == T);
+    o = tick(&r, T - 900, T, EV_SCHED_CHANGED); o = tick(&r, T - 899, T, 0); CHECK(o.state == SM_SUNRISE && r.sm.armed == T);
     /* no alarm set: stays idle for a month */
     sm_init(&r.sm); for (int64_t t = 0; t < 30 * 86400; t += 7) { o = tick(&r, t, 0, 0); CHECK(o.state == SM_IDLE && !o.light_on && o.sound_stage == 0); }
 }
@@ -181,6 +196,8 @@ static void t_sm_reboot(void) {
     r.sm = saved; o = tick(&r, T + 600, T + 86400, 0); CHECK(o.state == SM_RINGING && o.sound_stage == 1 && r.sm.ring_t0 == T + 600);
     r.sm = saved; o = tick(&r, T + 3600, T + 86400, 0); CHECK(o.state == SM_RINGING);          /* exactly at the window edge */
     r.sm = saved; o = tick(&r, T + 3601, T + 86400, 0); CHECK(o.state == SM_IDLE && r.sm.handled == T);   /* too late: not rung, next day armed */
+    /* power went during the dawn and came back 10 minutes after the alarm time: ring now, starting soft */
+    sm_init(&r.sm); tick(&r, T - 1000, T, 0); saved = r.sm; r.sm = saved; o = tick(&r, T + 600, T + 86400, 0); CHECK(o.state == SM_RINGING && o.sound_stage == 1 && o.ring_elapsed_s == 0 && o.dawn_t_s == 600);
     /* a snooze survives a reboot */
     sm_init(&r.sm); tick(&r, T, T, 0); tick(&r, T + 30, T + 86400, EV_SNOOZE); saved = r.sm;
     r.sm = saved; o = tick(&r, T + 400, T + 86400, 0); CHECK(o.state == SM_SNOOZED); o = tick(&r, T + 30 + 540, T + 86400, 0); CHECK(o.state == SM_RINGING);
@@ -223,6 +240,10 @@ static void t_dawn(void) {
     CHECK(maxstep < 0.01f); CHECK(maxrel < 0.0045f); CHECK(peak < 900.0f);                 /* under the 0.9 A cap (R14) */
     rgbw_f z = dawn_rgbw(0), a = dawn_rgbw(-1); CHECK(fabsf(z.w - a.w) < 0.01f && fabsf(z.r - a.r) < 0.01f);   /* no jump at the alarm time */
     z = dawn_rgbw(600); CHECK(z.w == 1 && fabsf(z.b - .25f) < 1e-4f && z.r < 1e-4f);
+    /* alarm loudness: never silent, a quarter of the set volume at first, the set volume after 3 minutes, no jumps */
+    CHECK(fabsf(alarm_gain(100, 0) - 0.25f) < 1e-4f && fabsf(alarm_gain(100, 180) - 1.0f) < 1e-4f && fabsf(alarm_gain(100, 5000) - 1.0f) < 1e-4f);
+    CHECK(alarm_gain(0, 0) >= 0.30f * 0.25f - 1e-4f && alarm_gain(-5, 999) >= 0.299f && alarm_gain(250, 999) <= 1.0f);
+    { float pg = alarm_gain(70, 0); for (int e = 1; e <= 200; e++) { float g = alarm_gain(70, e); CHECK(g >= pg && g - pg < 0.01f); pg = g; } CHECK(fabsf(pg - 0.70f) < 1e-4f); }
     /* pre-dawn sound */
     CHECK(presound_gain(-3600, 0) == 0 && presound_gain(-2000, 0) == 0);                    /* all night: no pre-window */
     for (int n = 15; n <= 90; n += 15) {
@@ -260,6 +281,18 @@ static void t_storage(void) {
         slot[dst] = neu;
     }
     CHECK(bad == 0);
+    /* found on the board: the newest copy had a good CRC but an impossible time inside. The older good copy must be used. */
+    { sched_t good, got; sched_init(&good); good.day[0].on = true; good.day[0].min = 420; uint8_t gb[SCHED_BYTES], bb[SCHED_BYTES]; sched_serialize(&good, gb);
+      memcpy(bb, gb, SCHED_BYTES); bb[22] = 0xd7; bb[23] = 0xfe;                       /* one_min = 65239, as read from the real device */
+      rec_t ra, rb; rec_pack(&ra, SCHED_SCHEMA, 7, gb, SCHED_BYTES); rec_pack(&rb, SCHED_SCHEMA, 8, bb, SCHED_BYTES); bool fb = false;
+      CHECK(rec_pick(&ra, &rb) == 1); CHECK(sched_load_ab(&ra, &rb, &got, &fb) && fb && got.day[0].on && got.day[0].min == 420);
+      CHECK(sched_load_ab(&rb, &ra, &got, &fb) && fb && got.day[0].min == 420);
+      rec_pack(&rb, SCHED_SCHEMA, 8, gb, SCHED_BYTES); CHECK(sched_load_ab(&ra, &rb, &got, &fb) && !fb);
+      rec_pack(&ra, SCHED_SCHEMA, 9, bb, SCHED_BYTES); rec_pack(&rb, SCHED_SCHEMA, 8, bb, SCHED_BYTES); CHECK(!sched_load_ab(&ra, &rb, &got, &fb) && !got.day[0].on);
+      rec_pack(&ra, SCHED_SCHEMA, 7, gb, SCHED_BYTES); rec_pack(&rb, SCHED_SCHEMA, 8, bb, SCHED_BYTES);
+      CHECK(sched_next_slot(&ra, &rb) == 1 && sched_next_seq(&ra, &rb) == 9);     /* never overwrite the only usable copy */
+      rec_pack(&rb, SCHED_SCHEMA, 8, gb, SCHED_BYTES); CHECK(sched_next_slot(&ra, &rb) == 0 && sched_next_seq(&ra, &rb) == 9);
+      sched_t bad = good; bad.one_min = 65239; CHECK(sched_valid(&good) && !sched_valid(&bad)); bad = good; bad.day[3].min = 1440; CHECK(!sched_valid(&bad)); }
     /* PCF85063A */
     uint8_t reg[7]; int64_t utc; bool osc;
     for (int i = 0; i < 20000; i++) { int64_t t = U(2000, 1, 1, 0, 0, 0) + (int64_t)(rnd() % 3150000000u); pcf85063_encode(t, reg); CHECK(pcf85063_decode(reg, &utc, &osc) && utc == t && !osc); }

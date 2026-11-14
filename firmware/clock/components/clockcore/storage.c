@@ -60,3 +60,30 @@ float drift_ppm(int64_t elapsed, int64_t err) {
     float ppm = (float)err * 1e6f / (float)elapsed;
     return (ppm > 200 || ppm < -200) ? 0 : ppm;
 }
+
+bool sched_valid(const sched_t *s) {
+    for (int i = 0; i < 7; i++) if (s->day[i].min >= 1440) return false;
+    return s->one_min < 1440;
+}
+static bool usable(const rec_t *r, sched_t *out) { return rec_valid(r) && r->schema == SCHED_SCHEMA && sched_deserialize(out, r->payload, r->len); }
+bool sched_load_ab(const rec_t *a, const rec_t *b, sched_t *out, bool *fell_back) {
+    const rec_t *first = a, *second = b; *fell_back = false;
+    if (rec_pick(a, b) == 1) { first = b; second = a; }
+    if (usable(first, out)) return true;
+    if (usable(second, out)) { *fell_back = true; return true; }
+    sched_init(out); return false;
+}
+int sched_next_slot(const rec_t *a, const rec_t *b) {
+    sched_t t; bool ua = usable(a, &t), ub = usable(b, &t);
+    if (ua && ub) return rec_pick(a, b) == 1 ? 0 : 1;      /* both good: replace the older */
+    if (ua) return 1;
+    if (ub) return 0;
+    return 0;
+}
+uint32_t sched_next_seq(const rec_t *a, const rec_t *b) {
+    bool va = rec_valid(a), vb = rec_valid(b);
+    if (va && vb) return ((int32_t)(b->seq - a->seq) > 0 ? b->seq : a->seq) + 1;
+    if (va) return a->seq + 1;
+    if (vb) return b->seq + 1;
+    return 1;
+}

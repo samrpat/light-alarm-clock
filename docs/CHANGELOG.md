@@ -106,3 +106,4 @@
 - Phase 3, step 3a: `firmware/clock/components/clockcore` (calendar, time zones, schedule, alarm state machine, dawn curve, storage records, RTC decode, drift) with 518,574 host checks, 0 failed. Step 3b-1: ESP-IDF project with the alarm engine on core 1 and NVS A/B storage; it builds (not flashed).
 - Added TEST_PLAN.md and RELIABILITY.md. D-048 proposed. Requirement rows whose logic now passes are marked `[~]`.
 - Step 3b-2: ring task, alarm chime, clock-chip restore and set, and a bench console added to `firmware/clock`; builds, not yet flashed.
+- Bench testing on the real board found four engine and storage bugs (D-049); each is fixed with a host test (518,798 checks). The alarm sound "Rise" is specified and built; tap, hold and BOOT-button stops are real. New `tools/bench.py`: muted self-test (17 of 17 engine checks passed on hardware), sound check, one real run. Open: the board went silent on USB after repeated software restarts.

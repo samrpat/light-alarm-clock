@@ -8,7 +8,7 @@
 #include <stdbool.h>
 
 typedef enum { SM_IDLE = 0, SM_SUNRISE, SM_RINGING, SM_SNOOZED, SM_MISSED } sm_state_t;
-typedef enum { EV_NONE = 0, EV_SNOOZE, EV_DISMISS, EV_TIME_SET } sm_event_t;
+typedef enum { EV_NONE = 0, EV_SNOOZE, EV_DISMISS, EV_TIME_SET, EV_SCHED_CHANGED } sm_event_t;
 
 typedef struct {
     int32_t sunrise_s;      /* 1800 */
@@ -34,9 +34,11 @@ typedef struct {
     bool    light_on;
     int32_t dawn_t_s;       /* seconds relative to the alarm time: -1800 .. +600 */
     int32_t sound_stage;    /* 0 = silent, 1..4 = escalation steps */
+    int32_t ring_elapsed_s; /* seconds since this ringing episode began (for the smooth loudness ramp) */
     bool    persist;        /* state changed: write it down */
     bool    missed;         /* the sound gave up: show "Alarm missed" */
     bool    ended;          /* an occurrence was just handled: the caller clears overrides */
+    int64_t ended_occ;      /* which occurrence ended; if it is still in the future it was dismissed early: the caller skips it */
     int32_t snoozes_left;
 } sm_out_t;
 

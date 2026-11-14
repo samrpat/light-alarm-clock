@@ -4,3 +4,5 @@ sdkconfig.old
 managed_components/
 test/clock_tests
 test/clock_tests.dSYM/
+tools/logs/
+tools/__pycache__/

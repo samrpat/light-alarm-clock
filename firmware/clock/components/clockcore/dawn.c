@@ -26,3 +26,8 @@ float presound_gain(int32_t t, int n) {
     float fout = 1.0f - smooth((tm + 30.0f) / 3.0f);
     return fin < fout ? fin : fout;
 }
+float alarm_gain(int vol, int32_t el) {
+    if (vol < 30) vol = 30;
+    if (vol > 100) vol = 100;
+    return vol / 100.0f * (0.25f + 0.75f * smooth(el / 180.0f));
+}

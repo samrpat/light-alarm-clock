@@ -17,7 +17,9 @@ Last updated: 2026-11-14
 - **3a, done:** the core logic in `firmware/clock/components/clockcore` with 518,574 host checks passing under sanitizers ([TEST_PLAN.md](TEST_PLAN.md)). 1,184 daylight-saving changes (2026-2099, 10 regions) match an independent library; 1,500 random schedules match a brute-force scan; settings survive a power cut at every byte; reboot during dawn or ringing resumes right; 7 injected bugs all caught.
 - **3b-1, builds (not flashed):** `firmware/clock` ESP-IDF project: alarm engine on core 1, NVS A/B storage, task watchdog, 64-bit time assert. 0x34310 bytes, 86 % of the app partition free.
 - **3b-2, builds (not flashed):** RTC restore and set, ring task (tested dawn curve, dithering, 300 mA cap for the unfused rig), alarm chime in four loudness steps, and a bench console on the USB port (`time`, `alarm`, `in 90`, `snooze`, `dismiss`, `status`). 0xBC790 bytes, 50 % of the app partition free. The screen stays dark until 3c.
-- **To do:** 3b-3 supervisor, boot-loop guard, safe mode, BOOT dismiss, battery rules; 3c the LVGL UI from UX.md with Inter fonts and the layout check on real strings. Then bench tests.
+- **3b-3 (2026-11-14), on the board:** the real alarm sound (D-049), tap to snooze, hold to stop, BOOT-button stop, daylight stage and 60 s fade, last-remembered time, engine as the only schedule writer. Bench self-test with light and sound muted: **17 of 17 engine checks passed on the real board** before the board stopped answering over USB during the last two checks (cause not yet known; needs a replug). Host suite: 518,798 checks, 0 failed.
+- **Open problem:** after the third software restart in the self-test the board went silent on USB (even to the flashing tool). Not yet known whether the firmware hung or only the USB link.
+- **To do:** 3b-4 supervisor, boot-loop guard, safe mode, BOOT dismiss, battery rules; 3c the LVGL UI from UX.md with Inter fonts and the layout check on real strings. Then bench tests.
 - Reliability notes: [RELIABILITY.md](RELIABILITY.md).
 
 ## Phase 2 revision (2026-11-13)

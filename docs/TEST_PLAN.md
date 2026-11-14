@@ -2,7 +2,7 @@
 
 Every requirement maps to a test. **Host** tests run on a computer with no hardware (`cd firmware/clock/test && make test`), under AddressSanitizer and UBSan. **Bench** tests need the board. Result column: ✅ passes today · ⏳ not yet written or run.
 
-Last run: 2026-11-14 · 518,574 checks, 0 failed (`firmware/clock/test/test_main.c`).
+Last run: 2026-11-14 · 518,798 checks, 0 failed (`firmware/clock/test/test_main.c`).
 
 | Test | Requirement | Kind | What it proves | Result |
 |------|-------------|------|----------------|--------|
@@ -26,6 +26,10 @@ Last run: 2026-11-14 · 518,574 checks, 0 failed (`firmware/clock/test/test_main
 | T-47 | R44 | host | 1,249 random swipes, 0 mistaken for a dial turn (concept page) | ✅ concept; ⏳ real glass (UX-B2) |
 | T-50 | R47 | host | pre-dawn sound: N minutes ending at the dawn start, fade in then out; none for "All night" | ✅ curve |
 | T-19, T-24-27, T-29-T-33, T-36-T-38, T-41-T-46, T-48, T-49, T-51 | see REQUIREMENTS.md | bench / UI | watchdogs, battery, enclosure, UI, Bluetooth | ⏳ |
+
+## Bench (hardware in the loop)
+`firmware/clock/tools/bench.py selftest` runs on the real board with light and sound muted and prints PASS or FAIL: empty schedule, weekday alarm, dawn at T−30:00, ring at T, the three later sound steps, snooze and its 9 minutes, fourth snooze refused, dismiss and next week, restart mid-dawn, hold-to-cancel and bring-back, catch-up after power off, too-late, both stored copies good. **2026-11-14: 17 of 17 engine checks passed**; the run then lost the USB link (open problem in STATUS.md), so "too late" and "stored copies" have not passed on hardware yet.
+`bench.py real` is the one real run: a real alarm 32 minutes ahead, nothing muted, nothing sped up, stopped by hand.
 
 ## Mutation check
 To be sure the tests can fail, seven deliberate bugs were put into the code one at a time (wrong DST week, repeated hour resolved the wrong way, catch-up window ignored, snooze limit ignored, sequence wrap, dawn curve changed, skip ignored). Every one made the suite fail. The original code was restored and passes.

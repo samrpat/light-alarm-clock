@@ -21,6 +21,14 @@ int  rec_next_slot(const rec_t *a, const rec_t *b);
 #define SCHED_BYTES 30
 void sched_serialize(const sched_t *s, uint8_t out[SCHED_BYTES]);
 bool sched_deserialize(sched_t *s, const uint8_t in[SCHED_BYTES], uint16_t len);
+bool sched_valid(const sched_t *s);                 /* every field in range: nothing else may be written */
+/* Load from the A/B pair. Tries the newest copy first; a copy counts only if its CRC is good AND its contents are a
+ * valid schedule, otherwise the other copy is used (R17). Returns false if neither is usable (schedule left empty).
+ * *fell_back is set when the newest copy had to be passed over. */
+bool sched_load_ab(const rec_t *a, const rec_t *b, sched_t *out, bool *fell_back);
+/* Where and with which number to write next, so the one usable copy is never the one overwritten. */
+int  sched_next_slot(const rec_t *a, const rec_t *b);
+uint32_t sched_next_seq(const rec_t *a, const rec_t *b);
 
 /* PCF85063A registers 0x04..0x0A: seconds, minutes, hours, days, weekdays, months, years (BCD).
  * Bit 7 of seconds is the oscillator-stop flag: time is not trusted (D-003, R15). */
