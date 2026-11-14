@@ -362,3 +362,12 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
 - **Bugs found on the real board, each now fixed with a host test:** (1) an earlier alarm set during a dawn was dropped; (2) a cancelled dawn blocked any new alarm earlier than it; (3) the newest settings copy with a good checksum but impossible contents made both copies count as bad, instead of falling back; (4) a late power return during the dawn would have started at full volume.
 - **New rules from that:** the engine is the only writer of the schedule and refuses out-of-range values; with no time ever set, alarms wait; if the clock chip lost its time, the clock carries on from the time it last remembered (saved every 5 minutes) and says "Check time", so an alarm is late rather than missed.
 - **Testing is now one tool,** `firmware/clock/tools/bench.py`: one owner of the USB port, a muted self-test with PASS/FAIL, a 6 s sound check, and one real run with nothing sped up.
+
+## D-050 — Interface carried over from the concept, drawn directly (2026-11-14, proposed)
+- **What:** the device interface is one full-screen drawing routine (`ui_draw.c`) that paints from a plain state struct through a small helper layer (`gfx.c`) shaped like the concept page's drawing helpers. Gestures and state live in `ui.c`. No LVGL widgets.
+- **Why:** each screen could be carried over from the approved concept almost line by line; the same routine draws real screens, test states and screenshots, so the layout rules (R37) are checked on the device itself (`layoutcheck`), and any state can be photographed over USB (`bench.py shot`).
+- **Fonts and icons:** built by `tools/make_fonts.py` (Inter Light, Regular, Medium at the sizes used, about 320 KB; no kerning) and `tools/make_icons.py`. Inter's licence is in `docs/licenses/`.
+- **Alarm safety:** the interface reads the engine's snapshot and a copy of the schedule, and changes anything only by messages to the engine (new: set once, clear once, skip a day, reload region). Sleep sounds and the focus chime are mixed in the sound task below the alarm; the lamp is shown only when no alarm owns the ring.
+- **Changed from the concept:** the Brightness page title is "Brightness" (the longer title touched its dot at some values).
+- **Open:** sounds are untuned; battery page is a placeholder; background glow shows faint steps on a 16-bit colour screen.
+

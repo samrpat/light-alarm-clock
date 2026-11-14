@@ -1,5 +1,5 @@
 /* Product firmware (Phase 3). Engine, storage, clock chip, ring, alarm sound and stop gestures are real;
- * the screen graphics are temporary until step 3c. */
+ * the screen is the interface of UX.md (step 3c). */
 #include <time.h>
 #include "nvs_flash.h"
 #include "esp_log.h"
@@ -8,6 +8,7 @@
 #include "bsp/esp-bsp.h"
 #include "hw.h"
 #include "store.h"
+#include "ui.h"
 
 _Static_assert(sizeof(time_t) == 8, "64-bit time is required (R39, 2038)");
 static const char *TAG = "clock";
@@ -23,7 +24,7 @@ void app_main(void) {
     light_fx_start();
     audio_out_start();
     console_start();
-    face_start();
+    ui_start();
     rtc_housekeeping_start();
     ESP_LOGI(TAG, "READY");
 }

@@ -21,6 +21,7 @@ static const char *TAG = "light";
 #define RING_CAP_MA 300
 #endif
 static led_strip_handle_t ring;
+rgbw_f g_lamp;
 
 /* spread the fraction across the 24 LEDs and across 4 frames (about 96 levels between whole steps) */
 static void fill(rgbw_f c) {
@@ -53,7 +54,7 @@ static void task(void *arg) {
         else {
             if (was_on) { was_on = false; from = cur; off_t0 = now; }                               /* alarm ended: fade over 60 s (LIGHT.md) */
             if (off_t0) { float u = (now - off_t0) / 60e6f; if (u >= 1) { cur = zero; off_t0 = 0; } else cur = scale(from, (1 - u) * (1 - u)); }
-            else cur = mixc(cur, zero, 0.02f);
+            else cur = mixc(cur, g_lamp, 0.02f);                       /* no alarm: the Lamp screen owns the ring */
         }
         if (ring) fill(g_bench_mute ? zero : cur);
         esp_task_wdt_reset(); vTaskDelay(pdMS_TO_TICKS(4));

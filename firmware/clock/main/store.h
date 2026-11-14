@@ -11,4 +11,5 @@ void store_save_sm(const alarm_sm_t *sm);
 void store_load_region(char *buf, int n);
 int64_t store_get_i64(const char *key, int64_t def);
 void store_set_i64(const char *key, int64_t v);
+void store_set_str(const char *key, const char *v);
 void store_dump(void);

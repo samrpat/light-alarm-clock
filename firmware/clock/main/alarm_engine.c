@@ -19,10 +19,11 @@
 static const char *TAG = "alarm";
 typedef struct { uint8_t type; int32_t a, b; } msg_t;
 static QueueHandle_t q;
-static alarm_snapshot_t snap;
+static alarm_snapshot_t snap; static sched_t sched_pub;
 static portMUX_TYPE mux = portMUX_INITIALIZER_UNLOCKED;
 
 void alarm_post(alarm_cmd_t c, int a, int b) { msg_t m = {(uint8_t)c, a, b}; if (q) xQueueSend(q, &m, 0); }
+void alarm_sched_get(sched_t *out) { portENTER_CRITICAL(&mux); *out = sched_pub; portEXIT_CRITICAL(&mux); }
 void alarm_snapshot_get(alarm_snapshot_t *out) { portENTER_CRITICAL(&mux); *out = snap; portEXIT_CRITICAL(&mux); }
 
 static void engine(void *arg) {
@@ -32,7 +33,7 @@ static void engine(void *arg) {
     if (!tz_parse(tzs, &tz)) tz_parse("EST5EDT,M3.2.0/2,M11.1.0/2", &tz);
     alarm_sm_t sm; store_load_sm(&sm); sm_cfg_t cfg; sm_default_cfg(&cfg);
     ESP_LOGI(TAG, "engine up%s", damaged ? " (SCHEDULE DAMAGED: empty, warning shown)" : "");
-    bool first = true;
+    bool first = true; sched_pub = s;
     for (;;) {
         struct timeval tv; gettimeofday(&tv, NULL);
         int wait_ms = 1000 - (int)(tv.tv_usec / 1000); if (wait_ms < 10) wait_ms = 10;
@@ -49,6 +50,10 @@ static void engine(void *arg) {
             case CMD_SKIP_NEXT: sched_skip_next(&s, &tz, now); break;
             case CMD_UNSKIP: sched_unskip(&s); break;
             case CMD_CLEAR_ALL: sched_init(&s); break;
+            case CMD_SET_ONCE: if (m.b >= 0 && m.b < 1440) { s.one_day = m.a; s.one_min = (uint16_t)m.b; } break;
+            case CMD_CLEAR_ONCE: if (s.one_day == m.a) s.one_day = NO_DAY; break;
+            case CMD_SKIP_DAY: s.skip_day = m.a; break;
+            case CMD_TZ_RELOAD: store_load_region(tzs, sizeof tzs); if (!tz_parse(tzs, &tz)) tz_parse("EST5EDT,M3.2.0/2,M11.1.0/2", &tz); ev = EV_SCHED_CHANGED; edit = false; break;
             default: edit = false; break;
             }
             if (edit) {
@@ -71,6 +76,7 @@ static void engine(void *arg) {
             store_save_sched(&s);
         }
         if (out.persist) store_save_sm(&sm);
+        portENTER_CRITICAL(&mux); sched_pub = s; portEXIT_CRITICAL(&mux);
         first = false;
         esp_task_wdt_reset();
     }

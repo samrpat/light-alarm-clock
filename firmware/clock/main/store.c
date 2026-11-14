@@ -65,6 +65,11 @@ void store_set_i64(const char *key, int64_t v) {
     if (nvs_open(NS, NVS_READWRITE, &h) != ESP_OK) return;
     nvs_set_i64(h, key, v); nvs_commit(h); nvs_close(h);
 }
+void store_set_str(const char *key, const char *v) {
+    nvs_handle_t h;
+    if (nvs_open(NS, NVS_READWRITE, &h) != ESP_OK) return;
+    nvs_set_str(h, key, v); nvs_commit(h); nvs_close(h);
+}
 void store_dump(void) {
     nvs_handle_t h;
     if (nvs_open(NS, NVS_READONLY, &h) != ESP_OK) { ESP_LOGW(TAG, "dump: no namespace"); return; }

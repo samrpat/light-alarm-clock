@@ -176,6 +176,25 @@ def main():
     b = Board()
     if what == "status": print(b.cmd("status"))
     elif what == "cmd": print(b.cmd(sys.argv[2]))
+    elif what == "layoutcheck":
+        b.s.write(b"layoutcheck\n")
+        for l in b.lines(60):
+            if l.startswith("LAYOUT"): print(l)
+            if l.startswith("LAYOUTCHECK"): break
+    elif what == "shot":                      # shot <out.png> ["ui args"] ...  (several pairs allowed)
+        for i in range(2, len(sys.argv), 2):
+            if i + 1 < len(sys.argv): b.cmd("ui " + sys.argv[i + 1]); time.sleep(0.4)
+            b.s.write(b"shot\n"); rows = []; w = h = 0
+            for l in b.lines(30):
+                if l.startswith("SHOT END"): break
+                if l.startswith("SHOT "): w, h = map(int, l.split()[1:3]); continue
+                if w and len(l) == w * 4: rows.append(l)
+            import zlib, struct
+            raw = b"".join(b"\0" + b"".join(bytes(((v >> 11) * 255 // 31, (v >> 5 & 63) * 255 // 63, (v & 31) * 255 // 31)) for v in (int(r[k:k + 4], 16) for k in range(0, w * 4, 4))) for r in rows)
+            ch = lambda t, d: struct.pack(">I", len(d)) + t + d + struct.pack(">I", zlib.crc32(t + d))
+            open(sys.argv[i], "wb").write(b"\x89PNG\r\n\x1a\n" + ch(b"IHDR", struct.pack(">IIBBBBB", w, len(rows), 8, 2, 0, 0, 0)) + ch(b"IDAT", zlib.compress(raw)) + ch(b"IEND", b""))
+            print("saved", sys.argv[i], w, len(rows))
+        b.cmd("ui live")
     elif what == "soundcheck": b.cmd("mute off"); print(b.cmd("test"))
     elif what == "selftest": sys.exit(0 if selftest(b) else 1)
     elif what == "real": sys.exit(0 if real(b) else 1)

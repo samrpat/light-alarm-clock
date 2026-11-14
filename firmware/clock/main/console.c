@@ -16,12 +16,26 @@
 #include "esp_system.h"
 #include "hw.h"
 #include "store.h"
+#include "ui.h"
+#include "lvgl.h"
+#include "bsp/esp-bsp.h"
 
 static void status(void) {
     alarm_snapshot_t s; alarm_snapshot_get(&s);
     printf("STATUS state=%d light=%d dawn_t=%d stage=%d el=%d snz=%d next=%lld now=%lld trusted=%d est=%d notime=%d damaged=%d mute=%d vol=%d\n",
            (int)s.state, s.light_on, (int)s.dawn_t_s, (int)s.sound_stage, (int)s.ring_elapsed_s, (int)s.snoozes_left, (long long)s.next_utc, (long long)time(NULL),
            g_time_trusted, g_time_estimated, s.no_time, s.sched_damaged, g_bench_mute, g_alarm_vol);
+}
+static void shot(void) {
+    bsp_display_lock(-1); lv_draw_buf_t *d = lv_snapshot_take(lv_screen_active(), LV_COLOR_FORMAT_RGB565); bsp_display_unlock();
+    if (!d) { printf("ERR shot\n"); return; }
+    int w = d->header.w, h = d->header.h; printf("SHOT %d %d\n", w, h); static char ln[466 * 4 + 2];
+    for (int y = 0; y < h; y++) {
+        const uint16_t *p = (const uint16_t *)(d->data + (size_t)y * d->header.stride); int n = 0;
+        for (int x = 0; x < w && x < 466; x++) n += sprintf(ln + n, "%04x", p[x]);
+        puts(ln); if ((y & 31) == 31) vTaskDelay(1);
+    }
+    printf("SHOT END\n"); lv_draw_buf_destroy(d);
 }
 static void run(char *l) {
     long long t; int wd, h, mi, v;
@@ -42,14 +56,17 @@ static void run(char *l) {
     else if (!strncmp(l, "reboot", 6)) { printf("OK reboot\n"); fflush(stdout); vTaskDelay(pdMS_TO_TICKS(100)); esp_restart(); }
     else if (!strncmp(l, "dump", 4)) store_dump();
     else if (!strncmp(l, "status", 6)) status();
+    else if (!strncmp(l, "ui ", 3)) { ui_bench_goto(l + 3); vTaskDelay(pdMS_TO_TICKS(150)); printf("OK ui\n"); }
+    else if (!strncmp(l, "shot", 4)) shot();
+    else if (!strncmp(l, "layoutcheck", 11)) { bsp_display_lock(-1); ui_bench_layoutcheck(); bsp_display_unlock(); }
     else printf("ERR unknown: %s\n", l);
 }
 static void task(void *a) {
-    (void)a; char line[80]; int n = 0;
+    (void)a; char line[160]; int n = 0;
     for (;;) {
         int c = getchar();
         if (c == EOF) { vTaskDelay(pdMS_TO_TICKS(20)); continue; }
-        if (c == '\n' || c == '\r') { line[n] = 0; if (n) run(line); n = 0; } else if (n < 79) line[n++] = (char)c;
+        if (c == '\n' || c == '\r') { line[n] = 0; if (n) run(line); n = 0; } else if (n < 159) line[n++] = (char)c;
     }
 }
-void console_start(void) { xTaskCreatePinnedToCore(task, "console", 4096, NULL, 4, NULL, 0); }
+void console_start(void) { xTaskCreatePinnedToCore(task, "console", 12288, NULL, 4, NULL, 0); }
