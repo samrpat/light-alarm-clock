@@ -236,7 +236,7 @@ const PG=['Time','Date','Region','Phone','Bedtime','Brightness','Alarm','About']
 const wrap=m=>((m%1440)+1440)%1440,clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 function t12(m){m=wrap(m);const h=Math.floor(m/60);return{h:((h+11)%12)+1,mm:String(m%60).padStart(2,'0'),ap:h<12?'AM':'PM'}}
 const f12=m=>{const t=t12(m);return t.h+':'+t.mm+' '+t.ap};
-function fresh(){return{scr:'clock',now:870,awake:false,days:[0,1,2,3,4,5,6].map(i=>({on:i<5,min:i<5?405:510})),sel:2,skip:false,one:null,vol:40,play:false,ti:1,lt:{on:false,m:0,l:[20,60]},snz:3,hold:0,done:false,sunT:null,msg:'',pg:0,df:0,clk:870,dat:{m:10,d:12,y:2026},rg:0,dayB:60,ns:1350,ld:70,test:false,snd:0,fade:1,sec:0,secMode:false,bt:0,fo:{len:25,run:false,ph:0,left:1500,rd:1}}}
+function fresh(){return{scr:'clock',now:870,awake:false,days:[0,1,2,3,4,5,6].map(i=>({on:i<5,min:i<5?405:510})),sel:2,skip:false,one:null,vol:40,play:false,ti:1,lt:{on:false,m:0,l:[20,60]},snz:3,hold:0,done:false,sunT:null,msg:'',pg:0,df:0,clk:870,dat:{m:10,d:12,y:2026},rg:0,dayB:60,ns:1350,ld:70,test:false,snd:0,fade:1,sec:0,secMode:false,bt:0,fo:{len:25,brk:5,rds:4,run:false,ph:0,left:1500,rd:1,menu:false,pick:null}}}
 const mix=(a,b,k)=>a.map((v,i)=>v+(b[i]-v)*k);
 const hex=c=>'#'+c.map(v=>clamp(Math.round(v),0,255).toString(16).padStart(2,'0')).join('');
 const NA=[224,128,28],BK=[0,0,0],WH=[255,255,255];
@@ -316,12 +316,16 @@ if(n==='sound'){const k=SOUNDS[s.snd],pc=theme('s_'+k[1],s);h+=pc.defs;
   else{let bars='';for(let i=0;i<4;i++){const bh=[18,30,24,14][i];for(const sg of[-1,1]){const x=C+sg*(52+i*17)-5;bars+=`<rect ${s.play?`class="eq" style="animation-delay:${(i*.13).toFixed(2)}s"`:''} x="${x}" y="${218-bh/2}" width="10" height="${bh}" rx="5" fill="${s.play?pc.a:pc.trk}"/>`}}
     h+=rimL(s.vol,0,100,pc)+`<rect x="${C-125}" y="112" width="250" height="56" rx="28" fill="${pc.trk}" opacity=".7"/><circle cx="${C-98}" cy="140" r="16" fill="${pc.g}"/>`+T(C+6,140,28,k[0],pc.t,500)+ico('chv',C+104,140,pc.s)
      +bars+playIco(C,218,s.play,pc.t)+`<rect x="${C-125}" y="268" width="250" height="56" rx="28" fill="${pc.trk}" opacity=".7"/>`+ico('moon',C-92,296,pc.a)+T(C,296,28,TIMER[s.ti][0],pc.t,400)+ico('chv',C+104,296,pc.s)}}
-if(n==='focus'){const f=s.fo,pc=theme('focus',s),brk=f.ph>0,tot=(f.ph===0?f.len:f.ph===1?5:15)*60,mm=Math.floor(f.left/60),ss=f.left%60,fr=1-f.left/tot,live=f.run||f.left!==tot;
+if(n==='focus'){const f=s.fo,pc=theme('focus',s),brk=f.ph===1,tot=(brk?f.brk:f.len)*60,mm=Math.floor(f.left/60),ss=f.left%60,fr=1-f.left/tot,OPT={len:[15,25,35,50,60],brk:[3,5,10,15,20],rds:[2,3,4,5,6]},TT={len:'Focus length',brk:'Break length',rds:'Rounds'},UN={len:'minutes',brk:'minutes',rds:'focus rounds in a cycle'};
   h+=pc.defs;
-  if(!f.run)h+=rimL(f.len,5,60,pc);
-  else h+=`<circle cx="${C}" cy="${C}" r="${RR}" fill="none" stroke="${pc.trk}" stroke-width="6"/>`+arc(RR,0,Math.max(fr*360,.4),brk?pc.s:pc.a,8);
-  let dd='';for(let i=0;i<4;i++){const dn=brk?i<f.rd:i<f.rd-1,cu=!brk&&i===f.rd-1;dd+=`<circle cx="${C-33+i*22}" cy="338" r="7" fill="${dn?pc.t:cu?pc.a:pc.trk}"/>`}
-  h+=T(C,118,30,brk?(f.ph===2?'Long break':'Break'):'Focus',pc.a,500)+T(C,206,96,mm+':'+String(ss).padStart(2,'0'),pc.t,300)+T(C,290,28,f.run?'Tap to pause':live?'Paused':'Tap to start',pc.s,400)+dd}
+  if(f.menu&&f.pick){const o=OPT[f.pick];for(let i=0;i<5;i++){const[x,y]=P(i*72,150),sel=o[i]===f[f.pick];h+=`<circle cx="${x}" cy="${y}" r="50" fill="${sel?pc.g:pc.trk}"/>`+T(x,y,38,o[i],sel?'#15101c':pc.t,sel?500:400)}
+    h+=T(C,214,28,TT[f.pick],pc.t,500)+T(C,252,26,UN[f.pick],pc.s,400)}
+  else if(f.menu){const rows=[['Focus',f.len+' min'],['Break',f.brk+' min'],['Rounds',f.rds]];rows.forEach((r,k)=>{const y=150+k*83;h+=`<rect x="${C-125}" y="${y-28}" width="250" height="56" rx="28" fill="${pc.trk}" opacity=".7"/>`+T(C-62,y,28,r[0],pc.s,400)+T(C+44,y,28,r[1],pc.t,500)+ico('chv',C+104,y,pc.s)})}
+  else{h+=`<circle cx="${C}" cy="${C}" r="${RR}" fill="none" stroke="${pc.trk}" stroke-width="6"/>`;if(f.run||f.left!==tot)h+=arc(RR,0,Math.max(fr*360,.4),brk?pc.s:pc.a,8);
+   let dd='';const n=f.rds,x0=C-(n-1)*11;for(let i=0;i<n;i++){const dn=brk?i<f.rd:i<f.rd-1,cu=!brk&&i===f.rd-1;dd+=`<circle cx="${x0+i*22}" cy="272" r="7" fill="${dn?pc.t:cu?pc.a:pc.trk}"/>`}
+   h+=`<rect x="${C-125}" y="84" width="250" height="56" rx="28" fill="${pc.trk}" opacity=".7"/>`+T(C-6,112,28,brk?'Break':'Focus',pc.t,500)+ico('chv',C+104,112,pc.s)
+    +T(C,206,96,mm+':'+String(ss).padStart(2,'0'),pc.t,300)+dd
+    +`<rect x="${C-125}" y="300" width="250" height="56" rx="28" fill="${f.run?pc.trk:pc.g}" opacity="${f.run?.7:1}"/>`+playIco(C-60,328,f.run,f.run?pc.t:'#15101c')+T(C+16,328,28,f.run?'Pause':f.left!==tot?'Resume':'Start',f.run?pc.t:'#15101c',500)}}
 if(n==='light'){const m=s.lt.m,pc=theme(m?'light':'nlight',s),l=s.lt.l[m],on=s.lt.on;
   h+=pc.defs+rimL(l,5,100,pc)+T(C,112,30,'Lamp',pc.a,500)+T(C,200,76,on?l+'%':'Off',on?pc.t:OFFC,300)
    +`<rect x="${C-125}" y="265" width="250" height="56" rx="28" fill="${pc.trk}" opacity=".6"/><rect x="${m?C:C-125}" y="265" width="125" height="56" rx="28" fill="${pc.g}"/>`+ico('moon',C-62,293,m?pc.s:'#2a0d06')+ico('sun',C+62,293,m?'#2a1a04':pc.s)}
@@ -360,7 +364,7 @@ tmr:[['Drag a dot','Outer dot minutes, inner dot hours'],['Hold','Skip tomorrow,
 week:[['Tap a day','Open that day'],['Swipe up','Back to the clock']],
 day:[['Drag a dot','Outer dot minutes, inner dot hours'],['Hold','Turn the day on or off'],['Swipe sideways','Next or previous day'],['Swipe up','Back to the week']],
 sound:[['Tap the top pill','Pick a sound: 8 noise, 8 nature'],['Tap the icon','Play or pause (real sound in this demo)'],['Tap the lower pill','Pick a sleep timer'],['Drag the dot','Volume'],['Swipe left','Focus timer'],['Swipe right','Back to the clock']],
-focus:[['Tap','Start or pause'],['Drag the dot','Focus length, 5 to 60 minutes'],['Hold','Reset the timer'],['Swipe right','Back to sound']],
+focus:[['Tap the time or top pill','Set focus, break and rounds'],['Tap the lower pill','Start or pause'],['Hold','Reset the timer'],['Swipe right','Back to sound']],
 light:[['Drag the dot','Brightness'],['Tap the number','On or off'],['Tap the pill','Night light or reading light'],['Swipe left','Back to the clock']],
 ring:[['Tap anywhere','Snooze 9 minutes'],['Hold 2 seconds','Turn the alarm off']],
 set:[['Drag the dot','Change the value'],['Tap','Pick a date line, set seconds, sync the phone, or test the alarm'],['Swipe sideways','Next page'],['Swipe down','Back to the clock']]};
@@ -379,7 +383,8 @@ function states(){const L=[],add=(n,f)=>{const s=fresh();f&&f(s);L.push([n,s])};
  for(const m of [0,1])for(const on of [true,false])for(const l of [5,100])add('light',s=>{s.lt.m=m;s.lt.on=on;s.lt.l[m]=l});
  for(const z of [0,1,2,3])add('ring',s=>{s.snz=z});add('ring',s=>{s.done=true});add('ring',s=>{s.hold=.6});
  for(let p=0;p<PG.length;p++)for(let r=0;r<REG.length;r++)add('set',s=>{s.pg=p;s.rg=r;s.dat={m:r%12,d:28,y:2099};s.dayB=100;s.ns=1380;s.ld=100;s.clk=779});
- for(const df of [0,1,2])add('set',s=>{s.pg=1;s.df=df;s.dat={m:df*5+1,d:df===1?28:7,y:2099}});for(const ns of [1350,1230,60,1439,1260])for(const al of [405,300,720,540])add('set',s=>{s.pg=3;s.ns=ns;s.days[2].min=al});add('set',s=>{s.pg=6;s.test=true});for(const sc of [0,7,30,59])add('set',s=>{s.pg=0;s.secMode=true;s.sec=sc});for(const b of [0,1,2,3])add('set',s=>{s.pg=3;s.bt=b});for(const now of [1394,1290])for(let p=0;p<PG.length;p++)add('set',s=>{s.pg=p;s.now=now});for(const now of [1394,1290])for(const n of ['tmr','week','day','sound','light'])add(n,s=>{s.now=now});for(const v of [30,65,100])add('set',s=>{s.pg=5;s.ld=v});for(const v of [10,55,100])add('set',s=>{s.pg=4;s.dayB=v}); for(const len of [5,25,50,60])for(const ph of [0,1,2])for(const left of [1,59,len*60-1,(ph?300:len*60)]){if(left>0)add('focus',s=>{s.fo.len=len;s.fo.ph=ph;s.fo.rd=ph===1?2:ph===2?4:1;s.fo.left=left;s.fo.run=left%2===1})}
+ for(const df of [0,1,2])add('set',s=>{s.pg=1;s.df=df;s.dat={m:df*5+1,d:df===1?28:7,y:2099}});for(const ns of [1350,1230,60,1439,1260])for(const al of [405,300,720,540])add('set',s=>{s.pg=3;s.ns=ns;s.days[2].min=al});add('set',s=>{s.pg=6;s.test=true});for(const sc of [0,7,30,59])add('set',s=>{s.pg=0;s.secMode=true;s.sec=sc});for(const b of [0,1,2,3])add('set',s=>{s.pg=3;s.bt=b});for(const now of [1394,1290])for(let p=0;p<PG.length;p++)add('set',s=>{s.pg=p;s.now=now});for(const now of [1394,1290])for(const n of ['tmr','week','day','sound','light'])add(n,s=>{s.now=now});for(const v of [30,65,100])add('set',s=>{s.pg=5;s.ld=v});for(const v of [10,55,100])add('set',s=>{s.pg=4;s.dayB=v}); for(const [len,brk,rds] of [[25,5,4],[60,20,6],[15,3,2]])for(const ph of [0,1])for(const left of [1,59,len*60-1])add('focus',s=>{Object.assign(s.fo,{len,brk,rds,ph,rd:ph?rds-1:rds,left:Math.min(left,(ph?brk:len)*60),run:left%2===1})});
+ add('focus',s=>{s.fo.menu=true});for(const k of ['len','brk','rds'])for(const v of [0,1,2,3,4])add('focus',s=>{s.fo.menu=true;s.fo.pick=k;s.fo.len=[15,25,35,50,60][v];s.fo.brk=[3,5,10,15,20][v];s.fo.rds=[2,3,4,5,6][v]});
  for(const now of [1260,1410])add('focus',s=>{s.now=now});
  add('dialfig');return L}
 function layoutCheck(){const g=$('chk'),svg=$('dev'),sr=svg.getBoundingClientRect(),k=588/sr.width,issues=[],seen={};let boxes=0,all=states();
@@ -387,7 +392,7 @@ function layoutCheck(){const g=$('chk'),svg=$('dev'),sr=svg.getBoundingClientRec
   for(const e of els){const r=e.getBoundingClientRect();let x0=(r.left-sr.left)*k-61,x1=(r.right-sr.left)*k-61,y0=(r.top-sr.top)*k-61,y1=(r.bottom-sr.top)*k-61;
    const tag=e.tagName.toLowerCase();if(tag==='text'){const cy=(y0+y1)/2,hh=(y1-y0)*.4;y0=cy-hh;y1=cy+hh;ys.push(cy);const fs=+e.getAttribute('font-size');if(fs<MINFONT)issues.push(n+': font '+fs+'px "'+e.textContent+'"')}
    R.push({x0,x1,y0,y1,dot:e.getAttribute('data-k')==='d',t:(e.textContent||tag).trim().slice(0,22)});boxes++}
-  ys.sort((a,b)=>a-b);let lines=ys.length?1:0;for(let i=1;i<ys.length;i++)if(ys[i]-ys[i-1]>14)lines++;if(lines>MAXLINES&&n!=='week'&&n!=='dialfig'&&!s.pick){const key=n+'|lines|'+lines;if(!seen[key]){seen[key]=1;issues.push(n+': '+lines+' text lines (max '+MAXLINES+') '+JSON.stringify([s.now,s.pg,s.msg]))}}
+  ys.sort((a,b)=>a-b);let lines=ys.length?1:0;for(let i=1;i<ys.length;i++)if(ys[i]-ys[i-1]>14)lines++;if(lines>MAXLINES&&n!=='week'&&n!=='dialfig'&&!s.pick&&!(s.fo&&s.fo.pick)){const key=n+'|lines|'+lines;if(!seen[key]){seen[key]=1;issues.push(n+': '+lines+' text lines (max '+MAXLINES+') '+JSON.stringify([s.now,s.pg,s.msg]))}}
   const lab=n+' '+JSON.stringify([s.now,s.awake,s.msg,s.pg,s.rg,s.sel,s.skip,s.one,s.ti,s.hold,s.done]);
   for(const r of R){if(r.dot)continue;for(const[x,y]of[[r.x0,r.y0],[r.x1,r.y0],[r.x0,r.y1],[r.x1,r.y1]])if(Math.hypot(x-C,y-C)>SAFE){const key=n+'|out|'+r.t;if(!seen[key]){seen[key]=1;issues.push(n+': outside safe circle "'+r.t+'" ('+Math.round(Math.hypot(x-C,y-C))+'px) '+lab)}break}}
   for(let i=0;i<R.length;i++)for(let j=i+1;j<R.length;j++){const a=R[i],b=R[j];if(a.dot&&b.dot)continue;if(a.x0<b.x1+3&&b.x0<a.x1+3&&a.y0<b.y1+3&&b.y0<a.y1+3){const key=n+'|ov|'+a.t+'|'+b.t;if(!seen[key]){seen[key]=1;issues.push(n+': overlap "'+a.t+'" with "'+b.t+'" '+lab)}}}}
@@ -447,11 +452,11 @@ const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;let anim=0,idleT
 let btT=[];function startBT(){btT.forEach(clearTimeout);S.bt=1;fb('Searching for your phone for about 2 minutes');btT=[setTimeout(()=>{S.bt=2;fb('Confirm the code on your phone');if(S.scr==='set')render()},2200),setTimeout(()=>{S.bt=3;S.sec=0;fb('Time synced from your phone. Bluetooth is off again.');if(S.scr==='set')render()},4600)]}
 function focusAudio(){try{if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();AC.resume&&AC.resume()}catch(e){}}
 function chime(n){try{focusAudio();[0,.28,.56].slice(0,n).forEach((d,i)=>{const o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=[784,988,1319][i];g.gain.setValueAtTime(0,AC.currentTime+d);g.gain.linearRampToValueAtTime(.18,AC.currentTime+d+.03);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d+.7);o.connect(g);g.connect(AC.destination);o.start(AC.currentTime+d);o.stop(AC.currentTime+d+.8)})}catch(e){}}
-function focusTick(){const f=S.fo;if(!f.run)return;f.left--;if(f.left<=0){if(f.ph===0){f.ph=f.rd>=4?2:1;f.left=(f.ph===2?15:5)*60;chime(2);fb(f.ph===2?'Focus done. Long break':'Focus done. Take 5')}else{const wasLong=f.ph===2;f.ph=0;f.rd=wasLong?1:f.rd+1;f.left=f.len*60;if(wasLong)f.run=false;chime(3);fb(wasLong?'Cycle complete':'Break over. Focus round '+f.rd)}}if(!busy&&!G)render()}
+function focusTick(){const f=S.fo;if(!f.run)return;f.left--;if(f.left<=0){if(f.ph===0){if(f.rd>=f.rds){f.run=false;f.ph=0;f.rd=1;f.left=f.len*60;chime(3);fb('All rounds done')}else{f.ph=1;f.left=f.brk*60;chime(2);fb('Focus done. Take '+f.brk)}}else{f.ph=0;f.rd++;f.left=f.len*60;chime(3);fb('Break over. Focus round '+f.rd)}}if(!busy&&!G)render()}
 setInterval(focusTick,1000);
 window.focusFast=()=>{S.fo.left=Math.min(S.fo.left,3)};
 setInterval(()=>{if(S.scr==='set'&&PG[S.pg]==='Time'&&!S.secMode&&!busy&&!G){S.sec++;if(S.sec>=60){S.sec=0;S.clk=wrap(S.clk+1);S.now=S.clk}render()}},1000);
-function nav(to,d,msg){S.secMode=false;old.innerHTML=cur.innerHTML;S.test=false;S.pick=null;S.scr=to;if(msg)fb(msg);render();cancelAnimationFrame(anim);if(RM||!d){old.innerHTML='';cur.removeAttribute('transform');return}
+function nav(to,d,msg){S.fo.menu=false;S.fo.pick=null;S.secMode=false;old.innerHTML=cur.innerHTML;S.test=false;S.pick=null;S.scr=to;if(msg)fb(msg);render();cancelAnimationFrame(anim);if(RM||!d){old.innerHTML='';cur.removeAttribute('transform');return}
  const t0=performance.now();(function st(t){const p=Math.min(1,(t-t0)/340),q=p-1,e=1+2.2*q*q*q+1.2*q*q;cur.setAttribute('transform',`translate(${d[0]*466*(1-e)} ${d[1]*466*(1-e)})`);old.setAttribute('transform',`translate(${-d[0]*466*e} ${-d[1]*466*e})`);old.setAttribute('opacity',1-e);if(p<1)anim=requestAnimationFrame(st);else{old.innerHTML='';old.removeAttribute('transform');old.removeAttribute('opacity');cur.removeAttribute('transform')}})(t0)}
 function idle(){clearTimeout(idleT);if(S.scr!=='clock'&&S.scr!=='ring'&&!busy)idleT=setTimeout(()=>{if(S.scr!=='clock'&&S.scr!=='ring'&&!busy)nav('clock',null,'Back to the clock after 20 seconds, changes kept')},S.scr==='set'?30000:20000)}
 let awA=0;function tweenAw(to,done){cancelAnimationFrame(awA);const a=S.aw!==undefined?S.aw:(S.awake?1:0),t0=performance.now(),D=to?320:600;(function st(t){const p=Math.min(1,(t-t0)/D),e=p*p*(3-2*p);S.aw=a+(to-a)*e;if(S.scr==='clock'&&!busy)render();if(p<1)awA=requestAnimationFrame(st);else if(done)done()})(t0)}
@@ -468,7 +473,6 @@ function stepVal(dir){const g=PG[S.pg];
  else if(g==='Region'){S.rg=(S.rg+(dir>0?1:REG.length-1))%REG.length;fb(REG[S.rg][0])}
  render()}
 function linInfo(){const s=S.scr;
- if(s==='focus'){if(S.fo.run||S.fo.ph||S.fo.left!==S.fo.len*60&&false)return null;return{lo:5,hi:60,get:()=>S.fo.len,set:v=>{S.fo.len=v;S.fo.left=v*60;fb('Focus '+v+' minutes')}}}
  if(s==='sound')return{lo:0,hi:100,get:()=>S.vol,set:v=>{S.vol=v;fb('Volume '+v+'%')}};
  if(s==='light')return{lo:5,hi:100,get:()=>S.lt.l[S.lt.m],set:v=>{S.lt.on=true;S.lt.l[S.lt.m]=v;fb('Brightness '+v+'%')}};
  if(s==='set'&&PG[S.pg]==='Brightness')return{lo:10,hi:100,get:()=>S.dayB,set:v=>{S.dayB=v;fb('Daytime brightness '+v+'%')}};
@@ -491,7 +495,11 @@ function tap(x,y){const r=Math.hypot(x-C,y-C),s=S.scr;
  else if(s==='ring'){if(S.done)return;if(S.snz>0){S.snz--;S.msg='Snoozed · rings 7:09 AM';return nav('clock',null,'Snoozed for 9 minutes')}return fb('No snoozes left. Hold to stop')}
  else if(s==='tmr'){if((S.one??usual(S))==null)fb('Drag a dot to set one');else fb(S.skip?'Hold to bring it back':'Hold to skip tomorrow')}
  else if(s==='day'){fb(S.days[S.sel].on?'Hold to turn this day off':'Hold to turn this day on')}
- else if(s==='focus'){const f=S.fo;f.run=!f.run;if(f.run)focusAudio();fb(f.run?(f.ph?'Break running':'Focus running'):'Paused');ripple(C,C)}
+ else if(s==='focus'){const f=S.fo;
+  if(f.menu&&f.pick){const O={len:[15,25,35,50,60],brk:[3,5,10,15,20],rds:[2,3,4,5,6]}[f.pick];for(let i=0;i<5;i++){const[bx,by]=P(i*72,150);if(Math.hypot(x-bx,y-by)<=58){f[f.pick]=O[i];f.ph=0;f.rd=1;f.left=f.len*60;fb(({len:'Focus ',brk:'Break ',rds:'Rounds '})[f.pick]+O[i])}}f.pick=null}
+  else if(f.menu){const i=Math.round((y-150)/83);if(i>=0&&i<=2&&Math.abs(y-(150+i*83))<=40&&Math.abs(x-C)<=135){f.pick=['len','brk','rds'][i];fb('Pick a number')}else{f.menu=false;fb('Closed')}}
+  else if(y<268){f.run=false;f.menu=true;f.pick=null;fb('Focus, break and rounds')}
+  else{f.run=!f.run;if(f.run)focusAudio();fb(f.run?(f.ph?'Break running':'Focus running'):'Paused');ripple(C,C)}}
  else if(s==='sound'){
   if(S.pick==='snd'){for(let i=0;i<8;i++){const[bx,by]=P(i*45,150);if(Math.hypot(x-bx,y-by)<=56){S.snd=(S.pp||0)*8+i;S.play=true;fb(SOUNDS[S.snd][0])}}S.pick=null}
   else if(S.pick==='tmr'){for(let i=0;i<5;i++){const[bx,by]=P(i*72,150);if(Math.hypot(x-bx,y-by)<=58){S.ti=i;fb('Sleep timer: '+TIMER[i][0])}}S.pick=null}
@@ -507,6 +515,7 @@ function swipe(d){const s=S.scr;
  if(s==='week'&&d==='up')return nav('clock',[0,1],'Back to the clock');
  if(s==='day'){if(d==='up')return nav('week',[0,1],'Saved');if(d==='left'||d==='right'){const t=S.days[S.sel].min;S.sel=(S.sel+(d==='left'?1:6))%7;if(!S.days[S.sel].on)S.days[S.sel].min=t;return nav('day',[d==='left'?1:-1,0],DF[S.sel])}}
  if(s==='sound'&&S.pick){if(S.pick==='snd'&&(d==='left'||d==='right')){S.pp=S.pp?0:1;fb(S.pp?'Nature sounds':'Noise colours')}else{S.pick=null;fb('Closed')}return render()}
+ if(s==='focus'&&S.fo.menu){S.fo.menu=false;S.fo.pick=null;fb('Closed');return render()}
  if(s==='sound'&&d==='left')return nav('focus',[1,0],'Focus timer');
  if(s==='focus'&&d==='right')return nav('sound',[-1,0],'Sleep sound');
  if(s==='sound'&&d==='right')return nav('clock',[-1,0],'Back to the clock');
@@ -515,7 +524,7 @@ function swipe(d){const s=S.scr;
  fb('Nothing in that direction')}
 function onHold(){const s=S.scr;
  if(s==='ring'){S.hold=0;S.done=true;fb('Alarm off');render();setTimeout(()=>{S.done=false;S.snz=3;S.msg='';nav('clock',null,'Good morning')},1900)}
- else if(s==='focus'){S.hold=0;S.fo.run=false;S.fo.ph=0;S.fo.rd=1;S.fo.left=S.fo.len*60;fb('Timer reset');ripple(C,C);render()}
+ else if(s==='focus'){S.hold=0;S.fo.run=false;S.fo.ph=0;S.fo.rd=1;S.fo.left=S.fo.len*60;S.fo.menu=false;fb('Timer reset');ripple(C,C);render()}
  else if(s==='tmr'){S.hold=0;S.skip=!S.skip;fb(S.skip?'Tomorrow\u2019s alarm skipped':'Tomorrow\u2019s alarm is back');ripple(C,C);render()}
  else if(s==='day'){S.hold=0;const d=S.days[S.sel];d.on=!d.on;fb(DF[S.sel]+' alarm '+(d.on?'on':'off'));ripple(C,C);render()}
  else if(s==='clock'&&S.scr==='clock'){S.hold=0;S.pg=0;S.clk=S.now;nav('set',[0,1],'Settings: the time is first, so a daylight saving fix is one tap')}
@@ -529,7 +538,7 @@ dev.addEventListener('pointerdown',e=>{if(busy)return;const[x,y]=pt(e),r=Math.hy
  const ks=knobs();if(ks){let best=null,bd=57;for(const k of ks){const[kx,ky]=P(k.a,k.r),dd=Math.hypot(x-kx,y-ky);if(dd<bd){bd=dd;best=k}}if(best){g.grab=true;g.kt=best.t;g.unit=best.u||30;g.v0=best.t==='lin'?linInfo().get():0}}
  let hm=0;const s=S.scr;
  if(s==='ring'&&!S.done)hm=2000;else if(s==='clock'&&!S.awakeLock)hm=1500;
- else if(s==='focus'&&!g.grab&&r<150&&(S.fo.run||S.fo.ph||S.fo.rd>1||S.fo.left!==S.fo.len*60))hm=1000;
+ else if(s==='focus'&&!S.fo.menu&&(S.fo.run||S.fo.ph||S.fo.rd>1||S.fo.left!==S.fo.len*60))hm=1000;
  else if(((s==='tmr'&&(S.one??usual(S))!=null)||s==='day')&&!g.grab&&r<150)hm=1000;
  if(hm)(function lp(){if(G!==g||g.moved)return;const el=performance.now()-g.t,p=el/hm;if((s==='ring'||s==='tmr'||s==='day'||s==='clock'||s==='focus')&&el>450){S.hold=Math.min(1,(el-450)/(hm-450));render()}if(p>=1){g.held=true;return onHold()}requestAnimationFrame(lp)})()});
 dev.addEventListener('pointermove',e=>{if(!G)return;const[x,y]=pt(e);

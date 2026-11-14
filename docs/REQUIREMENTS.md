@@ -37,7 +37,7 @@ Last reviewed: 2026-11-13 (Phase 2)
 | R44 | M | `[~]` A swipe starting anywhere, including right next to a dot, is never mistaken for a dial turn, and a deliberate grab always turns it (D-036). Host test: 1,249 random swipes, 0 mistaken. Still to do on the real panel with `/firmware/dialtest` (UX-B2). | 2, 3 | T-47 |
 | R45 | M | `[ ]` The colour language of UX.md §7 runs smoothly on the real panel (bench check UX-B3), with fades as the fallback. Alarm is always orange with a bell; bedtime is always violet with a moon. | 3 | T-48 |
 | R47 | M | `[ ]` If the sleep sound ran that evening with an N-minute timer, it plays again for N minutes ending at the dawn start, fading in smoothly (D-044). Not for "All night". | 3 | T-50 |
-| R48 | N | `[ ]` A Focus (Pomodoro) screen: 25/5 minute rounds, four rounds then a 15 minute break; never affects an alarm (D-047). | 3 | T-51 |
+| R48 | N | `[ ]` A Focus (Pomodoro) screen: focus length, break length and number of rounds set from a tap on the time (defaults 25 / 5 / 4); never affects an alarm (D-047). | 3 | T-51 |
 | R46 | M | `[ ]` The Time page sets hours, minutes and seconds; seconds are set with the clock paused and started by a tap (D-043). | 3 | T-49 |
 
 ## 3. Sound

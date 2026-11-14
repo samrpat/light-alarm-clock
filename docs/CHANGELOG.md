@@ -99,3 +99,4 @@
 
 ## 2026-11-14 — round 10
 - Sleep sound returns before the dawn and fades out as the sunrise begins (D-044). A quiet living sky on the clock (D-045). Apple-style type, Inter on the device (D-046). New Focus (Pomodoro) screen right of Sound (D-047). Checks: 496 states, 2,932 boxes, 0 issues.
+- Focus screen reworked: pill buttons like Sound; tap the time for a menu of focus length, break length and rounds (D-047). Checks: 482 states, 0 issues.
