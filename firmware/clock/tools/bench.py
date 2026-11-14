@@ -72,7 +72,8 @@ class Board:
         time.sleep(0.5)
         try: self.s.close()
         except Exception: pass
-        end = time.time() + 20
+        time.sleep(6.0)                                       # let it boot fully before the port is opened again
+        end = time.time() + 30
         while time.time() < end:
             time.sleep(1.0)
             try: self.__init__(); self.status(); return
@@ -152,6 +153,11 @@ def real(b):
             print(f"  {time.strftime('%H:%M:%S')}  {NAMES[st['state']]}  step {st['stage']}  dawn_t {st['dawn_t']}", flush=True)
             if key not in seen: seen[key] = st
         if prev and prev[0] in (1, 2, 3, 4) and st["state"] == 0: break
+        side = os.path.join(HERE, "send.txt")                 # a console line dropped here is sent during the run (e.g. vol 90)
+        if os.path.exists(side):
+            for line in open(side).read().splitlines():
+                if line.strip(): print("  sent:", line.strip(), "->", b.cmd(line.strip()), flush=True)
+            os.remove(side)
         prev = key; time.sleep(1.0 if abs(st["now"] - T) < 240 or abs(st["now"] - (T - 1800)) < 20 else 10.0)
     d = seen.get((1, 0)); c.ok(bool(d) and -1800 <= d["dawn_t"] <= -1797, "dawn began 30:00 before the alarm", str(d))
     r = seen.get((2, 1)); c.ok(bool(r) and abs(r["now"] - T) <= 2, "alarm rang on the second", str(r))
