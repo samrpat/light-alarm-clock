@@ -325,13 +325,13 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
   1. A **Phone** settings page starts a two-minute Bluetooth window on tap, pairs with a code shown on the clock, reads the time, and turns Bluetooth off. Bluetooth is never on otherwise. Time only; region and daylight saving stay on the clock. Wi-Fi stays unused. Details in [BLUETOOTH.md](BLUETOOTH.md).
   2. The Time page sets **seconds**: tap the seconds line to pause, drag the dot, tap to start at the beep.
 - **Why it is still safe:** the clock works fully without Bluetooth; the Bluetooth code runs off the alarm path (D-002) and can be removed without touching it; the "no server, no account" goal is untouched.
-- **Open:** which phone (iPhone, Android) decides which phone-side option to build.
+- **Phone:** owner has an iPhone (2026-11-14), so BLUETOOTH.md option A (iPhone Current Time Service) is tried first; it must be bench-verified (V-BT1), with an nRF Connect fallback.
 
 ## D-044 — Sleep sound is mirrored before the dawn
 - **Date:** 2026-11-14 · **Status:** Proposed (owner: "white noise to fade in 30 min before the alarm so it feels like it has been on … and a smooth fade out when the sun sequence starts") · **Reqs:** R10, R47
 - **Decision:** If the sleep sound was started that evening with a timer of N minutes, it plays again for N minutes ending where the dawn begins (alarm − 30 min). It fades in smoothly over the first min(N, 10) minutes and fades out over 3 minutes as the sunrise starts (smoothstep, no steps). The "All night" timer has no pre-window. Sound off the evening before means no morning sound.
 - **Why:** the room sounds the same as when you fell asleep, so the sound ends gently before the light begins. The alarm path is unchanged: the sound is a command from `alarm_engine` to `audio_out`, and the alarm tone never depends on it.
-- **Open:** the "only after you used it that evening" rule is my reading; owner to confirm or choose every night.
+- **Confirmed by owner (2026-11-14):** only when the sleep sound was used that evening.
 
 ## D-045 — A quiet living sky on the clock
 - **Date:** 2026-11-14 · **Status:** Proposed (owner: "add a lively moving element on the home screen") · **Reqs:** R6

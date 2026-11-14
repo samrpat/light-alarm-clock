@@ -27,7 +27,7 @@ Only the current date and time. Region and daylight saving stay on the clock (a 
 
 | Option | What you need | Catch |
 |--------|---------------|-------|
-| **A. iPhone Current Time Service** | Nothing: iPhones offer their time to paired Bluetooth accessories | I could not verify it works with this board. iPhone only. |
+| **A. iPhone Current Time Service (owner has an iPhone: build this first)** | Nothing: iPhones offer their time to paired Bluetooth accessories | I could not verify it works with this board. iPhone only. |
 | **B. A small web page using Web Bluetooth** | Chrome on Android or a computer | **iPhone Safari does not support Web Bluetooth.** Needs HTTPS, so it would be hosted (for example on this repository's GitHub page), which is a small dependency on a host, only for the convenience. |
 | **C. A generic Bluetooth app** (nRF Connect, LightBlue) | The app | You write the time by hand into a characteristic. Works, but clumsy. |
 | **D. A small custom app** | Building and keeping an app | The most work and the most to maintain |
