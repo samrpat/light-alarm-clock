@@ -379,21 +379,27 @@ function noiseBuf(kind){const sr=AC.sampleRate,n=sr*5,F=sr>>1,b=AC.createBuffer(
   d[i]=v}
  for(let i=0;i<F;i++){const k=i/F;d[i]=d[i]*k+d[n-F+i]*(1-k)}
  for(let i=0;i<n-F;i++)mx=Math.max(mx,Math.abs(d[i]));for(let i=0;i<n;i++)d[i]*=.9/mx;return{b,end:(n-F)/sr}}
+function evBuf(kind){const sr=AC.sampleRate,secs=kind==='storm'?40:10,n=Math.floor(sr*secs),b=AC.createBuffer(1,n,sr),d=b.getChannelData(0),at=(i,v)=>{d[((i%n)+n)%n]+=v},R=Math.random;
+ if(kind==='fire'){let t=0;while(t<secs){t+=-Math.log(1-R())/6.5;const i=Math.floor(t*sr),big=R()<.12,A=(big?.8:.15+.5*R())*(.4+.6*R()),len=Math.floor(sr*(big?.006:.0012+.003*R())),tau=len/3;for(let k=0;k<len;k++)at(i+k,(R()*2-1)*A*Math.exp(-k/tau));if(R()<.3){const c=1+Math.floor(R()*3);for(let q=0;q<c;q++){const j=i+Math.floor(sr*(.008+.03*R())),A2=A*.5*R();for(let k=0;k<len/2;k++)at(j+k,(R()*2-1)*A2*Math.exp(-k/(tau/2)))}}}}
+ if(kind==='rain'){let t=0;while(t<secs){t+=-Math.log(1-R())/140;const i=Math.floor(t*sr),A=.05+.25*R()*R(),len=Math.floor(sr*(.0006+.0012*R()));for(let k=0;k<len;k++)at(i+k,(R()*2-1)*A*Math.exp(-k/(len/3)))}}
+ if(kind==='stream'){let t=0;while(t<secs){t+=-Math.log(1-R())/55;const i=Math.floor(t*sr),f0=450+2200*R()*R(),dur=.008+.02*R(),len=Math.floor(sr*dur),A=.08+.3*R(),up=1.3+.9*R();let ph=0;for(let k=0;k<len;k++){const u=k/len,f=f0*(1+(up-1)*u);ph+=2*Math.PI*f/sr;at(i+k,Math.sin(ph)*A*Math.sin(Math.PI*u)*Math.exp(-3*u))}}}
+ if(kind==='storm'){let t=4+10*R(),lp=0;const th=new Float32Array(n);while(t<secs){const dur=5+5*R(),rip=1.2+1.2*R(),A=.5+.5*R(),i0=Math.floor(t*sr),len=Math.floor(sr*dur);for(let k=0;k<len;k++){const u=k/len,env=Math.min(1,k/(sr*.7))*Math.exp(-3.2*u)*(1+.45*Math.sin(2*Math.PI*rip*k/sr));th[(i0+k)%n]+=(R()*2-1)*A*Math.max(0,env)}t+=12+14*R()}for(let i=0;i<n;i++){lp+=(th[i]-lp)*.02;d[i]=lp*6}}
+ let mx=0;for(let i=0;i<n;i++)mx=Math.max(mx,Math.abs(d[i]));if(mx>0)for(let i=0;i<n;i++)d[i]*=.9/mx;return b}
 function audioStart(kind){const g=AC.createGain();g.gain.value=0;g.connect(AC.destination);const stops=[];
  const lfo=(f,amt,param)=>{const o=AC.createOscillator(),og=AC.createGain();o.frequency.value=f;og.gain.value=amt;o.connect(og);og.connect(param);o.start();stops.push(o)};
  const tone=(f,lvl)=>{const o=AC.createOscillator(),og=AC.createGain();o.frequency.value=f;og.gain.value=lvl;o.connect(og);og.connect(g);o.start();stops.push(o);return og};
- const L=(bk,lvl,fs)=>{const nb=noiseBuf(bk),src=AC.createBufferSource();src.buffer=nb.b;src.loop=true;src.loopEnd=nb.end;let node=src;const out=[];for(const[t,f,q,gn]of fs||[]){const x=AC.createBiquadFilter();x.type=t;x.frequency.value=f;if(q)x.Q.value=q;if(gn)x.gain.value=gn;node.connect(x);node=x;out.push(x)}const lg=AC.createGain();lg.gain.value=lvl;node.connect(lg);lg.connect(g);src.start();stops.push(src);return{f:out,g:lg}};
+ const L=(bk,lvl,fs)=>{const ev=['fire','rain','stream','storm'].includes(bk),nb=ev?{b:evBuf(bk),end:undefined}:noiseBuf(bk),src=AC.createBufferSource();src.buffer=nb.b;src.loop=true;if(nb.end)src.loopEnd=nb.end;let node=src;const out=[];for(const[t,f,q,gn]of fs||[]){const x=AC.createBiquadFilter();x.type=t;x.frequency.value=f;if(q)x.Q.value=q;if(gn)x.gain.value=gn;node.connect(x);node=x;out.push(x)}const lg=AC.createGain();lg.gain.value=lvl;node.connect(lg);lg.connect(g);src.start();stops.push(src);return{f:out,g:lg}};
  switch(kind){
   case 'green':L('white',1,[['bandpass',500,.6]]);break;
   case 'grey':L('white',1,[['lowshelf',150,0,12],['peaking',3000,.8,-8],['highshelf',7000,0,6]]);break;
-  case 'rain':L('white',1,[['highpass',900],['lowpass',9000]]);break;
-  case 'storm':{L('white',.8,[['highpass',700],['lowpass',8000]]);const t=L('brown',.5,[['lowpass',140]]);lfo(.06,.5,t.g.gain);break}
+  case 'rain':L('pink',.4,[['highpass',350],['lowpass',7000]]);L('rain',2,[['bandpass',3500,.7]]);break;
+  case 'storm':L('pink',.5,[['highpass',300],['lowpass',6000]]);L('rain',2,[['bandpass',3500,.7]]);L('storm',2.5,[['lowpass',160]]);break;
   case 'ocean':{const o=L('brown',.6);lfo(.11,.4,o.g.gain);break}
-  case 'stream':{const o=L('white',.9,[['bandpass',1800,1.4]]);lfo(3.1,500,o.f[0].frequency);lfo(5.3,350,o.f[0].frequency);break}
+  case 'stream':L('pink',.3,[['highpass',250],['lowpass',3000]]);L('stream',1,[['highpass',300]]);break;
   case 'falls':L('pink',.7,[['lowpass',5000]]);L('brown',.6);break;
   case 'wind':{const o=L('pink',1,[['bandpass',420,1.2]]);lfo(.13,260,o.f[0].frequency);break}
   case 'forest':{L('pink',.1,[['highpass',1500]]);const a=tone(4300,.02);lfo(27,.02,a.gain);const b=tone(3900,.012);lfo(19,.012,b.gain);break}
-  case 'fire':L('brown',.5,[['lowpass',600]]);L('crackle',.9,[['highpass',1500]]);break;
+  case 'fire':L('brown',.25,[['lowpass',420]]);L('fire',3,[['highpass',500],['lowpass',6500]]);break;
   case 'fan':L('brown',1,[['lowpass',520]]);tone(110,.05);break;
   default:L(kind,1)}
  return{kind,g,stops}}
@@ -487,7 +493,7 @@ dev.addEventListener('pointerdown',e=>{if(busy)return;const[x,y]=pt(e),r=Math.hy
  let hm=0;const s=S.scr;
  if(s==='ring'&&!S.done)hm=2000;else if(s==='clock'&&!S.awakeLock)hm=1500;
  else if(((s==='tmr'&&(S.one??usual(S))!=null)||s==='day')&&!g.grab&&r<150)hm=1000;
- if(hm)(function lp(){if(G!==g||g.moved)return;const el=performance.now()-g.t,p=el/hm;if((s==='ring'||s==='tmr'||s==='day'||s==='clock')&&el>220){S.hold=Math.min(1,(el-220)/(hm-220));render()}if(p>=1){g.held=true;return onHold()}requestAnimationFrame(lp)})()});
+ if(hm)(function lp(){if(G!==g||g.moved)return;const el=performance.now()-g.t,p=el/hm;if((s==='ring'||s==='tmr'||s==='day'||s==='clock')&&el>450){S.hold=Math.min(1,(el-450)/(hm-450));render()}if(p>=1){g.held=true;return onHold()}requestAnimationFrame(lp)})()});
 dev.addEventListener('pointermove',e=>{if(!G)return;const[x,y]=pt(e);
  if(!G.moved&&Math.hypot(x-G.x,y-G.y)>16){G.moved=true;stopRep();if(S.hold){S.hold=0;render()}
   if(G.grab&&performance.now()-G.t<90)G.grab=false;

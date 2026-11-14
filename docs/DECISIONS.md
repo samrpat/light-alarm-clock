@@ -313,3 +313,8 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
 - **Date:** 2026-11-13 · **Status:** Proposed (owner's requests) · amends D-040 · **Reqs:** R11, R34
 - **Decisions:** (1) Sound has two pills that open bubble pickers, one for the sound (Noise and Nature pages, picture and colour per sound) and one for the sleep timer; a tap on a bubble picks and closes. Swiping to change sound is dropped. (2) Sixteen sounds: eight noises, eight nature (rain, storm, ocean, stream, waterfall, wind, forest, fire). (3) The hold indicator waits 0.22 s so an ordinary tap shows nothing; settings open only from the home screen. (4) The tap hints fade in and out and the night face brightens and dims on the same curve.
 - **Tested in the concept page:** a quick tap shows no hold line; a hold on the home screen opens settings; a hold on any other screen does not; all 16 sounds build.
+
+## D-042 — Round 7: natural sounds rebuilt from random events; hold line waits 0.45 s
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "fire, storm, stream all sound horrible", "don't want delay for swipe, want it for the holding animation") · amends D-041
+- **Decision:** Fire, rain, storm and stream are synthesised from random events (crackles, drops, bubbles, thunder). The hold indicator now waits 0.45 s; swipes and taps are never delayed.
+- **Verified:** event rates and levels in the browser. **Not verified:** how it sounds.

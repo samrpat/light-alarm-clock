@@ -31,11 +31,11 @@ Tap the sound pill on the Sound screen and a ring of bubbles opens; pick one and
 
 | Sound | What it is | How it is made |
 |-------|-----------|----------------|
-| Storm | Heavy rain with distant, slowly rolling thunder | Rain noise plus a deep rumble that swells every 16 s |
-| Stream | A bright babbling brook | Mid-range noise with two wandering filters |
+| Storm | Rain with distant thunder that rolls in at random, every 12 to 26 s | Rain texture plus low-passed noise swelling and rippling |
+| Stream | A babbling brook | Soft noise plus about 55 tiny rising "bubble" tones a second at random pitches |
 | Waterfall | A broad, steady roar | Pink and brown noise together |
 | Forest | Leaves with a hint of night insects | Quiet high noise plus two fluttering tones near 4 kHz |
-| Fire | A fireplace: low rumble and random crackles | Low noise plus random sharp pops |
+| Fire | A fireplace: a low rumble and random crackles and pops | A quiet rumble plus about 6 random clicks a second, some louder, some in clusters |
 
 Sixteen sounds in all. Like the others they are shaped noise, not recordings: good for masking and sleep, not a replica of a real forest. Recordings on the SD card stay the fallback (Phase 5).
 
@@ -49,3 +49,9 @@ Sixteen sounds in all. Like the others they are shaped noise, not recordings: go
 ## Firmware notes
 
 A 32-bit generator makes white noise at 22 050 Hz. Pink uses a 7-stage filter (Paul Kellet's coefficients, as in the concept page). Brown and violet are one-line filters. Green, grey, rain, wind and fan add one to three biquad filters. Ocean and wind add a slow oscillator. All of it costs well under 1 % of one core (my estimate, to measure).
+
+## Round 7: rebuilt rain, storm, stream and fire
+
+The first versions of fire, storm and stream were shaped noise with a wandering filter, and sounded wrong ("horrible"). They are now built from **random events**, like the real thing: crackles, raindrops, bubbles and thunder claps placed at random times. Each is generated once into a loop 10 s long (storm 40 s) with no repeat you can hear.
+
+**Honest limit:** I cannot listen. I checked that each builds without errors, loops, has the right event rate and level balance, but whether it *sounds* good is for your ears. Please try Fire, Storm, Stream and Rain in the concept and tell me what is wrong ("too crackly", "thunder too loud", "stream too hissy") and I will adjust the numbers. These are likely to need tuning on the real 2 W speaker too.

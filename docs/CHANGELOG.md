@@ -87,3 +87,6 @@
 - Sound screen: two pill buttons open bubble pickers (sound: Noise and Nature pages; timer). Sixteen sounds including storm, stream, waterfall, forest, fire (D-041, SOUND.md).
 - Tap hints and night brightness now fade smoothly. The hold indicator waits 0.22 s. Settings open only by a hold on the home screen.
 - Checks: 427 states, 2,697 boxes, 0 issues; 582 swipes, 0 mistaken.
+
+## 2026-11-13 — round 7
+- Fire, rain, storm, stream rebuilt from random events (SOUND.md). Hold indicator waits 0.45 s; swipes instant (tested).
