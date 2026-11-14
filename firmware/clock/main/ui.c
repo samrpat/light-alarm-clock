@@ -353,7 +353,7 @@ static void focus_tick(void) {
     else { S.fo.ph = 0; S.fo.rd++; S.fo.left = S.fo.len * 60; g_chime = 3; }
 }
 static void fxtick(lv_timer_t *t) {      /* 30 fps for the clock's effects, and only there */
-    (void)t; if (bench_frozen || (S.scr != SCR_CLOCK && S.scr != SCR_RING && !(S.scr == SCR_SOUND && S.play) && !(S.scr == SCR_FOCUS && S.fo.run))) return;
+    (void)t; if (bench_frozen || (S.scr != SCR_RING && !(S.scr == SCR_SOUND && S.play) && !(S.scr == SCR_FOCUS && S.fo.run))) return;
     S.fx = (uint32_t)(us() / 33000); redraw();
 }
 static void tick(lv_timer_t *t) {

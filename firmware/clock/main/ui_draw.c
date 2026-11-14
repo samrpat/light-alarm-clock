@@ -101,34 +101,32 @@ static col_t sky_at(int m, int which) {
     return which ? SKY[4].b : SKY[4].a;
 }
 /* ---- the clock's effects: an orb that travels the rim once a day, sparks that drift and twinkle, a rising sun, ripples when the alarm rings ---- */
-static void fx_day(const ui_t *s, col_t a, col_t b) {
-    uint32_t ca = rgb(a), cb = rgb(b), warm = 0xffd27a; float x, y, day = (s->now % 1440) / 4.0f;
-    gfx_ring(C, C, 215, rgb(mulc(a, .22f)), 4, 1); gfx_arc(C, C, 215, 0, day, ca, 4, 1, true);
-    gfx_pt(day, 215, &x, &y); for (int i = 3; i >= 1; i--) gfx_circle(x, y, 8 + i * 8, warm, .10f); gfx_circle(x, y, 9, warm, 1); gfx_circle(x, y, 4, 0xffffff, 1);
-    for (int i = 0; i < 4; i++) { gfx_pt(s->fx * .8f + i * 90, 188 - (i & 1) * 14, &x, &y); gfx_circle(x, y, 4, i & 1 ? cb : ca, .35f + .45f * sinf(s->fx * .17f + i * 1.9f)); }
+/* ---- the clock's colour: the edge ring is the day as a colour timeline; the bead is now, the pin is the next alarm ---- */
+static col_t spec(float h) {                  /* h in hours, 0..24: indigo night, rose dawn, amber morning, sky noon, teal afternoon, coral dusk, violet evening */
+    static const struct { float h; col_t c; } K[] = {{0, {70, 70, 210}}, {4, {150, 80, 230}}, {6.5f, {255, 110, 150}}, {8.5f, {255, 170, 80}}, {12, {90, 190, 255}}, {16, {80, 220, 190}}, {19, {255, 120, 120}}, {21.5f, {160, 90, 235}}, {24, {70, 70, 210}}};
+    h = fmodf(h + 24, 24);
+    for (int i = 1; i < 9; i++) if (h <= K[i].h) return mixc(K[i - 1].c, K[i].c, (h - K[i - 1].h) / (K[i].h - K[i - 1].h));
+    return K[8].c;
 }
-static void fx_dawn(const ui_t *s, float k) {
-    float cy = 540 - 360 * k; (void)s;
-    for (int i = 4; i >= 1; i--) gfx_circle(C, cy, 70 + i * 36, 0xe8506a, .09f);
-    gfx_circle(C, cy, 78, 0xff7a59, .95f); gfx_circle(C, cy, 52, 0xffb24d, 1);
+static void fx_spectrum(const ui_t *s, float amt) {
+    float now = s->now / 60.0f, ang = s->now / 4.0f; float x, y;
+    for (int i = 0; i < 120; i++) { float a0 = i * 3.0f, h = (i + .5f) * .2f; bool past = a0 + 3 <= ang; gfx_arc(C, C, 214, a0, a0 + (past ? 3.4f : 3.0f), rgb(spec(h)), 8, (past ? 1.0f : .22f) * amt, false); }
+    gfx_pt(ang, 214, &x, &y); col_t c = spec(now);
+    for (int i = 3; i >= 1; i--) gfx_circle(x, y, 8 + i * 8, rgb(c), .12f * amt);
+    gfx_circle(x, y, 11, 0xffffff, amt);
+    if (s->has_next) { gfx_pt(s->next_min / 4.0f, 214, &x, &y); gfx_circle(x, y, 7, 0x000000, amt); gfx_circle(x, y, 4.5f, 0xffffff, amt); }
 }
-static void fx_ring(const ui_t *s) {
-    for (int i = 0; i < 4; i++) { float p = fmodf(s->fx * .025f + i * .25f, 1); gfx_ring(C, C, 30 + p * 195, i & 1 ? 0xff5478 : 0xff9646, 6, (1 - p) * .55f); }
+static void fx_dawn(const ui_t *s, float k) {       /* the ring warms and thickens, and a soft warm wash comes up behind the digits */
+    float w = 8 + 16 * k; (void)s;
+    gfx_circle(C, C, 205, 0xff9a50, .10f * k);
+    for (int i = 0; i < 120; i++) gfx_arc(C, C, 214 - (w - 8) / 2, i * 3.0f, i * 3.0f + 3.4f, rgb(mixc(spec(7.0f + i * .05f), (col_t){255, 190, 100}, .4f + .6f * k)), w, .5f + .5f * k, false);
+}
+static void fx_alarm(const ui_t *s) {               /* ringing: the whole spectrum, breathing */
+    int b = (int)(s->fx >> 2) % 12; float w = 10 + (b < 6 ? b : 12 - b) * 2;
+    for (int i = 0; i < 120; i++) gfx_arc(C, C, 214, i * 3.0f, i * 3.0f + 3.4f, rgb(spec(5 + i * .12f)), w, 1, false);
 }
 static void fx_eq(const ui_t *s, uint32_t col) {              /* sound is playing: a small equalizer dances under the name */
     for (int i = 0; i < 7; i++) { int h = 6 + (int)(18 * (.5f + .5f * sinf(s->fx * .23f * (1 + .17f * i) + i * 1.3f))) / 3 * 3; gfx_pill(C - 49 + i * 14, 170 - h / 2.0f, 8, (float)h, col, 1); }
-}
-static void cloud(float x, float y, float k, uint32_t col, float opa) { gfx_pill(x - 30 * k, y - 4 * k, 60 * k, 18 * k, col, opa); gfx_circle(x - 10 * k, y - 6 * k, 13 * k, col, opa); gfx_circle(x + 12 * k, y - 4 * k, 10 * k, col, opa); }
-static void fx_cloud(const ui_t *s, float amt, uint32_t col) {       /* slow: they move a whole pixel at a time, so few bands change */
-    cloud((int)fmodf(s->fx * .07f, 640) - 90.0f, 76, 1, col, .3f * amt); cloud(550 - (int)fmodf(s->fx * .045f + 300, 640), 392, .85f, col, .25f * amt);
-}
-static void fx_fly(const ui_t *s, float amt, uint32_t col) {         /* fireflies: they drift round the middle and blink */
-    float t = s->fx * .01f;
-    for (int i = 0; i < 6; i++) {
-        float x, y, r = 70 + 115 * (.5f + .5f * sinf(t * .37f + i * 2.3f)); gfx_pt(t * (14 + 2.3f * i) + i * 60, r, &x, &y);
-        float bl = floorf((.5f + .5f * sinf(s->fx * .09f + i * 2.4f)) * 6) / 6 * amt;
-        gfx_circle(x, y, 15, col, .15f * bl); gfx_circle(x, y, 5, col, 1 * bl);
-    }
 }
 static void next_text(const ui_t *s, char *b, size_t n) { char t[12]; f12(t, sizeof t, s->next_min, true); if (s->next_far) snprintf(b, n, "%s %s", DN[s->next_wd], t); else snprintf(b, n, "%s", t); }
 
@@ -141,11 +139,11 @@ static void draw_clock(const ui_t *s) {
         tc = rgb(mixc(am, WH, kt)); sc = rgb(mixc(mulc(am, .72f), (col_t){255, 236, 220}, kt)); hc = sc;
     } else if (night) {
         float vis = .5f + .35f * aw; col_t am = mulc(NA, vis);
-        tc = rgb(am); sc = rgb(mulc(am, .72f)); hc = rgb(mulc(am, .5f)); fx_fly(s, .3f, rgb(mulc(NA, .8f)));
+        tc = rgb(am); sc = rgb(mulc(am, .72f)); hc = rgb(mulc(am, .5f));
     } else {
         float k = .55f + .45f * s->dayB / 100.0f; col_t top = mulc(mixc(sky_at(s->now, 0), BK, ws), k), bot = mulc(mixc(sky_at(s->now, 1), BK, ws), k), am = mulc(NA, .85f);
-        fx_day(s, mixc(top, WH, .35f), mixc(bot, WH, .35f)); fx_cloud(s, 1 - w, 0xcfe3ff); if (w > 0) fx_fly(s, w, 0xd8ff7a);
-        tc = rgb(mixc(WH, am, ws)); sc = rgb(mixc(mixc(WH, top, .12f), mulc(am, .78f), ws)); hc = sc; if (ws < .6f) wc = tc;
+        fx_spectrum(s, 1 - ws); (void)top; (void)bot;
+        tc = rgb(mixc(mixc(WH, spec(s->now / 60.0f), .22f), am, ws)); sc = rgb(mixc(mixc(WH, top, .12f), mulc(am, .78f), ws)); hc = sc; if (ws < .6f) wc = tc;
     }
     if (!dawn && (ph.p == 0 || (ph.p == 1 && ph.w < .5f))) { snprintf(b, sizeof b, "%s, %s %d", DN[s->wd], MON[s->mo - 1], s->d); T(C, 128, 28, b, sc, 500); }
     gfx_time(C, 208, 124, s->now, tc, 28);
@@ -240,7 +238,7 @@ static void draw_light(const ui_t *s) {
     gfx_icon(ICO_MOON, C - 62, 293, m ? pc.s : 0x2a0d06, 1, 1, true); gfx_icon(ICO_SUN, C + 62, 293, m ? 0x2a1a04 : pc.s, 1, 1, true);
 }
 static void draw_ring(const ui_t *s) {
-    fx_ring(s); float x0, y0, x1, y1;
+    fx_alarm(s); float x0, y0, x1, y1;
     if (s->done) { for (int i = 0; i < 12; i++) { gfx_pt(i * 30, 120, &x0, &y0); gfx_pt(i * 30, 210, &x1, &y1); gfx_line(x0, y0, x1, y1, 0xffffff, 10, .3f); } T(C, 222, 40, "Good", 0xffffff, 500); T(C, 266, 40, "morning", 0xffffff, 500); return; }
     gfx_time(C, 190, 124, s->now, 0xffffff, 28); T(C, 268, 30, s->snz_left ? "Tap to snooze" : "No snoozes left", 0xffffff, 500); T(C, 312, 26, "Hold to stop", 0xffe9d6, 400);
     for (int k = 0; k < 3; k++) gfx_circle(C - 20 + k * 20, 352, 6, 0xffffff, k < s->snz_left ? 1 : .3f);
