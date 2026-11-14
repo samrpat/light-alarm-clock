@@ -306,7 +306,7 @@ if(n==='sound'){const k=SOUNDS[s.snd],pc=theme('s_'+k[1],s);h+=pc.defs;
     h+=rimL(s.vol,0,100,pc)+`<rect x="${C-125}" y="112" width="250" height="56" rx="28" fill="${pc.trk}" opacity=".7"/><circle cx="${C-98}" cy="140" r="16" fill="${pc.g}"/>`+T(C+6,140,28,k[0],pc.t,500)+ico('chv',C+104,140,pc.s)
      +bars+playIco(C,218,s.play,pc.t)+`<rect x="${C-125}" y="268" width="250" height="56" rx="28" fill="${pc.trk}" opacity=".7"/>`+ico('moon',C-92,296,pc.a)+T(C,296,28,TIMER[s.ti][0],pc.t,400)+ico('chv',C+104,296,pc.s)}}
 if(n==='light'){const m=s.lt.m,pc=theme(m?'light':'nlight',s),l=s.lt.l[m],on=s.lt.on;
-  h+=pc.defs+(on?`<circle class="br" cx="${C}" cy="196" r="${64+46*l/100}" fill="${pc.a}" opacity="${(.12+.2*l/100).toFixed(2)}"/>`:'')+rimL(l,5,100,pc)+T(C,112,30,'Lamp',pc.a,500)+T(C,200,76,on?l+'%':'Off',on?pc.t:OFFC,300)
+  h+=pc.defs+rimL(l,5,100,pc)+T(C,112,30,'Lamp',pc.a,500)+T(C,200,76,on?l+'%':'Off',on?pc.t:OFFC,300)
    +`<rect x="${C-125}" y="265" width="250" height="56" rx="28" fill="${pc.trk}" opacity=".6"/><rect x="${m?C:C-125}" y="265" width="125" height="56" rx="28" fill="${pc.g}"/>`+ico('moon',C-62,293,m?pc.s:'#2a0d06')+ico('sun',C+62,293,m?'#2a1a04':pc.s)}
 if(n==='ring'){const id='u'+(UID++);h+=ringGrad(id)+`<circle cx="${C}" cy="${C}" r="233" fill="url(#${id})"/>`;
  if(s.done){let rays='';for(let i=0;i<12;i++){const[x0,y0]=P(i*30,120),[x1,y1]=P(i*30,210);rays+=`<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".3"/>`}h+=`<g class="spin">${rays}</g>`+T(C,222,40,'Good','#fff',500)+T(C,266,40,'morning','#fff',500)}

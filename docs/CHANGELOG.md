@@ -90,3 +90,6 @@
 
 ## 2026-11-13 — round 7
 - Fire, rain, storm, stream rebuilt from random events (SOUND.md). Hold indicator waits 0.45 s; swipes instant (tested).
+
+## 2026-11-13 — round 8
+- Lamp screen: removed the glow circle behind the percentage (the clock face no longer has one either).
