@@ -226,13 +226,13 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
 
 ## D-029 — Enclosure: pop-out back-panel stand, 30-year serviceable build
 - **Date:** 2026-11-13 · **Status:** Stand choice (option D) accepted by the owner 2026-11-13; the rest is an early draft before Phase 4; revised the same day (owner: "foldable or pop out stand", "lean" back, "just have printer and access to a laser cutter", small metal parts OK) · **Reqs:** R33, R27, R36
-- **Decision:** A round head (about 88 × 38 mm) holds every electronic part, so no wire crosses a hinge. The lower half of the back is a 5 mm panel that swings out on an M3 stainless pin in brass tube and lands on a screwed stop block, propping the head at 15° back. Folded, it sits flush, held by a magnet. About 100 g of steel washers sit low in the head. Made with a 3D printer (ASA or PETG) and a laser cutter (opal acrylic diffuser, silicone gasket and pads). For 30 years: screws into brass inserts only, no glue or snap-fits, wear on cheap replaceable parts, and a board carrier so a future display only needs a new carrier. Full draft in ENCLOSURE.md.
+- **Decision:** A round head (about 88 × 38 mm) holds every electronic part, so no wire crosses a hinge. The lower half of the back is a 5 mm panel that swings out on two short M3 stainless shoulder screws in brass tube (D-043) and lands on a screwed stop block, propping the head at 15° back. Folded, it sits flush, held by a magnet. About 100 g of steel washers sit low in the head. Made with a 3D printer (ASA or PETG) and a laser cutter (opal acrylic diffuser, silicone gasket and pads). For 30 years: screws into brass inserts only, no glue or snap-fits, wear on cheap replaceable parts, and a board carrier so a future display only needs a new carrier. Full draft in ENCLOSURE.md.
 - **Options considered:** thin kickstand leg (2.5/5) · head in a U-shaped base (3) · weighted foot plate under the head, the first draft (4) · **pop-out back panel (4.5)**, my judgement (ENCLOSURE.md §2).
 - **Risk:** calculated tip force is about 1.5 N at the top of the screen; to be tested (C1).
 - **Open:** front halo or a rear wall-wash, colours, laser cutter materials, and the board measurements E1–E6.
 
 ## D-030 — Standalone and long-lived: no network, ever
-- **Date:** 2026-11-13 · **Status:** Accepted 2026-11-13 (owner: "yes"; "30 years is not serious, I just want a product of that quality", so 30 years is a quality yardstick, not a promise or a test) · Request: "last 30 years, not dependent on any external software, Wi-Fi or servers, like a Nokia" · supersedes D-010 · **Reqs:** R16, R38, R41
+- **Date:** 2026-11-13 · **Status:** Accepted 2026-11-13; the "no Bluetooth" part reversed by D-043 (owner: "yes"; "30 years is not serious, I just want a product of that quality", so 30 years is a quality yardstick, not a promise or a test) · Request: "last 30 years, not dependent on any external software, Wi-Fi or servers, like a Nokia" · supersedes D-010 · **Reqs:** R16, R38, R41
 - **Decision:** The product never uses Wi-Fi, Bluetooth, a time server, a cloud, an account or a phone. The radios are never initialised. Time is set by hand. Updates come from an SD-card file or a USB cable. The build tools and every library are kept offline. Full plan in [LONGEVITY.md](LONGEVITY.md).
 - **Why:** Servers, certificates, apps and cloud accounts are what stop working first.
 - **Consequences:** The phone link (Phase 6) and over-the-air updates are dropped. Phase 6 becomes "offline update and the long-life kit", Phase 7 polish.
@@ -291,12 +291,6 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
   3. Alarm = orange + bell, everywhere. Bedtime = violet + moon, everywhere.
 - **Why:** Two different "wake" numbers invited the question of which one rings. Now only the alarm can wake you.
 
-## D-040 — The case is designed for metal from the start
-- **Date:** 2026-11-13 · **Status:** Proposed (owner: "I will want this case in metal", "not only follow 3D printing design rules but for metal CNC or 3D printing") · refines D-029 · **Reqs:** R33
-- **Decision:** One set of drawings must be makeable as a plastic print (the prototype), by CNC and by metal printing. Rules: two-sided parts, no undercuts, inside radii ≥ 2 mm, 2.5 mm walls, drilled round holes, shallow hinge bores (two short shoulder screws replace the single 70 mm pin). A `material` switch changes only threads, fits and bores. The board carrier, ring seat and battery tray stay plastic so nothing electrical touches the shell. Recommended metal: anodised aluminium 6061, by CNC. Rules in ENCLOSURE.md §12.
-- **Why it is safe:** the radios are never used (D-030), so a metal shell blocks nothing.
-- **Risk:** a metal bezel can upset the touch screen; foil-wrap test C8 on the plastic prototype comes before any metal order.
-
 ## D-040 — Round 5: clock face, gradual dawn, hold both ways, sounds, settings fixes
 - **Date:** 2026-11-13 · **Status:** Proposed (owner's list of 15 points) · amends D-024, D-036, D-037, D-039 · **Reqs:** R4, R9, R11, R12, R34
 - **Decisions:**
@@ -318,3 +312,17 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
 - **Date:** 2026-11-13 · **Status:** Proposed (owner: "fire, storm, stream all sound horrible", "don't want delay for swipe, want it for the holding animation") · amends D-041
 - **Decision:** Fire, rain, storm and stream are synthesised from random events (crackles, drops, bubbles, thunder). The hold indicator now waits 0.45 s; swipes and taps are never delayed.
 - **Verified:** event rates and levels in the browser. **Not verified:** how it sounds.
+
+## D-043 — The case is designed for metal from the start
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "I will want this case in metal", "not only follow 3D printing design rules but for metal CNC or 3D printing") · refines D-029 · **Reqs:** R33
+- **Decision:** One set of drawings must be makeable as a plastic print (the prototype), by CNC and by metal printing. Rules: two-sided parts, no undercuts, inside radii ≥ 2 mm, 2.5 mm walls, drilled round holes, shallow hinge bores (two short shoulder screws replace the single 70 mm pin). A `material` switch changes only threads, fits and bores. The board carrier, ring seat and battery tray stay plastic so nothing electrical touches the shell. Recommended metal: anodised aluminium 6061, by CNC. Rules in ENCLOSURE.md §12.
+- **Why it is safe:** the radios are never used (D-030), so a metal shell blocks nothing.
+- **Risk:** a metal bezel can upset the touch screen; foil-wrap test C8 on the plastic prototype comes before any metal order.
+
+## D-043 — Optional Bluetooth time sync; seconds can be set by hand
+- **Date:** 2026-11-13 · **Status:** Proposed (owner: "take it back, will want Bluetooth connectivity to phone, add it as a setting menu so time can sync"; "also add the ability to edit seconds") · partly reverses D-030 · **Reqs:** R16, R38, N1, N3, R46
+- **Decision:**
+  1. A **Phone** settings page starts a two-minute Bluetooth window on tap, pairs with a code shown on the clock, reads the time, and turns Bluetooth off. Bluetooth is never on otherwise. Time only; region and daylight saving stay on the clock. Wi-Fi stays unused. Details in [BLUETOOTH.md](BLUETOOTH.md).
+  2. The Time page sets **seconds**: tap the seconds line to pause, drag the dot, tap to start at the beep.
+- **Why it is still safe:** the clock works fully without Bluetooth; the Bluetooth code runs off the alarm path (D-002) and can be removed without touching it; the "no server, no account" goal is untouched.
+- **Open:** which phone (iPhone, Android) decides which phone-side option to build.

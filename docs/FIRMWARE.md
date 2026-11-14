@@ -2,7 +2,7 @@
 
 > Phase 0 content: architecture, task layout and alarm state machine.
 > Phase 3 adds: module APIs, data model, NVS layout detail, build/flash steps.
-> No BLE table: the product has no radios (D-030).
+> Bluetooth is optional and used only for time sync: see BLUETOOTH.md (D-043).
 
 Framework: ESP-IDF v5.x + LVGL 9 + FreeRTOS (see [D-001](DECISIONS.md#d-001--firmware-framework-esp-idf--lvgl-9--freertos)).
 
@@ -51,7 +51,7 @@ Critical tasks are on **core 1**. Nothing on core 1 waits on anything owned by c
 | `storage` | 1 | 8 | 6 KB | queue | — | A/B NVS writes with verify (write-behind, never on the fire path) |
 | `input` | 0 | 10 | 4 KB | touch/IMU INT | heartbeat | Gesture recognition → UI events, snooze events → alarm queue |
 | `ui_lvgl` | 0 | 6 | 16 KB | 5–33 ms | heartbeat | Screens, night theme, display power |
-| ~~`ble`~~ | — | — | — | — | — | **Not in the product** (D-030). No radios are ever started. |
+| `ble` (NimBLE host) | 0 | 5 | IDF default | events | heartbeat | **Optional time sync.** Never started unless you tap Phone; on for about 2 minutes (D-043, BLUETOOTH.md). |
 
 Inter-task channels:
 - `alarm_cmd_q` (UI/input → alarm_engine): validated commands such as `SET_DAY`, `SET_OVERRIDE`, `SNOOZE`, `DISMISS`, `PREVIEW`.
@@ -88,7 +88,7 @@ The step levels and timings above are placeholders and become final in Phase 3. 
 
 ## 4. Longevity notes (D-030, D-031)
 
-- Radios are never initialised. Build with Bluetooth off and no Wi-Fi start-up.
+- Wi-Fi is never initialised. Bluetooth is initialised only when the user taps Phone, and shut down after the sync or two minutes (D-043).
 - `time_t` is 64-bit (build assert). Dates are computed by the firmware, never trusted from the RTC's weekday.
 - Region rules are stored as time-zone rule strings. An SD-card file `region.txt` can replace them. Details in [LONGEVITY.md](LONGEVITY.md).
 - `light_fx` follows [LIGHT.md](LIGHT.md): a 64-point dawn table, caps by time of day, dithering, the 0.9 A limit.

@@ -30,6 +30,7 @@ Reference product for feel and features: Dreamie by Hello Ambient (helloambient.
 | [UX.md](UX.md) | Gestures, options compared, screen map, day/night look, type and layout rules, acceptance checks | Phase 2 |
 | [LIGHT.md](LIGHT.md) | The evidence and the ring and screen light plan: dawn, evening, night | Phase 2 |
 | [SOUND.md](SOUND.md) | The eleven sleep sounds and how they are made | Phase 2 |
+| [BLUETOOTH.md](BLUETOOTH.md) | Optional phone time sync, how it works and the phone-side options | Phase 2 |
 | [LONGEVITY.md](LONGEVITY.md) | Long-life, offline plan: time, daylight saving, wear, updates | Phase 2 |
 | `licenses/` | Third-party licence texts (Ubuntu Font Licence) | Phase 2 |
 | RELIABILITY.md | FMEA, watchdog design | Phase 3 |

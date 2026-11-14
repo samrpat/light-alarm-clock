@@ -1,7 +1,7 @@
 # UX specification
 
 Phase 2 (revised 2026-11-13, round 3) · Decisions: [D-011](DECISIONS.md), [D-015](DECISIONS.md), [D-016](DECISIONS.md), [D-024](DECISIONS.md), [D-028](DECISIONS.md), [D-032](DECISIONS.md), [D-036](DECISIONS.md) to [D-039](DECISIONS.md)
-Interactive concept (touch only, Ubuntu type, 427 checked screen states): `/mockups/ux-concept.html`, published at https://claude.ai/artifact/UGtnZ6MqkrSfuM5BShyG5a (private link).
+Interactive concept (touch only, Ubuntu type, 446 checked screen states): `/mockups/ux-concept.html`, published at https://claude.ai/artifact/UGtnZ6MqkrSfuM5BShyG5a (private link).
 Light and colour: [LIGHT.md](LIGHT.md). Offline and repairable: [LONGEVITY.md](LONGEVITY.md). A test app for the real touch screen: `/firmware/dialtest`.
 
 ## 1. Principles
@@ -95,7 +95,7 @@ Not a switch: the face changes continuously from wake to bedtime and winds down 
   swipe RIGHT             |              swipe LEFT                     (sleeping)
                      [ Tomorrow ]         swipe UP from the clock       (waking)
 
- Settings: hold the clock for 1.5 s. Seven pages side by side.
+ Settings: hold the clock for 1.5 s. Eight pages side by side.
 ```
 
 | Screen | Reached by | Sideways | Back by | Auto-return |
@@ -157,18 +157,19 @@ A big percentage or "Off" and a two-icon switch (moon = night light, sun = readi
 - **Ringing:** the time, "Tap to snooze", "Hold to stop", three dots for snoozes left. **Tap anywhere = snooze 9 min** (3 times). **Hold 2 s = stop.** BOOT held 3 s stops the alarm even if the screen is dead.
 - After 30 minutes the sound stops and the face says "Alarm 7:00 AM timed out" until touched (D-015).
 
-### 6.8 Settings (hold the clock 1.5 s): seven pages, each a picture of what it sets
+### 6.8 Settings (hold the clock 1.5 s): eight pages, each a picture of what it sets
 Swipe sideways between pages, drag a dot to change, swipe down to leave. A row of small pills shows the page. Each page has its own colour.
 
 | # | Page | Colour | What you see | What you do |
 |---|------|--------|--------------|-------------|
-| 1 | **Time** | blue | A watch face: two rings, 60 fine ticks, the time | Drag the outer dot (minutes) and the inner dot (hours). Opens by itself after a power loss. |
+| 1 | **Time** | blue | A watch face: two rings, 60 fine ticks, the time, and "Seconds 42" under it | Drag the outer dot (minutes) and the inner dot (hours). **To set seconds, tap the seconds line:** the clock pauses and the ring becomes 60 seconds; drag the dot, then tap to start at the beep. Opens by itself after a power loss. |
 | 2 | **Date** | red | A calendar page: month, a big day number, year | Tap the line you want, then drag the dot |
 | 3 | **Region** | green | The region, its UTC offset, daylight saving on or off. **The ring has exactly one mark per region**, so the dot's position is the choice. (Date works the same: 12 marks for months, 31 for days.) | Drag the dot: US Eastern (default), Central, Mountain, Pacific, Alaska, Hawaii; UK; Central Europe; **Manual**; Custom (SD card) |
-| 4 | **Bedtime** | violet | A violet band of night on the clock ring, starting at a moon dot, with the 3-hour wind-down fading in before it. The band ends at an **orange bell: your alarm**. Text: bedtime, "Wind down 7:30 PM", "Alarm 6:45 AM". | Drag the moon (15-minute steps, default 10:30 PM). The bell cannot be moved here. |
-| 5 | **Day brightness** | gold | An orb that grows and glows, and the words "Night stays dim" | Drag the dot (default 60 %). It sets the daytime face only. At night the face is always at the lowest level at which the clock is still readable (set once on the real panel, UX-B1). |
-| 6 | **Alarm** | orange | A bell with sound waves, the volume, "Tap to test" | Drag the dot for volume (30–100 %, default 70 %). **Tap the bell to test:** the ring lights and the alarm sound plays at that volume for 6 s. Tap again to stop. |
-| 7 | **Battery** | mint | A ring that shows the charge, **the percentage large, the voltage small**, and the version | Nothing |
+| 4 | **Phone** | blue | A Bluetooth badge. Off, "Searching" with expanding rings, "Code 482 913" to confirm on the phone, then "Time synced". | Tap to start a two-minute sync window. Bluetooth is off at all other times ([BLUETOOTH.md](BLUETOOTH.md), optional). |
+| 5 | **Bedtime** | violet | A violet band of night on the clock ring, starting at a moon dot, with the 3-hour wind-down fading in before it. The band ends at an **orange bell: your alarm**. Text: bedtime, "Wind down 7:30 PM", "Alarm 6:45 AM". | Drag the moon (15-minute steps, default 10:30 PM). The bell cannot be moved here. |
+| 6 | **Day brightness** | gold | An orb that grows and glows, and the words "Night stays dim" | Drag the dot (default 60 %). It sets the daytime face only. At night the face is always at the lowest level at which the clock is still readable (set once on the real panel, UX-B1). |
+| 7 | **Alarm** | orange | A bell with sound waves, the volume, "Tap to test" | Drag the dot for volume (30–100 %, default 70 %). **Tap the bell to test:** the ring lights and the alarm sound plays at that volume for 6 s. Tap again to stop. |
+| 8 | **Battery** | mint | A ring that shows the charge, **the percentage large, the voltage small**, and the version | Nothing |
 
 - **Bedtime and alarm are different things and look different.** The **alarm** is when the clock wakes you: orange, a bell, set on the Tomorrow and Week screens. **Bedtime** is when the face goes dark: violet, a moon, set here. There is **no "wake time" setting**. The face treats your alarm as the start of the day (if no alarm is set, the last one, or 7:00 AM).
 - The old Preview page and Alarm volume page are one page: the dot changes, the tap does.
@@ -259,7 +260,7 @@ One status line, highest priority first: **Set time** · Alarm timed out · Alar
 
 **Rules.** Every text and icon box inside the safe circle (radius 209 px). No two boxes overlap (3 px padding). No text under 26 px. At most four text lines per screen (the week excepted). A string that does not fit is shortened, never shrunk.
 
-**The automatic check.** `layoutCheck()` in the concept page draws **427 screen states**, now including the dots, (every screen, every day name, the widest times, every status line, every region name, every settings page), measures every box in the loaded Ubuntu font and reports anything outside the circle, overlapping, under 26 px, or over four lines. **Result on 2026-11-13: 2,697 boxes, 0 issues.**
+**The automatic check.** `layoutCheck()` in the concept page draws **446 screen states**, now including the dots, (every screen, every day name, the widest times, every status line, every region name, every settings page), measures every box in the loaded Ubuntu font and reports anything outside the circle, overlapping, under 26 px, or over four lines. **Result on 2026-11-13: 2,768 boxes, 0 issues.**
 
 ## 12. Acceptance checks
 
@@ -287,4 +288,4 @@ One status line, highest priority first: **Set time** · Alarm timed out · Alar
 
 ## 13. What the concept page shows
 
-The whole gesture model (swipe, tap, drag a dot, hold), every screen, the seven settings pages, the dynamic face on a time-of-day slider, the 30-minute dawn on the ring, and the two stress tests in §4.2. It does not simulate the night pixel shift, the 15-minute morning brighten, first-run tips or the status-line priorities beyond static examples.
+The whole gesture model (swipe, tap, drag a dot, hold), every screen, the eight settings pages, the dynamic face on a time-of-day slider, the 30-minute dawn on the ring, and the two stress tests in §4.2. It does not simulate the night pixel shift, the 15-minute morning brighten, first-run tips or the status-line priorities beyond static examples.

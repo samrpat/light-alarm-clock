@@ -76,7 +76,7 @@
 - Vivid colour language (D-038): sky clock, a colour per place, glossy dots, motion; all colour drains in the wind-down and night stays dim amber.
 - One Alarm settings page with tap-to-test; no wake-time setting; Bedtime page with a moon dot and an orange alarm bell marker (D-039). Seven settings pages.
 - Layout check now covers the dots: 386 states, 2,299 boxes, 0 issues. Picker digits 80 px so a dot never touches them.
-- Owner wants the final case in metal. ENCLOSURE.md §12 adds metal-ready rules (CNC and metal printing), a `material` switch, and touch check C8; the hinge becomes two short shoulder screws. D-040 proposed.
+- Owner wants the final case in metal. ENCLOSURE.md §12 adds metal-ready rules (CNC and metal printing), a `material` switch, and touch check C8; the hinge becomes two short shoulder screws. D-043 proposed.
 
 ## 2026-11-13 — Phase 2 revision, round 5
 - D-040: clock face (time 124 px, small alarm line, day shown only beyond 24 h, no pulsing circle, distinct hint icons), gradual dawn on the screen, hold both ways with visible feedback, eleven synthesised sounds (new SOUND.md), Lamp rename, Day brightness, Battery page, real mark counts on Region and Date.
@@ -93,3 +93,6 @@
 
 ## 2026-11-13 — round 8
 - Lamp screen: removed the glow circle behind the percentage (the clock face no longer has one either).
+
+## 2026-11-13 — round 9
+- Time page sets seconds (pause, drag, tap to start). New Phone page for optional Bluetooth time sync (D-043, BLUETOOTH.md). Settings are eight pages. Phase 6 restored. Checks: 446 states, 2,768 boxes, 0 issues; 468 swipes, 0 mistaken.

@@ -187,7 +187,15 @@ Board size from a third-party listing (Core Electronics): **48.96 mm across × 1
 | C7 | BOOT plunger in the dark, by feel | Found and pressed within 5 s |
 | C8 | Metal near the screen: wrap the plastic prototype's shell in aluminium foil (not the front), tied to ground and then not tied, and run the touch tests | No false or missed touches either way. A cheap early warning before paying for metal. |
 
-## 12. Metal-ready rules (D-040)
+## 11. Open questions for the owner
+
+1. ~~Option D (pop-out back panel, 15° lean back): OK?~~ **Approved 2026-11-13.**
+5. What can your laser cutter cut: acrylic, plywood, silicone sheet? What is its bed size and power?
+2. Halo on the **front** around the screen (this draft), or facing **backward** to wash the wall behind? A rear glow is softer but needs a wall close behind.
+3. Colour and finish: one colour, or a contrasting stand and bezel?
+4. Can you measure E1–E6 with calipers? If not, I work from Waveshare's drawing and you test-fit a quick print.
+
+## 12. Metal-ready rules (D-043)
 
 The owner wants the final case in **metal**, made by CNC machining or metal 3D printing. The plastic print is the prototype. So every part is drawn once and must be makeable three ways: plastic print, CNC, metal print. The CAD has one switch, `material = plastic | metal`, that changes only the items in the last table below.
 
@@ -240,11 +248,3 @@ The owner wants the final case in **metal**, made by CNC machining or metal 3D p
 - Order from a print service: the part shrinks and warps slightly, so tight fits are always machined after.
 
 **CNC or metal print?** For this shape, CNC in aluminium is the better fit: it is a simple round body with two open sides, and it gives clean threads and faces straight off the machine. Metal printing only wins if the shape gains details that cannot be milled, which these rules forbid anyway.
-
-## 11. Open questions for the owner
-
-1. ~~Option D (pop-out back panel, 15° lean back): OK?~~ **Approved 2026-11-13.**
-5. What can your laser cutter cut: acrylic, plywood, silicone sheet? What is its bed size and power?
-2. Halo on the **front** around the screen (this draft), or facing **backward** to wash the wall behind? A rear glow is softer but needs a wall close behind.
-3. Colour and finish: one colour, or a contrasting stand and bezel?
-4. Can you measure E1–E6 with calipers? If not, I work from Waveshare's drawing and you test-fit a quick print.

@@ -28,7 +28,7 @@ Last reviewed: 2026-11-13 (Phase 2)
 | R35 | M | `[ ]` Every sub-screen returns to the clock after 20 s without a touch (settings 30 s). Every change is saved the moment it is made (D-024). | 2, 3 | T-35 |
 | R36 | M | `[ ]` The firmware boots, keeps time and rings with no battery and with no ring fitted. Optional parts (battery, ring, protection parts, level shifter, light sensor) each have a defined behaviour when missing (D-025). | 3 | T-36 |
 | R37 | M | `[~]` No text overlaps, none under 26 px, all inside the safe circle, in Ubuntu. `layoutCheck()` reports zero issues for every screen state (D-028). Passes on the concept page; repeats on the firmware strings in Phase 3. | 2, 3 | T-37 |
-| R38 | M | `[ ]` The device never needs a network, server, account or phone at any time in its life (D-030, LONGEVITY.md §1). The radios are never switched on. | all | T-38 |
+| R38 | M | `[ ]` The device never needs a network, server, account or phone at any time in its life. Optional Bluetooth time sync is a convenience, off unless asked (D-030, D-043). | all | T-38 |
 | R39 | M | `[ ]` Dates are correct to 2099: 64-bit time, every leap day 2028–2056, the year 2038 (LONGEVITY.md §2). | 3 | T-39 |
 | R40 | M | `[ ]` The alarm still works if the screen, touch, speaker, ring or battery fails, or one copy of the program or settings is corrupt (LONGEVITY.md §6). | 3 | T-41, T-44 |
 | R41 | M | `[ ]` The firmware can be rebuilt and updated with no network: pinned toolchain, every library committed to the repository, a "long-life kit", and an SD-card update (LONGEVITY.md §5). | 7 | T-42 |
@@ -36,6 +36,7 @@ Last reviewed: 2026-11-13 (Phase 2)
 | R43 | M | `[ ]` Nothing lights the sleeper: the ring is off from bedtime to the dawn, the screen is under 1 lux at the pillow, and the evening light is warm and capped (LIGHT.md §2, §4). | 3 | T-46 |
 | R44 | M | `[~]` A swipe starting anywhere, including right next to a dot, is never mistaken for a dial turn, and a deliberate grab always turns it (D-036). Host test: 1,249 random swipes, 0 mistaken. Still to do on the real panel with `/firmware/dialtest` (UX-B2). | 2, 3 | T-47 |
 | R45 | M | `[ ]` The colour language of UX.md §7 runs smoothly on the real panel (bench check UX-B3), with fades as the fallback. Alarm is always orange with a bell; bedtime is always violet with a moon. | 3 | T-48 |
+| R46 | M | `[ ]` The Time page sets hours, minutes and seconds; seconds are set with the clock paused and started by a tap (D-043). | 3 | T-49 |
 
 ## 3. Sound
 
@@ -58,7 +59,7 @@ Last reviewed: 2026-11-13 (Phase 2)
 | ID | Pri | Requirement | Phase | Test |
 |----|-----|-------------|-------|------|
 | R15 | M | `[ ]` Time survives power loss: the PCF85063 RTC is the time source, and system time is restored from it at boot. Lost RTC integrity (oscillator-stop flag) is detected and shown as "Set time"; it never silently gives a wrong time. | 3 | T-15 |
-| R16 | M | `[ ]` No time source outside the device. Time is set by hand, and the clock learns its own drift and trims the RTC when you correct it (LONGEVITY.md §2). An optional GNSS receiver may be added later. | 3 | T-16 |
+| R16 | M | `[ ]` The time can be set by hand to the second (pause, drag, tap to start at the beep), or synced from a phone over Bluetooth on request (D-043, BLUETOOTH.md). The clock learns its own drift when corrected. No Wi-Fi and no time server. | 3, 6 | T-16 |
 | R17 | M | `[ ]` Schedule is stored in NVS as an A/B pair of records, each with schema version, sequence number and CRC32. A bad record falls back to the other copy. If both are bad, the schedule is empty and the clock shows a persistent warning and chimes (D-015). Never a silent "no alarm". A new clock has no alarms until the user adds one. | 3 | T-17 |
 | R18 | M | `[ ]` The alarm path does not depend on UI, touch, BLE or the I2C bus at the moment it fires. A UI crash or hang, or a BLE fault, cannot block or delay an alarm. | 3 | T-18 |
 | R19 | M | `[ ]` Watchdogs: task watchdog on every alarm-critical task, interrupt watchdog, a supervisor heartbeat for UI/BLE, and a boot-loop guard that enters an "alarm-only" safe mode. | 3 | T-19 |
@@ -91,9 +92,9 @@ Last reviewed: 2026-11-13 (Phase 2)
 
 | ID | Pri | Requirement | Phase | Test |
 |----|-----|-------------|-------|------|
-| N1 | N | `[–]` Dropped: the product has no radio (D-030). | 6 | T-40 |
-| N2 | N | `[–]` Dropped: the product has no radio (D-030). | 6 | T-41 |
-| N3 | N | `[–]` Dropped: the product has no radio (D-030). | 6 | T-42 |
+| N1 | N | `[ ]` Optional Bluetooth time sync with a phone: off unless the Phone page is tapped, a two-minute window, code-confirmed pairing, time only (D-043). | 6 | T-40 |
+| N2 | N | `[–]` Dropped: only the time is synced, so there are no settings to reconcile. | — | — |
+| N3 | N | `[ ]` Bluetooth pairing is secure: a code shown on the clock, a stored bond, and writes only from the paired phone. | 6 | T-42 |
 | N4 | N | `[ ]` Offline firmware update from an SD-card file or a USB cable, with automatic rollback if the new program fails its self-test (LONGEVITY.md §5). | 7 | T-42 |
 | N5 | N | `[ ]` The device works fully with no phone. Every setting can be changed on the device itself. *(Also a Dreamie principle.)* | 2, 3 | T-44 |
 

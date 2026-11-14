@@ -10,7 +10,7 @@ Last updated: 2026-11-13
 | 3 | Core firmware (MVP) | ⏳ Next |
 | 4 | 3D-printed enclosure | — |
 | 5 | Sleep sounds library | — |
-| 6 | Offline update and the long-life kit (was BLE, dropped by D-030) | — |
+| 6 | Phone time sync over Bluetooth (optional) and the offline update kit | — |
 | 7 | Polish (power, assembly guide) | — |
 
 ## Phase 2 revision (2026-11-13)
@@ -27,6 +27,8 @@ Last updated: 2026-11-13
 
 - **Round 6 (D-041):** sound pickers (bubbles), 16 sounds incl. nature, smooth tap hints, delayed hold line. Checks: 427 states, 0 layout issues; 582 swipes, 0 mistaken; all 16 sounds build.
 
+- **Round 9 (D-043):** seconds can be set (pause, drag, tap to start). A Phone settings page for optional Bluetooth time sync, off unless tapped ([BLUETOOTH.md](BLUETOOTH.md)). Checks: 446 states, 0 layout issues; 468 swipes, 0 mistaken.
+
 ## Hardware state (bring-up test, 2026-11-12)
 - `/firmware/bringup` runs on the real board: screen, touch, 7 I2C chips, ring (GRBW, smooth dithered sunrise), speaker.
 - Ring ran with a direct 3.3 V data line, short wires and a 300 mA cap.
@@ -41,7 +43,7 @@ Last updated: 2026-11-13
 Answered: 12-hour AM/PM · 5-minute steps · battery spec · no lux meter · drop the phone link and wireless updates (Phase 6 becomes the offline update and the long-life kit) · 30 years is a quality yardstick, not a promise.
 
 ## Early enclosure draft (2026-11-13, at the owner's request)
-- [ENCLOSURE.md](ENCLOSURE.md) draft and proposed D-029 (revised): pop-out back-panel stand leaning 15° back, made with a 3D printer and laser cutter, all electronics in the head, built for 30 years with replaceable wear parts. Phase 4 has not started. **Option D approved by the owner 2026-11-13.** Final case will be metal, so the design follows metal-ready rules (ENCLOSURE.md §12, proposed D-040).
+- [ENCLOSURE.md](ENCLOSURE.md) draft and proposed D-029 (revised): pop-out back-panel stand leaning 15° back, made with a 3D printer and laser cutter, all electronics in the head, built for 30 years with replaceable wear parts. Phase 4 has not started. **Option D approved by the owner 2026-11-13.** Final case will be metal, so the design follows metal-ready rules (ENCLOSURE.md §12, proposed D-043).
 - Waiting for the owner: laser cutter materials, front halo or rear wall-wash, colours, board measurements E1–E6.
 
 ## Blockers

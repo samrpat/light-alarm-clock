@@ -6,7 +6,7 @@
 
 ## 1. Standalone rules
 
-1. **No network, ever.** No Wi-Fi, no Bluetooth, no time server, no cloud, no account, no certificate, no app. The radios are never switched on (D-030). Servers, certificates and phone apps are the first things to disappear over 30 years.
+1. **No network, ever.** No Wi-Fi, no time server, no cloud, no account, no certificate. **One optional exception (D-043):** Bluetooth time sync from your phone, off unless you tap Phone and on for two minutes. The clock works completely without it ([BLUETOOTH.md](BLUETOOTH.md)).
 2. **Everything is settable on the device.** Time, date, region, sleep hours, volume, brightness.
 3. **No clock needs a server to be right.** It is set by hand and keeps its own time (§2).
 4. **Updates need no network.** A file on the SD card, or a cable to any computer (§5).
