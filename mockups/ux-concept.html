@@ -169,7 +169,7 @@ section{display:flex;flex-direction:column;gap:28px}
       <div class="counts">
         <div><p>Wake an hour earlier tomorrow<small>swipe up, drag the inner dot one step</small></p><strong>2</strong></div>
         <div><p>Skip tomorrow's alarm<small>swipe up, hold</small></p><strong>2</strong></div>
-        <div><p>Change the sleep sound<small>swipe left, swipe up</small></p><strong>2</strong></div>
+        <div><p>Change the sleep sound<small>swipe left, tap the sound pill, tap a bubble</small></p><strong>3</strong></div>
         <div><p>Start the sleep sound<small>swipe left, tap</small></p><strong>2</strong></div>
         <div><p>Night light on<small>swipe right, tap</small></p><strong>2</strong></div>
         <div><p>Move every Wednesday an hour earlier<small>swipe down, tap Wed, drag the inner dot</small></p><strong>3</strong></div>
@@ -243,12 +243,13 @@ function sky(m){m=wrap(m);if(m<=SKY[0][0])return[SKY[0][1],SKY[0][2]];for(let i=
 const usual=s=>s.days[2].on?s.days[2].min:null;
 function wakeMin(s){const u=usual(s);if(u!=null)return u;const d=s.days.find(d=>d.on);return d?d.min:420}
 function phase(s){const wk=wakeMin(s),span=wrap(s.ns-wk),since=wrap(s.now-wk);if(since<span){const left=span-since;return left>180?{p:'day',w:0}:{p:'wind',w:1-left/180}}return{p:'night',w:1}}
-const SOUNDS=[['Pink noise','pink'],['White noise','white'],['Brown noise','brown'],['Green noise','green'],['Grey noise','grey'],['Blue noise','blue'],['Violet noise','violet'],['Rain','rain'],['Ocean','ocean'],['Wind','wind'],['Fan','fan']];
-const PAL={s_pink:{a:[255,150,190],b:[230,90,160],bg:[60,16,40]},s_white:{a:[235,240,250],b:[170,180,200],bg:[30,34,44]},s_brown:{a:[215,150,95],b:[150,90,50],bg:[44,26,12]},s_green:{a:[110,225,140],b:[40,170,120],bg:[10,44,26]},s_grey:{a:[190,195,205],b:[120,125,140],bg:[28,30,36]},s_blue:{a:[100,180,255],b:[60,110,240],bg:[10,26,64]},s_violet:{a:[190,140,255],b:[130,80,230],bg:[34,16,64]},s_rain:{a:[130,190,230],b:[70,120,190],bg:[14,30,50]},s_ocean:{a:[64,224,208],b:[108,124,255],bg:[14,28,70]},s_wind:{a:[190,230,225],b:[110,170,180],bg:[16,40,42]},s_fan:{a:[170,190,210],b:[100,120,150],bg:[22,28,38]},alarm:{a:[255,150,70],b:[255,84,120],bg:[64,20,30]},sound:{a:[64,224,208],b:[108,124,255],bg:[14,28,70]},light:{a:[255,220,100],b:[255,150,40],bg:[64,38,6]},nlight:{a:[255,110,70],b:[210,40,40],bg:[60,12,8]},time:{a:[100,205,255],b:[70,120,255],bg:[10,26,64]},date:{a:[255,110,100],b:[255,160,90],bg:[60,14,20]},region:{a:[90,225,165],b:[40,175,225],bg:[8,46,42]},bed:{a:[160,140,255],b:[96,76,230],bg:[24,18,70]},about:{a:[110,225,140],b:[60,180,200],bg:[14,36,30]}};
+const SOUNDS=[['Pink noise','pink','nz'],['White noise','white','nz'],['Brown noise','brown','nz'],['Green noise','green','nz'],['Grey noise','grey','nz'],['Blue noise','blue','nz'],['Violet noise','violet','nz'],['Fan','fan','fan'],['Rain','rain','rain'],['Storm','storm','bolt'],['Ocean','ocean','wave'],['Stream','stream','strm'],['Waterfall','falls','falls'],['Wind','wind','wind'],['Forest','forest','tree'],['Fire','fire','fire']];
+const PAL={s_storm:{a:[160,170,235],b:[90,90,180],bg:[18,18,54]},s_stream:{a:[120,225,235],b:[60,160,210],bg:[10,40,52]},s_falls:{a:[175,220,245],b:[90,150,205],bg:[14,34,52]},s_forest:{a:[155,220,125],b:[70,150,80],bg:[14,42,18]},s_fire:{a:[255,175,85],b:[230,80,40],bg:[62,22,6]},s_pink:{a:[255,150,190],b:[230,90,160],bg:[60,16,40]},s_white:{a:[235,240,250],b:[170,180,200],bg:[30,34,44]},s_brown:{a:[215,150,95],b:[150,90,50],bg:[44,26,12]},s_green:{a:[110,225,140],b:[40,170,120],bg:[10,44,26]},s_grey:{a:[190,195,205],b:[120,125,140],bg:[28,30,36]},s_blue:{a:[100,180,255],b:[60,110,240],bg:[10,26,64]},s_violet:{a:[190,140,255],b:[130,80,230],bg:[34,16,64]},s_rain:{a:[130,190,230],b:[70,120,190],bg:[14,30,50]},s_ocean:{a:[64,224,208],b:[108,124,255],bg:[14,28,70]},s_wind:{a:[190,230,225],b:[110,170,180],bg:[16,40,42]},s_fan:{a:[170,190,210],b:[100,120,150],bg:[22,28,38]},alarm:{a:[255,150,70],b:[255,84,120],bg:[64,20,30]},sound:{a:[64,224,208],b:[108,124,255],bg:[14,28,70]},light:{a:[255,220,100],b:[255,150,40],bg:[64,38,6]},nlight:{a:[255,110,70],b:[210,40,40],bg:[60,12,8]},time:{a:[100,205,255],b:[70,120,255],bg:[10,26,64]},date:{a:[255,110,100],b:[255,160,90],bg:[60,14,20]},region:{a:[90,225,165],b:[40,175,225],bg:[8,46,42]},bed:{a:[160,140,255],b:[96,76,230],bg:[24,18,70]},about:{a:[110,225,140],b:[60,180,200],bg:[14,36,30]}};
 let UID=0;const WARN='#E5703E',OFFC='#6b6670';
 function theme(key,s){const ph=phase(s),w=ph.w,ws=w*w*(3-2*w),P0=PAL[key],night=ph.p==='night',amb=NA.map(v=>v*.85);
  const a=mix(P0.a,amb,ws),b=mix(P0.b,amb.map(v=>v*.75),ws),bg=mix(P0.bg,BK,ws),t=mix(WH,amb,ws),id='u'+(UID++);
- return{id,ws,night,defs:`<defs><linearGradient id="${id}a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${hex(a)}"/><stop offset="1" stop-color="${hex(b)}"/></linearGradient><radialGradient id="${id}b" cx=".5" cy=".4" r=".62"><stop offset="0" stop-color="${hex(bg)}"/><stop offset="1" stop-color="${hex(bg.map(v=>v*.2))}"/></radialGradient></defs><circle cx="${C}" cy="${C}" r="233" fill="url(#${id}b)"/>`,
+ const d0=`<defs><linearGradient id="${id}a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${hex(a)}"/><stop offset="1" stop-color="${hex(b)}"/></linearGradient></defs>`;
+ return{id,ws,night,d0,defs:`<defs><linearGradient id="${id}a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${hex(a)}"/><stop offset="1" stop-color="${hex(b)}"/></linearGradient><radialGradient id="${id}b" cx=".5" cy=".4" r=".62"><stop offset="0" stop-color="${hex(bg)}"/><stop offset="1" stop-color="${hex(bg.map(v=>v*.2))}"/></radialGradient></defs><circle cx="${C}" cy="${C}" r="233" fill="url(#${id}b)"/>`,
   g:`url(#${id}a)`,a:hex(a),b:hex(b),t:hex(t),s:hex(mix(t,a,.45)),h:hex(mix(a,bg,.4)),trk:hex(mix(bg,t,.2)),alarm:hex(mix(PAL.alarm.a,amb,ws))}}
 const P=(a,r)=>[C+r*Math.sin(a*Math.PI/180),C-r*Math.cos(a*Math.PI/180)];
 function T(x,y,sz,t,c,w,extra){return `<text data-k="1" x="${x}" y="${(y+.35*sz).toFixed(1)}" font-size="${sz}" fill="${c}" text-anchor="middle" font-weight="${w||400}" ${extra||''}>${t}</text>`}
@@ -256,7 +257,7 @@ function TM(x,y,sz,m,c,w,apSz){const t=t12(m);return `<text data-k="1" x="${x}" 
 function arcAt(cx,cy,r,a0,a1,col,w,op){if(a1-a0>=359.9)return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${col}" stroke-width="${w}" opacity="${op==null?1:op}"/>`;if(a1-a0<=.1)return '';const q=a=>[cx+r*Math.sin(a*Math.PI/180),cy-r*Math.cos(a*Math.PI/180)],[x0,y0]=q(a0),[x1,y1]=q(a1);return `<path d="M${x0} ${y0}A${r} ${r} 0 ${a1-a0>180?1:0} 1 ${x1} ${y1}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" opacity="${op==null?1:op}"/>`}
 const arc=(r,a0,a1,col,w,op)=>arcAt(C,C,r,a0,a1,col,w,op);
 function wedge(a0,a1,r0,r1,fill,op){const[a,b]=P(a0,r1),[c,d]=P(a1,r1),[e,g]=P(a1,r0),[h,k]=P(a0,r0);return `<path d="M${a} ${b}A${r1} ${r1} 0 0 1 ${c} ${d}L${e} ${g}A${r0} ${r0} 0 0 0 ${h} ${k}Z" fill="${fill}" opacity="${op}"/>`}
-function ico(n,x,y,col,sc,raw,cls){const p={cal:'<rect x="-15" y="-13" width="30" height="28" rx="4"/><path d="M-15 -3H15M-7 -18V-9M7 -18V-9"/>',bell:'<path d="M0 -15C-9 -15 -11 -5 -11 2L-15 9H15L11 2C11 -5 9 -15 0 -15ZM-5 13A5 5 0 0 0 5 13"/>',sun:'<circle r="6"/><path d="M0 -17V-11M0 11V17M-17 0H-11M11 0H17M-12 -12L-8 -8M8 8L12 12M-12 12L-8 8M8 -8L12 -12"/>',spk:'<path d="M-15 -6H-8L2 -14V14L-8 6H-15Z"/><path d="M8 -7A10 10 0 0 1 8 7M13 -12A17 17 0 0 1 13 12"/>',moon:'<path d="M6 -15A15 15 0 1 0 15 7A12 12 0 0 1 6 -15Z"/>',lamp:'<path d="M-7 5A12 12 0 1 1 7 5V10H-7Z"/><path d="M-4 15H4"/>',set:'<path d="M-15 -7H-6M4 -7H15M-15 7H-4M6 7H15"/><circle cx="-1" cy="-7" r="4.5"/><circle cx="1" cy="7" r="4.5"/>'}[n];
+function ico(n,x,y,col,sc,raw,cls){const p={cal:'<rect x="-15" y="-13" width="30" height="28" rx="4"/><path d="M-15 -3H15M-7 -18V-9M7 -18V-9"/>',bell:'<path d="M0 -15C-9 -15 -11 -5 -11 2L-15 9H15L11 2C11 -5 9 -15 0 -15ZM-5 13A5 5 0 0 0 5 13"/>',sun:'<circle r="6"/><path d="M0 -17V-11M0 11V17M-17 0H-11M11 0H17M-12 -12L-8 -8M8 8L12 12M-12 12L-8 8M8 -8L12 -12"/>',spk:'<path d="M-15 -6H-8L2 -14V14L-8 6H-15Z"/><path d="M8 -7A10 10 0 0 1 8 7M13 -12A17 17 0 0 1 13 12"/>',moon:'<path d="M6 -15A15 15 0 1 0 15 7A12 12 0 0 1 6 -15Z"/>',nz:'<path d="M-14 3L-10 -6L-6 8L-2 -11L2 7L6 -5L10 3L14 -2"/>',rain:'<path d="M0 -14C7 -5 10 0 10 5A10 10 0 0 1 -10 5C-10 0 -7 -5 0 -14Z"/>',bolt:'<path d="M3 -15L-8 2H0L-3 15L8 -2H0Z"/>',wave:'<path d="M-15 -4C-10 -10 -5 -10 0 -4S10 2 15 -4M-15 7C-10 1 -5 1 0 7S10 13 15 7"/>',strm:'<path d="M-15 -8C-9 -13 -3 -3 3 -8S12 -8 15 -10M-15 0C-9 -5 -3 5 3 0S12 0 15 -2M-15 8C-9 3 -3 13 3 8S12 8 15 6"/>',falls:'<path d="M-8 -14V5M0 -14V7M8 -14V5M-14 13C-8 8 8 8 14 13"/>',wind:'<path d="M-15 -6H6A5 5 0 1 0 1 -11M-15 2H11A5 5 0 1 1 6 7M-15 9H-2"/>',tree:'<path d="M0 -15L-10 0H-4L-12 10H12L4 0H10ZM0 10V15"/>',fire:'<path d="M0 -15C8 -6 11 0 9 7A9 9 0 0 1 -9 7C-10 2 -6 -1 -4 -6C-2 -3 1 -3 0 -15Z"/>',fan:'<circle r="3"/><path d="M0 -3C-6 -8 -4 -15 2 -14C6 -13 5 -7 0 -3M3 1C10 -1 15 4 11 9C8 12 3 8 3 1M-3 1C-4 9 -10 12 -13 7C-15 3 -9 0 -3 1"/>',chv:'<path d="M-7 -3L0 4L7 -3"/>',lamp:'<path d="M-7 5A12 12 0 1 1 7 5V10H-7Z"/><path d="M-4 15H4"/>',set:'<path d="M-15 -7H-6M4 -7H15M-15 7H-4M6 7H15"/><circle cx="-1" cy="-7" r="4.5"/><circle cx="1" cy="7" r="4.5"/>'}[n];
  return `<g ${raw?'':'data-k="1" '}transform="translate(${x} ${y}) scale(${sc||1})"><g ${cls?`class="${cls}"`:''} fill="none" stroke="${col}" stroke-width="${3/(sc||1)+.6}" stroke-linecap="round" stroke-linejoin="round">${p}</g></g>`}
 function playIco(x,y,on,col){return on?`<g data-k="1" transform="translate(${x} ${y})" fill="${col}"><rect x="-14" y="-18" width="9" height="36" rx="3"/><rect x="5" y="-18" width="9" height="36" rx="3"/></g>`:`<path data-k="1" transform="translate(${x} ${y})" d="M-12 -19L19 0L-12 19Z" fill="${col}" stroke="${col}" stroke-width="4" stroke-linejoin="round"/>`}
 var DRAG='';const RR=188,RH=148;
@@ -274,9 +275,9 @@ const pillsRow=(pc,pg)=>PG.map((_,i)=>{const cx=C+(i-(PG.length-1)/2)*16,w=i==pg
 
 const ringGrad=id=>`<defs><linearGradient id="${id}" x1=".2" y1="0" x2=".8" y2="1">${RM?'':'<animateTransform attributeName="gradientTransform" type="rotate" values="-20 .5 .5;20 .5 .5;-20 .5 .5" dur="6s" repeatCount="indefinite"/>'}<stop offset="0" stop-color="#ffb24d"/><stop offset=".55" stop-color="#ff7a59"/><stop offset="1" stop-color="#e8506a"/></linearGradient></defs>`;
 function draw(n,s){let h='';
-if(n==='clock'){const ph=phase(s),w=ph.w,ws=w*w*(3-2*w),night=ph.p==='night',dawn=s.sunT!=null,nx=next(s),id='u'+(UID++);let tc,sc,hc,wc=WARN;
+if(n==='clock'){const ph=phase(s),w=ph.w,ws=w*w*(3-2*w),night=ph.p==='night',dawn=s.sunT!=null,nx=next(s),id='u'+(UID++),aw=s.aw!==undefined?s.aw:(s.awake?1:0);let tc,sc,hc,wc=WARN;
  if(dawn){const k=sunK(s.sunT),am=NA.map(v=>v*.6);h+=ringGrad(id)+`<circle cx="${C}" cy="${C}" r="233" fill="url(#${id})" opacity="${k.toFixed(3)}"/>`;const kt=Math.sqrt(k);tc=hex(mix(am,WH,kt));sc=hex(mix(am.map(v=>v*.72),[255,236,220],kt));hc=sc}
- else if(night){const vis=s.awake?.85:.5,am=NA.map(v=>v*vis);tc=hex(am);sc=hex(am.map(v=>v*.72));hc=hex(am.map(v=>v*.5))}
+ else if(night){const vis=.5+.35*aw,am=NA.map(v=>v*vis);tc=hex(am);sc=hex(am.map(v=>v*.72));hc=hex(am.map(v=>v*.5))}
  else{const[c1,c2]=sky(s.now),k=.55+.45*s.dayB/100,top=mix(c1,BK,ws).map(v=>v*k),bot=mix(c2,BK,ws).map(v=>v*k),am=NA.map(v=>v*.85);
   h+=`<defs><linearGradient id="${id}" x1=".2" y1="0" x2=".8" y2="1">${RM?'':'<animateTransform attributeName="gradientTransform" type="rotate" values="-16 .5 .5;16 .5 .5;-16 .5 .5" dur="18s" repeatCount="indefinite"/>'}<stop offset="0" stop-color="${hex(top)}"/><stop offset="1" stop-color="${hex(bot)}"/></linearGradient></defs><circle cx="${C}" cy="${C}" r="233" fill="url(#${id})"/>`;
   tc=hex(mix(WH,am,ws));sc=hex(mix(mix(WH,top,.12),am.map(v=>v*.78),ws));hc=sc;wc=ws<.6?tc:WARN}
@@ -286,8 +287,8 @@ if(n==='clock'){const ph=phase(s),w=ph.w,ws=w*w*(3-2*w),night=ph.p==='night',daw
  if(dawn)h+=T(C,296,26,'Sunrise',sc,400);else if(nx.none)h+=T(C,296,26,'No alarm set',sc,400);
  else{const txt=(nx.i!==2?DN[nx.i]+' ':'')+f12(nx.min),tw=txt.length*13.5;h+=ico('bell',C+14-tw/2-20,295,sc,.72)+T(C+14,296,26,txt,sc,400)}
  const st=s.msg||(nx.sk?'Wed skipped':'');
- if(st)h+=T(C,338,26,st,wc,500);else if(s.awake&&!dawn)h+=ico('set',C,346,hc);
- if(s.awake&&!dawn)h+=ico('cal',C,58,hc)+ico('bell',C,408,hc)+ico('lamp',66,300,hc)+ico('spk',400,300,hc)}
+ if(st)h+=T(C,338,26,st,wc,500);
+ if(aw>.01&&!dawn)h+=`<g opacity="${aw.toFixed(3)}">`+(st?'':ico('set',C,346,hc))+ico('cal',C,58,hc)+ico('bell',C,408,hc)+ico('lamp',66,300,hc)+ico('spk',400,300,hc)+'</g>'}
 if(n==='tmr'){const pc=theme('alarm',s),u=usual(s),t=s.one??u;h+=pc.defs;
  if(t==null)h+=picker(s,420,pc,'Tomorrow',false,'Drag a dot to set one',pc.s);
  else{const sub=s.skip?'Skipped':s.one!=null?'Once only':'';h+=picker(s,t,pc,'Tomorrow',!s.skip,sub,s.skip?WARN:pc.s);if(s.skip)h+=`<line x1="106" y1="218" x2="360" y2="218" stroke="${WARN}" stroke-width="5" stroke-linecap="round"/>`}}
@@ -295,9 +296,15 @@ if(n==='week'){const pc=theme('alarm',s),nx=next(s);h+=pc.defs;for(let i=0;i<7;i
    h+=(d.on?wedge(a0,a1,98,222,pc.night?'#2a1a0a':pc.g,pc.night?1:.95):wedge(a0,a1,98,222,pc.trk,.55))+T(x,y-15,28,DN[i],d.on?dk:pc.h,500)+T(x,y+16,26,d.on?f12(d.min).replace(' ',''):'off',d.on?dk:pc.h,d.on?500:400)}
   h+=`<circle cx="${C}" cy="${C}" r="90" fill="#000" opacity=".55"/>`+(nx.none?T(C,233,34,'None',pc.t,500):T(C,214,34,DN[nx.i],pc.t,500)+T(C,254,30,f12(nx.min),pc.a,500))}
 if(n==='day'){const pc=theme('alarm',s),d=s.days[s.sel];h+=pc.defs+picker(s,d.min,pc,DF[s.sel],d.on,d.on?'':'Off',pc.h)}
-if(n==='sound'){const pc=theme('s_'+SOUNDS[s.snd][1],s);let bars='',pg='';for(let i=0;i<10;i++){const bh=12+i*3.6,x=C-92+i*22,lit=i<s.vol/10;bars+=`<rect ${lit&&s.play?`class="eq" style="animation-delay:${(i*.11).toFixed(2)}s"`:''} x="${x}" y="${180-bh}" width="14" height="${bh}" rx="5" fill="${lit?pc.g:pc.trk}"/>`}
-  for(let i=0;i<SOUNDS.length;i++){const hh=i===s.snd?14:6;pg+=`<rect x="100" y="${196+(i-(SOUNDS.length-1)/2)*13-hh/2}" width="6" height="${hh}" rx="3" fill="${i===s.snd?pc.t:pc.trk}"/>`}
-  h+=pc.defs+rimL(s.vol,0,100,pc)+pg+T(C,112,30,SOUNDS[s.snd][0],pc.a,500)+bars+playIco(C,224,s.play,pc.t)+`<rect x="${C-125}" y="265" width="250" height="56" rx="28" fill="${pc.trk}" opacity=".6"/>`+ico('moon',C-64,293,pc.a)+T(C+26,293,30,TIMER[s.ti][0],pc.t,400)}
+if(n==='sound'){const k=SOUNDS[s.snd],pc=theme('s_'+k[1],s);h+=pc.defs;
+  if(s.pick==='snd'){const pp=s.pp||0;for(let i=0;i<8;i++){const it=SOUNDS[pp*8+i],b=theme('s_'+it[1],s),[x,y]=P(i*45,150),sel=pp*8+i===s.snd;
+     h+=b.d0+(sel?`<circle cx="${x}" cy="${y}" r="52" fill="none" stroke="${pc.t}" stroke-width="4"/>`:'')+`<circle cx="${x}" cy="${y}" r="44" fill="${b.g}"/><circle cx="${x-13}" cy="${y-15}" r="11" fill="#fff" opacity=".22"/>`+ico(it[2],x,y,'#15101c',1.15)}
+    h+=T(C,206,26,pp?'Nature':'Noise',pc.s,400)+T(C,242,30,k[0],pc.t,500)+`<rect x="${C-18}" y="270" width="${pp?6:14}" height="6" rx="3" fill="${pp?pc.trk:pc.t}"/><rect x="${C-18+(pp?10:18)}" y="270" width="${pp?14:6}" height="6" rx="3" fill="${pp?pc.t:pc.trk}"/>`}
+  else if(s.pick==='tmr'){for(let i=0;i<5;i++){const[x,y]=P(i*72,150),sel=i===s.ti;h+=`<circle cx="${x}" cy="${y}" r="50" fill="${sel?pc.g:pc.trk}"/>`+(i<4?T(x,y,38,TIMER[i][1],sel?'#15101c':pc.t,sel?500:400):ico('moon',x,y,sel?'#15101c':pc.t,1.3))}
+    h+=T(C,222,28,'Sleep timer',pc.t,500)+T(C,258,26,s.ti<4?'minutes':'all night',pc.s,400)}
+  else{let bars='';for(let i=0;i<4;i++){const bh=[18,30,24,14][i];for(const sg of[-1,1]){const x=C+sg*(52+i*17)-5;bars+=`<rect ${s.play?`class="eq" style="animation-delay:${(i*.13).toFixed(2)}s"`:''} x="${x}" y="${218-bh/2}" width="10" height="${bh}" rx="5" fill="${s.play?pc.a:pc.trk}"/>`}}
+    h+=rimL(s.vol,0,100,pc)+`<rect x="${C-125}" y="112" width="250" height="56" rx="28" fill="${pc.trk}" opacity=".7"/><circle cx="${C-98}" cy="140" r="16" fill="${pc.g}"/>`+T(C+6,140,28,k[0],pc.t,500)+ico('chv',C+104,140,pc.s)
+     +bars+playIco(C,218,s.play,pc.t)+`<rect x="${C-125}" y="268" width="250" height="56" rx="28" fill="${pc.trk}" opacity=".7"/>`+ico('moon',C-92,296,pc.a)+T(C,296,28,TIMER[s.ti][0],pc.t,400)+ico('chv',C+104,296,pc.s)}}
 if(n==='light'){const m=s.lt.m,pc=theme(m?'light':'nlight',s),l=s.lt.l[m],on=s.lt.on;
   h+=pc.defs+(on?`<circle class="br" cx="${C}" cy="196" r="${64+46*l/100}" fill="${pc.a}" opacity="${(.12+.2*l/100).toFixed(2)}"/>`:'')+rimL(l,5,100,pc)+T(C,112,30,'Lamp',pc.a,500)+T(C,200,76,on?l+'%':'Off',on?pc.t:OFFC,300)
    +`<rect x="${C-125}" y="265" width="250" height="56" rx="28" fill="${pc.trk}" opacity=".6"/><rect x="${m?C:C-125}" y="265" width="125" height="56" rx="28" fill="${pc.g}"/>`+ico('moon',C-62,293,m?pc.s:'#2a0d06')+ico('sun',C+62,293,m?'#2a1a04':pc.s)}
@@ -330,7 +337,7 @@ const LG={clock:[['Tap','Wake the face'],['Swipe up / down','Tomorrow / Week'],[
 tmr:[['Drag a dot','Outer dot minutes, inner dot hours'],['Hold','Skip tomorrow, or bring it back'],['Swipe down','Back to the clock']],
 week:[['Tap a day','Open that day'],['Swipe up','Back to the clock']],
 day:[['Drag a dot','Outer dot minutes, inner dot hours'],['Hold','Turn the day on or off'],['Swipe sideways','Next or previous day'],['Swipe up','Back to the week']],
-sound:[['Tap the icon','Play or pause (real sound in this demo)'],['Drag the dot','Volume'],['Swipe up / down','Next sound: 7 noise colours, 4 ambient'],['Tap the pill','Sleep timer'],['Swipe right','Back to the clock']],
+sound:[['Tap the top pill','Pick a sound: 8 noise, 8 nature'],['Tap the icon','Play or pause (real sound in this demo)'],['Tap the lower pill','Pick a sleep timer'],['Drag the dot','Volume'],['Swipe right','Back to the clock']],
 light:[['Drag the dot','Brightness'],['Tap the number','On or off'],['Tap the pill','Night light or reading light'],['Swipe left','Back to the clock']],
 ring:[['Tap anywhere','Snooze 9 minutes'],['Hold 2 seconds','Turn the alarm off']],
 set:[['Drag the dot','Change the value'],['Tap','Pick a date line, or test the alarm'],['Swipe sideways','Next page'],['Swipe down','Back to the clock']]};
@@ -345,7 +352,7 @@ function states(){const L=[],add=(n,f)=>{const s=fresh();f&&f(s);L.push([n,s])};
  add('tmr',s=>{s.one=500;s.days[2].on=false});
  add('week');add('week',s=>{s.days.forEach(d=>d.on=true);s.days.forEach((d,i)=>d.min=(i*140+1000)%1440)});add('week',s=>{s.days.forEach(d=>d.on=false)});add('week',s=>{s.days.forEach((d,i)=>{d.on=true;d.min=1439-i*61})});
  for(let i=0;i<7;i++)for(const on of [true,false])for(const m of [425,1255,719,60,180,585,765,195,555,1410])add('day',s=>{s.sel=i;s.days[i].on=on;s.days[i].min=m});
- for(let ti=0;ti<5;ti++)for(const pl of [true,false])for(const v of [0,100])add('sound',s=>{s.ti=ti;s.play=pl;s.vol=v});for(let i=0;i<SOUNDS.length;i++)add('sound',s=>{s.snd=i;s.ti=4});add('clock',s=>{s.days[2].on=false;s.days[3].min=765;s.awake=true});add('clock',s=>{s.now=765});add('clock',s=>{s.sunT=-2});add('day',s=>{s.hold=.5});
+ for(let ti=0;ti<5;ti++)for(const pl of [true,false])for(const v of [0,100])add('sound',s=>{s.ti=ti;s.play=pl;s.vol=v});for(let i=0;i<SOUNDS.length;i++){add('sound',s=>{s.snd=i;s.ti=4});add('sound',s=>{s.snd=i;s.pick='snd';s.pp=i>>3})}for(let i=0;i<5;i++)add('sound',s=>{s.pick='tmr';s.ti=i});add('clock',s=>{s.days[2].on=false;s.days[3].min=765;s.awake=true});add('clock',s=>{s.now=765});add('clock',s=>{s.sunT=-2});add('day',s=>{s.hold=.5});
  for(const m of [0,1])for(const on of [true,false])for(const l of [5,100])add('light',s=>{s.lt.m=m;s.lt.on=on;s.lt.l[m]=l});
  for(const z of [0,1,2,3])add('ring',s=>{s.snz=z});add('ring',s=>{s.done=true});add('ring',s=>{s.hold=.6});
  for(let p=0;p<PG.length;p++)for(let r=0;r<REG.length;r++)add('set',s=>{s.pg=p;s.rg=r;s.dat={m:r%12,d:28,y:2099};s.dayB=100;s.ns=1380;s.ld=100;s.clk=779});
@@ -355,7 +362,7 @@ function layoutCheck(){const g=$('chk'),svg=$('dev'),sr=svg.getBoundingClientRec
   for(const e of els){const r=e.getBoundingClientRect();let x0=(r.left-sr.left)*k-61,x1=(r.right-sr.left)*k-61,y0=(r.top-sr.top)*k-61,y1=(r.bottom-sr.top)*k-61;
    const tag=e.tagName.toLowerCase();if(tag==='text'){const cy=(y0+y1)/2,hh=(y1-y0)*.4;y0=cy-hh;y1=cy+hh;ys.push(cy);const fs=+e.getAttribute('font-size');if(fs<MINFONT)issues.push(n+': font '+fs+'px "'+e.textContent+'"')}
    R.push({x0,x1,y0,y1,dot:e.getAttribute('data-k')==='d',t:(e.textContent||tag).trim().slice(0,22)});boxes++}
-  ys.sort((a,b)=>a-b);let lines=ys.length?1:0;for(let i=1;i<ys.length;i++)if(ys[i]-ys[i-1]>14)lines++;if(lines>MAXLINES&&n!=='week'&&n!=='dialfig'){const key=n+'|lines|'+lines;if(!seen[key]){seen[key]=1;issues.push(n+': '+lines+' text lines (max '+MAXLINES+') '+JSON.stringify([s.now,s.pg,s.msg]))}}
+  ys.sort((a,b)=>a-b);let lines=ys.length?1:0;for(let i=1;i<ys.length;i++)if(ys[i]-ys[i-1]>14)lines++;if(lines>MAXLINES&&n!=='week'&&n!=='dialfig'&&!s.pick){const key=n+'|lines|'+lines;if(!seen[key]){seen[key]=1;issues.push(n+': '+lines+' text lines (max '+MAXLINES+') '+JSON.stringify([s.now,s.pg,s.msg]))}}
   const lab=n+' '+JSON.stringify([s.now,s.awake,s.msg,s.pg,s.rg,s.sel,s.skip,s.one,s.ti,s.hold,s.done]);
   for(const r of R){if(r.dot)continue;for(const[x,y]of[[r.x0,r.y0],[r.x1,r.y0],[r.x0,r.y1],[r.x1,r.y1]])if(Math.hypot(x-C,y-C)>SAFE){const key=n+'|out|'+r.t;if(!seen[key]){seen[key]=1;issues.push(n+': outside safe circle "'+r.t+'" ('+Math.round(Math.hypot(x-C,y-C))+'px) '+lab)}break}}
   for(let i=0;i<R.length;i++)for(let j=i+1;j<R.length;j++){const a=R[i],b=R[j];if(a.dot&&b.dot)continue;if(a.x0<b.x1+3&&b.x0<a.x1+3&&a.y0<b.y1+3&&b.y0<a.y1+3){const key=n+'|ov|'+a.t+'|'+b.t;if(!seen[key]){seen[key]=1;issues.push(n+': overlap "'+a.t+'" with "'+b.t+'" '+lab)}}}}
@@ -368,22 +375,31 @@ function noiseBuf(kind){const sr=AC.sampleRate,n=sr*5,F=sr>>1,b=AC.createBuffer(
   if(kind==='pink'||kind==='blue'){b0=.99886*b0+w*.0555179;b1=.99332*b1+w*.0750759;b2=.969*b2+w*.153852;b3=.8665*b3+w*.3104856;b4=.55*b4+w*.5329522;b5=-.7616*b5-w*.016898;const q=b0+b1+b2+b3+b4+b5+b6+w*.5362;b6=w*.115926;v=kind==='pink'?q:q-pp;pp=q}
   else if(kind==='brown'){last=(last+.02*w)/1.02;v=last}
   else if(kind==='violet'){v=w-pw;pw=w}
+  else if(kind==='crackle'){if(Math.random()<.0005)last=.3+Math.random()*.7;last*=.994;v=w*last}
   d[i]=v}
  for(let i=0;i<F;i++){const k=i/F;d[i]=d[i]*k+d[n-F+i]*(1-k)}
  for(let i=0;i<n-F;i++)mx=Math.max(mx,Math.abs(d[i]));for(let i=0;i<n;i++)d[i]*=.9/mx;return{b,end:(n-F)/sr}}
-function audioStart(kind){const base={green:'white',grey:'white',rain:'white',ocean:'brown',wind:'pink',fan:'brown'}[kind]||kind,nb=noiseBuf(base),src=AC.createBufferSource();src.buffer=nb.b;src.loop=true;src.loopEnd=nb.end;
- const g=AC.createGain();g.gain.value=0;let node=src;const bi=(t,f,q,gn)=>{const x=AC.createBiquadFilter();x.type=t;x.frequency.value=f;if(q)x.Q.value=q;if(gn)x.gain.value=gn;node.connect(x);node=x;return x},osc=[];
- const lfo=(f,amt,param)=>{const o=AC.createOscillator(),og=AC.createGain();o.frequency.value=f;og.gain.value=amt;o.connect(og);og.connect(param);o.start();osc.push(o)};
- if(kind==='green')bi('bandpass',500,.6);
- if(kind==='grey'){bi('lowshelf',150,0,12);bi('peaking',3000,.8,-8);bi('highshelf',7000,0,6)}
- if(kind==='rain'){bi('highpass',900);bi('lowpass',9000)}
- if(kind==='ocean'){const sw=AC.createGain();sw.gain.value=.6;node.connect(sw);node=sw;lfo(.11,.4,sw.gain)}
- if(kind==='wind'){const f=bi('bandpass',420,1.2);lfo(.13,260,f.frequency)}
- if(kind==='fan'){bi('lowpass',520);const o=AC.createOscillator(),og=AC.createGain();o.frequency.value=110;og.gain.value=.05;o.connect(og);og.connect(g);o.start();osc.push(o)}
- node.connect(g);g.connect(AC.destination);src.start();return{kind,src,g,osc}}
+function audioStart(kind){const g=AC.createGain();g.gain.value=0;g.connect(AC.destination);const stops=[];
+ const lfo=(f,amt,param)=>{const o=AC.createOscillator(),og=AC.createGain();o.frequency.value=f;og.gain.value=amt;o.connect(og);og.connect(param);o.start();stops.push(o)};
+ const tone=(f,lvl)=>{const o=AC.createOscillator(),og=AC.createGain();o.frequency.value=f;og.gain.value=lvl;o.connect(og);og.connect(g);o.start();stops.push(o);return og};
+ const L=(bk,lvl,fs)=>{const nb=noiseBuf(bk),src=AC.createBufferSource();src.buffer=nb.b;src.loop=true;src.loopEnd=nb.end;let node=src;const out=[];for(const[t,f,q,gn]of fs||[]){const x=AC.createBiquadFilter();x.type=t;x.frequency.value=f;if(q)x.Q.value=q;if(gn)x.gain.value=gn;node.connect(x);node=x;out.push(x)}const lg=AC.createGain();lg.gain.value=lvl;node.connect(lg);lg.connect(g);src.start();stops.push(src);return{f:out,g:lg}};
+ switch(kind){
+  case 'green':L('white',1,[['bandpass',500,.6]]);break;
+  case 'grey':L('white',1,[['lowshelf',150,0,12],['peaking',3000,.8,-8],['highshelf',7000,0,6]]);break;
+  case 'rain':L('white',1,[['highpass',900],['lowpass',9000]]);break;
+  case 'storm':{L('white',.8,[['highpass',700],['lowpass',8000]]);const t=L('brown',.5,[['lowpass',140]]);lfo(.06,.5,t.g.gain);break}
+  case 'ocean':{const o=L('brown',.6);lfo(.11,.4,o.g.gain);break}
+  case 'stream':{const o=L('white',.9,[['bandpass',1800,1.4]]);lfo(3.1,500,o.f[0].frequency);lfo(5.3,350,o.f[0].frequency);break}
+  case 'falls':L('pink',.7,[['lowpass',5000]]);L('brown',.6);break;
+  case 'wind':{const o=L('pink',1,[['bandpass',420,1.2]]);lfo(.13,260,o.f[0].frequency);break}
+  case 'forest':{L('pink',.1,[['highpass',1500]]);const a=tone(4300,.02);lfo(27,.02,a.gain);const b=tone(3900,.012);lfo(19,.012,b.gain);break}
+  case 'fire':L('brown',.5,[['lowpass',600]]);L('crackle',.9,[['highpass',1500]]);break;
+  case 'fan':L('brown',1,[['lowpass',520]]);tone(110,.05);break;
+  default:L(kind,1)}
+ return{kind,g,stops}}
 function audioSync(){try{const want=S.play?SOUNDS[S.snd][1]:null;if(!want&&!AU)return;
  if(want&&!AC)AC=new (window.AudioContext||window.webkitAudioContext)();
- if(AU&&AU.kind!==want){const o=AU;AU=null;o.g.gain.setTargetAtTime(0,AC.currentTime,.12);setTimeout(()=>{try{o.src.stop();o.osc.forEach(x=>x.stop())}catch(e){}},700)}
+ if(AU&&AU.kind!==want){const o=AU;AU=null;o.g.gain.setTargetAtTime(0,AC.currentTime,.12);setTimeout(()=>{try{o.stops.forEach(x=>x.stop())}catch(e){}},700)}
  if(want&&!AU)AU=audioStart(want);
  if(AU)AU.g.gain.setTargetAtTime(S.vol/100*.5*(S.fade??1),AC.currentTime,.15)}catch(e){}}
 let S=fresh();
@@ -397,10 +413,11 @@ function sync(){if(S.scr==='ring'&&S.sunT==null)glow('#ffe9cc',1);else if(S.test
 function todLabel(){const ph=phase(S);$('todl').textContent=f12(S.now);return ph}
 let holdWas=false;function render(){if(S.hold>0){const k=1-.07*S.hold;cur.setAttribute('transform',`translate(${C*(1-k)} ${C*(1-k)}) scale(${k})`);holdWas=true}else if(holdWas){cur.removeAttribute('transform');holdWas=false}audioSync();cur.innerHTML=draw(S.scr,S);sync();$('lg').innerHTML=LG[S.scr].map(r=>`<div><b>${r[0]}</b><span>${r[1]}</span></div>`).join('');$('tod').value=S.now;todLabel()}
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;let anim=0,idleT,awT,busy=false;
-function nav(to,d,msg){old.innerHTML=cur.innerHTML;S.test=false;S.scr=to;if(msg)fb(msg);render();cancelAnimationFrame(anim);if(RM||!d){old.innerHTML='';cur.removeAttribute('transform');return}
+function nav(to,d,msg){old.innerHTML=cur.innerHTML;S.test=false;S.pick=null;S.scr=to;if(msg)fb(msg);render();cancelAnimationFrame(anim);if(RM||!d){old.innerHTML='';cur.removeAttribute('transform');return}
  const t0=performance.now();(function st(t){const p=Math.min(1,(t-t0)/340),q=p-1,e=1+2.2*q*q*q+1.2*q*q;cur.setAttribute('transform',`translate(${d[0]*466*(1-e)} ${d[1]*466*(1-e)})`);old.setAttribute('transform',`translate(${-d[0]*466*e} ${-d[1]*466*e})`);old.setAttribute('opacity',1-e);if(p<1)anim=requestAnimationFrame(st);else{old.innerHTML='';old.removeAttribute('transform');old.removeAttribute('opacity');cur.removeAttribute('transform')}})(t0)}
 function idle(){clearTimeout(idleT);if(S.scr!=='clock'&&S.scr!=='ring'&&!busy)idleT=setTimeout(()=>{if(S.scr!=='clock'&&S.scr!=='ring'&&!busy)nav('clock',null,'Back to the clock after 20 seconds, changes kept')},S.scr==='set'?30000:20000)}
-function wake(){S.awake=true;clearTimeout(awT);awT=setTimeout(()=>{S.awake=false;if(S.scr==='clock'&&!busy)render()},5000)}
+let awA=0;function tweenAw(to,done){cancelAnimationFrame(awA);const a=S.aw!==undefined?S.aw:(S.awake?1:0),t0=performance.now(),D=to?320:600;(function st(t){const p=Math.min(1,(t-t0)/D),e=p*p*(3-2*p);S.aw=a+(to-a)*e;if(S.scr==='clock'&&!busy)render();if(p<1)awA=requestAnimationFrame(st);else if(done)done()})(t0)}
+function wake(){S.awake=true;tweenAw(1);clearTimeout(awT);awT=setTimeout(()=>{tweenAw(0,()=>{S.awake=false})},4200)}
 function ripple(x,y){const c=document.createElementNS(NS,'circle');c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('fill','#fff');$('fx').appendChild(c);const t0=performance.now();(function st(t){const p=Math.min(1,(t-t0)/380);c.setAttribute('r',12+30*p);c.setAttribute('opacity',.22*(1-p));p<1?requestAnimationFrame(st):c.remove()})(t0)}
 
 function adjTime(dm){const s=S.scr;
@@ -418,7 +435,7 @@ function linInfo(){const s=S.scr;
  if(s==='set'&&PG[S.pg]==='Brightness')return{lo:10,hi:100,get:()=>S.dayB,set:v=>{S.dayB=v;fb('Daytime brightness '+v+'%')}};
  if(s==='set'&&PG[S.pg]==='Alarm')return{lo:30,hi:100,get:()=>S.ld,set:v=>{S.ld=v;fb('Alarm volume '+v+'%')}};
  return null}
-function knobs(){const s=S.scr;let m=null;
+function knobs(){const s=S.scr;let m=null;if(s==='sound'&&S.pick)return null;
  if(s==='tmr')m=S.one??usual(S)??420;else if(s==='day')m=S.days[S.sel].min;
  else if(s==='set'){const g=PG[S.pg];if(g==='Time')m=S.clk}
  if(m!=null){m=wrap(m);return[{t:'min',a:(m%60)*6,r:RR},{t:'hr',a:(Math.floor(m/60)%12)*30+(m%60)*.5,r:RH}]}
@@ -435,7 +452,12 @@ function tap(x,y){const r=Math.hypot(x-C,y-C),s=S.scr;
  else if(s==='ring'){if(S.done)return;if(S.snz>0){S.snz--;S.msg='Snoozed · rings 7:09 AM';return nav('clock',null,'Snoozed for 9 minutes')}return fb('No snoozes left. Hold to stop')}
  else if(s==='tmr'){if((S.one??usual(S))==null)fb('Drag a dot to set one');else fb(S.skip?'Hold to bring it back':'Hold to skip tomorrow')}
  else if(s==='day'){fb(S.days[S.sel].on?'Hold to turn this day off':'Hold to turn this day on')}
- else if(s==='sound'){if(y<250){S.play=!S.play;fb(S.play?SOUNDS[S.snd][0]+' playing':'Paused')}else{S.ti=(S.ti+1)%5;fb('Sleep timer: '+TIMER[S.ti][0])}}
+ else if(s==='sound'){
+  if(S.pick==='snd'){for(let i=0;i<8;i++){const[bx,by]=P(i*45,150);if(Math.hypot(x-bx,y-by)<=56){S.snd=(S.pp||0)*8+i;S.play=true;fb(SOUNDS[S.snd][0])}}S.pick=null}
+  else if(S.pick==='tmr'){for(let i=0;i<5;i++){const[bx,by]=P(i*72,150);if(Math.hypot(x-bx,y-by)<=58){S.ti=i;fb('Sleep timer: '+TIMER[i][0])}}S.pick=null}
+  else if(y<172){S.pick='snd';S.pp=S.snd>>3;fb('Pick a sound. Swipe sideways for '+(S.pp?'noise':'nature'))}
+  else if(y<258){S.play=!S.play;fb(S.play?SOUNDS[S.snd][0]+' playing':'Paused')}
+  else{S.pick='tmr';fb('Pick a sleep timer')}}
  else if(s==='light'){if(y<250){S.lt.on=!S.lt.on;fb(S.lt.on?'Light on':'Light off')}else{S.lt.m^=1;S.lt.on=true;fb(S.lt.m?'Reading light':'Night light')}}
  else if(s==='set'){const g=PG[S.pg];if(g==='Date'){S.df=y<200?0:y<290?1:2;fb(['Month','Day','Year'][S.df])}else if(g==='Alarm'&&r<125){S.test=!S.test;clearTimeout(window.testT);if(S.test){fb('Testing: the light and the alarm sound at '+S.ld+'%');window.testT=setTimeout(()=>{S.test=false;if(!busy)render()},6000)}else fb('Test stopped')}else fb('Swipe sideways for more settings')}
  render()}
@@ -444,7 +466,7 @@ function swipe(d){const s=S.scr;
  if(s==='tmr'&&d==='down')return nav('clock',[0,-1],'Saved');
  if(s==='week'&&d==='up')return nav('clock',[0,1],'Back to the clock');
  if(s==='day'){if(d==='up')return nav('week',[0,1],'Saved');if(d==='left'||d==='right'){const t=S.days[S.sel].min;S.sel=(S.sel+(d==='left'?1:6))%7;if(!S.days[S.sel].on)S.days[S.sel].min=t;return nav('day',[d==='left'?1:-1,0],DF[S.sel])}}
- if(s==='sound'&&(d==='up'||d==='down')){S.snd=(S.snd+(d==='up'?1:SOUNDS.length-1))%SOUNDS.length;return nav('sound',[0,d==='up'?1:-1],SOUNDS[S.snd][0])}
+ if(s==='sound'&&S.pick){if(S.pick==='snd'&&(d==='left'||d==='right')){S.pp=S.pp?0:1;fb(S.pp?'Nature sounds':'Noise colours')}else{S.pick=null;fb('Closed')}return render()}
  if(s==='sound'&&d==='right')return nav('clock',[-1,0],'Back to the clock');
  if(s==='light'&&d==='left')return nav('clock',[1,0],'Back to the clock');
  if(s==='set'){if(d==='down')return nav('clock',[0,-1],'Settings closed');if(d==='left'||d==='right'){S.pg=(S.pg+(d==='left'?1:PG.length-1))%PG.length;return nav('set',[d==='left'?1:-1,0],PG[S.pg])}}
@@ -453,7 +475,7 @@ function onHold(){const s=S.scr;
  if(s==='ring'){S.hold=0;S.done=true;fb('Alarm off');render();setTimeout(()=>{S.done=false;S.snz=3;S.msg='';nav('clock',null,'Good morning')},1900)}
  else if(s==='tmr'){S.hold=0;S.skip=!S.skip;fb(S.skip?'Tomorrow\u2019s alarm skipped':'Tomorrow\u2019s alarm is back');ripple(C,C);render()}
  else if(s==='day'){S.hold=0;const d=S.days[S.sel];d.on=!d.on;fb(DF[S.sel]+' alarm '+(d.on?'on':'off'));ripple(C,C);render()}
- else if(s==='clock'){S.hold=0;S.pg=0;S.clk=S.now;nav('set',[0,1],'Settings: the time is first, so a daylight saving fix is one tap')}
+ else if(s==='clock'&&S.scr==='clock'){S.hold=0;S.pg=0;S.clk=S.now;nav('set',[0,1],'Settings: the time is first, so a daylight saving fix is one tap')}
 }
 
 const dev=$('dev');let G=null,rep=null;
@@ -463,9 +485,9 @@ dev.addEventListener('pointerdown',e=>{if(busy)return;const[x,y]=pt(e),r=Math.hy
  const g=G={x,y,t:performance.now(),moved:false,held:false,grab:false,kt:'',dial:false,dialed:false,acc:0,ang:0,applied:0,v0:0};
  const ks=knobs();if(ks){let best=null,bd=57;for(const k of ks){const[kx,ky]=P(k.a,k.r),dd=Math.hypot(x-kx,y-ky);if(dd<bd){bd=dd;best=k}}if(best){g.grab=true;g.kt=best.t;g.unit=best.u||30;g.v0=best.t==='lin'?linInfo().get():0}}
  let hm=0;const s=S.scr;
- if(s==='ring'&&!S.done)hm=2000;else if(s==='clock')hm=1500;
+ if(s==='ring'&&!S.done)hm=2000;else if(s==='clock'&&!S.awakeLock)hm=1500;
  else if(((s==='tmr'&&(S.one??usual(S))!=null)||s==='day')&&!g.grab&&r<150)hm=1000;
- if(hm)(function lp(){if(G!==g||g.moved)return;const p=(performance.now()-g.t)/hm;if((s==='ring'||s==='tmr'||s==='day'||s==='clock'||s==='set')&&p>.06){S.hold=Math.min(1,(p-.06)/.94);render()}if(p>=1){g.held=true;return onHold()}requestAnimationFrame(lp)})()});
+ if(hm)(function lp(){if(G!==g||g.moved)return;const el=performance.now()-g.t,p=el/hm;if((s==='ring'||s==='tmr'||s==='day'||s==='clock')&&el>220){S.hold=Math.min(1,(el-220)/(hm-220));render()}if(p>=1){g.held=true;return onHold()}requestAnimationFrame(lp)})()});
 dev.addEventListener('pointermove',e=>{if(!G)return;const[x,y]=pt(e);
  if(!G.moved&&Math.hypot(x-G.x,y-G.y)>16){G.moved=true;stopRep();if(S.hold){S.hold=0;render()}
   if(G.grab&&performance.now()-G.t<90)G.grab=false;

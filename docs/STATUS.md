@@ -25,13 +25,15 @@ Last updated: 2026-11-13
 
 - **Round 5 (D-040):** bigger clock, small alarm line, gradual dawn on the screen, hold to turn alarms on and off with visible feedback, eleven synthesised sounds ([SOUND.md](SOUND.md)), Lamp rename, Day brightness, Battery page, real mark counts on Region and Date. Checks: 401 states, 0 layout issues; 812 swipes, 0 mistaken.
 
+- **Round 6 (D-041):** sound pickers (bubbles), 16 sounds incl. nature, smooth tap hints, delayed hold line. Checks: 427 states, 0 layout issues; 582 swipes, 0 mistaken; all 16 sounds build.
+
 ## Hardware state (bring-up test, 2026-11-12)
 - `/firmware/bringup` runs on the real board: screen, touch, 7 I2C chips, ring (GRBW, smooth dithered sunrise), speaker.
 - Ring ran with a direct 3.3 V data line, short wires and a 300 mA cap.
 - Not yet tested: battery, full 0.9 A ring current with fuse + capacitor + resistor, USB voltage under load.
 
 ## Waiting for owner
-1. **Approve Phase 2** (accepts D-024 as amended, D-025, D-028, D-031 to D-040).
+1. **Approve Phase 2** (accepts D-024 as amended, D-025, D-028, D-031 to D-041).
 2. **Flash `/firmware/dialtest`** and try it (swipe near the rim, next to a dot, in the middle; grab a dot with and without a pause). Tell me anything that feels wrong (UX-B2). I could not flash it because the board was not plugged in.
 3. **Daylight saving:** US Eastern with automatic rules, a Manual option and a two-touch fix. OK? (not yet answered)
 4. **Battery:** order a 503450-class cell by the specification in HARDWARE.md §1 (answered yes).

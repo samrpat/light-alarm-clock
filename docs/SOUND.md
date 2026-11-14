@@ -6,7 +6,7 @@ All sleep sounds are **made by the clock itself from maths**, not played from re
 
 ## The sounds
 
-Swipe up or down on the Sound screen to change. Each has its own colour on screen.
+Tap the sound pill on the Sound screen and a ring of bubbles opens; pick one and it closes. Each sound has its own colour and picture, on two pages: Noise and Nature.
 
 | # | Sound | What it is | How it is made |
 |---|-------|-----------|----------------|
@@ -26,6 +26,18 @@ Swipe up or down on the Sound screen to change. Each has its own colour on scree
 - Blue and violet are bright and many people find them harsh for sleep. They are included because you asked for the full set.
 - The ambient sounds are simple syntheses. They will sound like "noise shaped like rain", not a field recording. If that is not good enough, recordings on the SD card are the fallback (Phase 5).
 - The concept page plays all eleven for real (tap play on the Sound screen).
+
+## Nature sounds added in round 6
+
+| Sound | What it is | How it is made |
+|-------|-----------|----------------|
+| Storm | Heavy rain with distant, slowly rolling thunder | Rain noise plus a deep rumble that swells every 16 s |
+| Stream | A bright babbling brook | Mid-range noise with two wandering filters |
+| Waterfall | A broad, steady roar | Pink and brown noise together |
+| Forest | Leaves with a hint of night insects | Quiet high noise plus two fluttering tones near 4 kHz |
+| Fire | A fireplace: low rumble and random crackles | Low noise plus random sharp pops |
+
+Sixteen sounds in all. Like the others they are shaped noise, not recordings: good for masking and sleep, not a replica of a real forest. Recordings on the SD card stay the fallback (Phase 5).
 
 ## Rules
 

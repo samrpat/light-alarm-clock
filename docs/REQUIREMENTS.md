@@ -43,7 +43,7 @@ Last reviewed: 2026-11-13 (Phase 2)
 |----|-----|-------------|-------|------|
 | R9 | M | `[ ]` White noise for falling asleep, with sleep timer (Off / 15 / 30 / 60 / 90 min / all night) and volume control. | 3 | T-09 |
 | R10 | M | `[ ]` White noise fades out smoothly (default 120 s, no clicks or steps you can hear) when the sunrise or the alarm begins. The timer end also fades (default 30 s). | 3 | T-10 |
-| R11 | M | `[ ]` Eleven sleep sounds made by the clock itself: pink (default), white, brown, green, grey, blue and violet noise; rain, ocean, wind, fan. No recordings, no loop gap ([SOUND.md](SOUND.md), D-040). | 3 | T-11 |
+| R11 | M | `[ ]` Sixteen sleep sounds made by the clock itself: noises (pink default, white, brown, green, grey, blue, violet, fan) and nature (rain, storm, ocean, stream, waterfall, wind, forest, fire), chosen from a visual picker. No recordings, no loop gap ([SOUND.md](SOUND.md), D-040). | 3 | T-11 |
 
 ## 4. Light
 

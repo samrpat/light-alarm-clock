@@ -82,3 +82,8 @@
 - D-040: clock face (time 124 px, small alarm line, day shown only beyond 24 h, no pulsing circle, distinct hint icons), gradual dawn on the screen, hold both ways with visible feedback, eleven synthesised sounds (new SOUND.md), Lamp rename, Day brightness, Battery page, real mark counts on Region and Date.
 - LONGEVITY.md: how daylight saving stays right for decades.
 - Concept page plays the sounds. Checks: 401 states, 2,401 boxes, 0 issues; 812 swipes, 0 mistaken.
+
+## 2026-11-13 — Phase 2 revision, round 6
+- Sound screen: two pill buttons open bubble pickers (sound: Noise and Nature pages; timer). Sixteen sounds including storm, stream, waterfall, forest, fire (D-041, SOUND.md).
+- Tap hints and night brightness now fade smoothly. The hold indicator waits 0.22 s. Settings open only by a hold on the home screen.
+- Checks: 427 states, 2,697 boxes, 0 issues; 582 swipes, 0 mistaken.

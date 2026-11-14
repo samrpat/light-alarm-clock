@@ -308,3 +308,8 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
   6. **Settings:** "Day brightness" with "Night stays dim" (night level fixed at the lowest readable); the last page is Battery with the percentage large and voltage small; Region and Date rings show exactly as many marks as there are choices.
   7. **Naming:** the Light screen is **Lamp**.
 - **DST over many years:** explained in LONGEVITY.md §3 (rules are formulas computed from the date; tested for every year to 2099).
+
+## D-041 — Round 6: sound pickers, nature sounds, smooth hints, calmer hold
+- **Date:** 2026-11-13 · **Status:** Proposed (owner's requests) · amends D-040 · **Reqs:** R11, R34
+- **Decisions:** (1) Sound has two pills that open bubble pickers, one for the sound (Noise and Nature pages, picture and colour per sound) and one for the sleep timer; a tap on a bubble picks and closes. Swiping to change sound is dropped. (2) Sixteen sounds: eight noises, eight nature (rain, storm, ocean, stream, waterfall, wind, forest, fire). (3) The hold indicator waits 0.22 s so an ordinary tap shows nothing; settings open only from the home screen. (4) The tap hints fade in and out and the night face brightens and dims on the same curve.
+- **Tested in the concept page:** a quick tap shows no hold line; a hold on the home screen opens settings; a hold on any other screen does not; all 16 sounds build.
