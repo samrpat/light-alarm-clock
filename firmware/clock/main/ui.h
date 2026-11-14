@@ -16,6 +16,7 @@ enum { FPICK_NONE, FPICK_LEN, FPICK_BRK, FPICK_RDS };
 
 typedef struct {
     int scr;
+    uint32_t fx;                /* animation clock, 33 ms steps, only counts on the clock and alarm screens */
     /* the world: filled in before every draw */
     int now, secs;                      /* local minute of the day, and seconds */
     int wd, y, mo, d;                   /* local date; wd 0 = Monday */
@@ -44,3 +45,4 @@ void ui_start(void);                    /* core 0 */
 /* bench: jump to a screen, run the layout check over many states, print one line per problem */
 void ui_bench_goto(const char *args);
 int  ui_bench_layoutcheck(void);
+void ui_shot_prepare(void);   /* display lock held: draws the full picture so lv_snapshot_take can read it */

@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "esp_timer.h"
+#include "esp_heap_caps.h"
 #include "esp_log.h"
 #include "bsp/esp-bsp.h"
 #include "lvgl.h"
@@ -29,7 +30,8 @@ static const int TIMER_N[5] = {15, 30, 60, 90, 0};
 
 static int wrap(int m) { return ((m % 1440) + 1440) % 1440; }
 static int64_t us(void) { return esp_timer_get_time(); }
-static void redraw(void) { if (canvas) lv_obj_invalidate(canvas); }
+static lv_obj_t *view; static bool dirty;
+static void redraw(void) { dirty = true; }
 static void load_tz(void) { char z[64]; store_load_region(z, sizeof z); if (!tz_parse(z, &tz)) tz_parse(REG_TZ[0], &tz); }
 static int wake_min(void) { if (S.days[S.wd].on) return S.days[S.wd].min; for (int i = 0; i < 7; i++) if (S.days[i].on) return S.days[i].min; return 420; }
 static int phase_p(float *w) {
@@ -157,7 +159,8 @@ static void lamp_apply(void) {
 }
 
 /* ---- navigation ---- */
-static void nav(int scr) { S.scr = scr; S.pick = 0; S.fo.menu = false; S.fo.pick = 0; S.sec_mode = false; S.test = false; S.hold = 0; S.drag = 0; }
+static int64_t tr_t0; static bool tr_on; static int tr_dx, tr_dy, sw_dx, sw_dy;       /* slide transition between screens */
+static void nav(int scr) { if ((sw_dx || sw_dy) && scr != S.scr && !bench_frozen) { gfx_hold_old(); tr_t0 = us(); tr_on = true; tr_dx = sw_dx; tr_dy = sw_dy; gfx_strips_forget(); } S.scr = scr; S.pick = 0; S.fo.menu = false; S.fo.pick = 0; S.sec_mode = false; S.test = false; S.hold = 0; S.drag = 0; }
 static void wake(void) { aw_from = S.aw; aw_to = 1; aw_t0 = us(); aw_anim = true; awake_until = us() + 4200000; }
 static void focus_reset(void) { S.fo.run = false; S.fo.ph = 0; S.fo.rd = 1; S.fo.left = S.fo.len * 60; }
 
@@ -195,7 +198,9 @@ static void tap(float x, float y) {
     default: break;
     }
 }
-static void swipe(int dx, int dy) {            /* one of dx, dy is -1 or +1: the direction the finger moved */
+static void swipe_inner(int dx, int dy);
+static void swipe(int dx, int dy) { sw_dx = dx; sw_dy = dy; swipe_inner(dx, dy); sw_dx = sw_dy = 0; }
+static void swipe_inner(int dx, int dy) {            /* one of dx, dy is -1 or +1: the direction the finger moved */
     bool left = dx < 0, right = dx > 0, up = dy < 0, down = dy > 0;
     switch (S.scr) {
     case SCR_CLOCK: if (up) nav(SCR_TMR); else if (down) nav(SCR_WEEK); else if (left) nav(SCR_SOUND); else nav(SCR_LIGHT); break;
@@ -245,6 +250,7 @@ static void dial_move(void) {
 }
 static void on_touch(lv_event_t *e) {
     lv_event_code_t code = lv_event_get_code(e); lv_point_t p; lv_indev_get_point(lv_indev_active(), &p); float x = p.x, y = p.y; int64_t now = us();
+    if (code == LV_EVENT_PRESSED || code == LV_EVENT_RELEASED) printf("touch %s %d,%d scr=%d\n", code == LV_EVENT_PRESSED ? "down" : "up", (int)x, (int)y, S.scr);
     if (code == LV_EVENT_PRESSED) {
         if (hypotf(x - C, y - C) > C) return;
         last_touch_us = now; memset(&g, 0, sizeof g); g.down = true; g.x = x; g.y = y; g.t = now;
@@ -266,10 +272,10 @@ static void on_touch(lv_event_t *e) {
                 if (tang > rad) { g.dial = true; S.drag = g.kt; g.ang = atan2f(g.x - C, C - g.y) * 57.29578f; g.acc = 0; } else g.grab = false;   /* toward or away from the centre: a swipe */
             }
         }
-        if (g.dial) { float a = atan2f(x - C, C - y) * 57.29578f, d = a - g.ang; if (d > 180) d -= 360; if (d < -180) d += 360; g.ang = a; g.acc += d; g.dialed = true; dial_move(); }
+        if (g.dial) { float a = atan2f(x - C, C - y) * 57.29578f, d = a - g.ang; if (d > 180) d -= 360; if (d < -180) d += 360; g.ang = a; g.acc += d; g.dialed = true; dial_move(); redraw(); }
         if (!g.moved && !g.held && g.hold_ms) {
             int64_t el = (now - g.t) / 1000;
-            if (el > 450) S.hold = fminf(1, (float)(el - 450) / (g.hold_ms - 450));       /* the indicator waits 0.45 s (D-042) */
+            if (el > 450) { S.hold = fminf(1, (float)(el - 450) / (g.hold_ms - 450)); redraw(); }       /* the indicator waits 0.45 s (D-042) */
             if (el >= g.hold_ms) { g.held = true; on_hold(); }
         }
     } else if ((code == LV_EVENT_RELEASED || code == LV_EVENT_PRESS_LOST) && g.down) {
@@ -285,9 +291,58 @@ static void on_touch(lv_event_t *e) {
 }
 
 /* ---- drawing and the 50 ms heartbeat ---- */
-static void on_draw(lv_event_t *e) {
-    int ox = 0, oy = 0; if (S.scr == SCR_CLOCK) { ox = (S.now * 7) % 5 - 2; oy = (S.now * 3) % 5 - 2; }      /* the face moves a step a minute (D-016) */
-    gfx_begin(lv_event_get_layer(e), ox, oy); gfx_check_reset(); ui_draw(&S);
+static int64_t perf_us, perf_t0, perf_fl, perf_cmd; static int perf_n, perf_strips;
+/* the picture is drawn once per change into a full-frame image; the display then only copies strips of it */
+static void flush_nop(lv_display_t *d, const lv_area_t *a, uint8_t *px) { (void)a; (void)px; lv_display_flush_ready(d); }
+static lv_obj_t *sc; static uint8_t *sbuf[2]; static int kk;
+static void face_shift(int *ox, int *oy) { *ox = *oy = 0; if (S.scr == SCR_CLOCK) { *ox = (S.now * 7) % 5 - 2; *oy = (S.now * 3) % 5 - 2; } }   /* the face moves a step a minute (D-016) */
+static void render(lv_timer_t *t) {
+    (void)t; if ((!dirty && !tr_on) || !sc) return; dirty = false;
+    int ox, oy; face_shift(&ox, &oy);
+    int64_t t0 = us(); gfx_record_begin(ox, oy); gfx_check_reset(); ui_draw(&S); perf_cmd += us() - t0; int64_t t1 = us();
+    if (tr_on) {
+        float q = (us() - tr_t0) / 300000.0f; if (q >= 1) { q = 1; tr_on = false; gfx_strips_forget(); dirty = true; }
+        float e = 1 - (1 - q) * (1 - q) * (1 - q), ex = 466 * e, en = 466 * (1 - e);                      /* the old picture leaves, the new one arrives behind it */
+        int oox = (int)(tr_dx * ex), ooy = (int)(tr_dy * ex), nox = (int)(-tr_dx * en), noy = (int)(-tr_dy * en);
+        for (int s = 0; s < GFX_STRIPS; s++) {
+            int y0 = s * GFX_STRIP_H, n = 466 - y0 < GFX_STRIP_H ? 466 - y0 : GFX_STRIP_H; uint8_t *b = sbuf[kk & 1];
+            memset(b, 0, 466 * n * 2); lv_canvas_set_buffer(sc, b, 466, n, LV_COLOR_FORMAT_RGB565_SWAPPED);
+            for (int w = 0; w < 2; w++) {
+                int dx = w ? nox : oox, dy = w ? noy : ooy; lv_layer_t layer; lv_canvas_init_layer(sc, &layer);
+                layer.buf_area = (lv_area_t){-dx, y0 - dy, 465 - dx, y0 + n - 1 - dy}; layer._clip_area = layer.phy_clip_area = layer.buf_area;
+                if (w) gfx_replay(&layer, y0 - dy, y0 + n - 1 - dy); else gfx_replay_old(&layer, y0 - dy, y0 + n - 1 - dy);
+                lv_canvas_finish_layer(sc, &layer);
+            }
+            bsp_display_blit_raw(b, y0, n); kk++;
+        }
+        perf_us += us() - t0; perf_n++; return;
+    }
+    for (int s = 0; s < GFX_STRIPS; s++) {
+        if (!gfx_strip_dirty(s)) continue;
+        int y0 = s * GFX_STRIP_H, n = 466 - y0 < GFX_STRIP_H ? 466 - y0 : GFX_STRIP_H; uint8_t *b = sbuf[kk & 1];
+        memset(b, 0, 466 * n * 2); lv_canvas_set_buffer(sc, b, 466, n, LV_COLOR_FORMAT_RGB565_SWAPPED);
+        lv_layer_t layer; lv_canvas_init_layer(sc, &layer); layer.buf_area.y1 = y0; layer.buf_area.y2 = y0 + n - 1; layer._clip_area = layer.phy_clip_area = layer.buf_area;
+        gfx_replay(&layer, y0, y0 + n - 1); lv_canvas_finish_layer(sc, &layer);
+        bsp_display_blit_raw(b, y0, n); gfx_strip_sent(s); kk++; perf_strips++;     /* the DMA of this band overlaps the drawing of the next */
+    }
+    perf_fl += us() - t1; perf_us += us() - t0; perf_n++;
+}
+void ui_shot_prepare(void) {            /* with the display lock held: draw the whole picture into the full-frame canvas so a snapshot can read it */
+    if (!view) return;
+    int ox, oy; face_shift(&ox, &oy);
+    gfx_record_begin(ox, oy); gfx_check_reset(); ui_draw(&S);
+    lv_canvas_fill_bg(view, lv_color_black(), LV_OPA_COVER); lv_layer_t layer; lv_canvas_init_layer(view, &layer); gfx_replay(&layer, -1, 0); lv_canvas_finish_layer(view, &layer);
+    /* check: a band drawn the way the panel path draws it must equal the same rows of the full picture, byte-swapped */
+    int bad = 0; lv_draw_buf_t *fb = lv_canvas_get_draw_buf(view);
+    for (int s2 = 3; s2 < GFX_STRIPS; s2 += 6) {
+        int y0 = s2 * GFX_STRIP_H, n = 466 - y0 < GFX_STRIP_H ? 466 - y0 : GFX_STRIP_H; uint8_t *b = sbuf[0];
+        memset(b, 0, 466 * n * 2); lv_canvas_set_buffer(sc, b, 466, n, LV_COLOR_FORMAT_RGB565_SWAPPED);
+        lv_layer_t l2; lv_canvas_init_layer(sc, &l2); l2.buf_area.y1 = y0; l2.buf_area.y2 = y0 + n - 1; l2._clip_area = l2.phy_clip_area = l2.buf_area;
+        gfx_replay(&l2, y0, y0 + n - 1); lv_canvas_finish_layer(sc, &l2);
+        for (int r = 0; r < n; r++) { const uint16_t *f = (const uint16_t *)((const uint8_t *)fb->data + (size_t)(y0 + r) * fb->header.stride), *q = (const uint16_t *)(b + r * 932);
+            for (int x = 0; x < 466; x++) { uint16_t v = (uint16_t)((q[x] << 8) | (q[x] >> 8)); if (abs((v >> 11) - (f[x] >> 11)) > 1 || abs(((v >> 5) & 63) - ((f[x] >> 5) & 63)) > 2 || abs((v & 31) - (f[x] & 31)) > 1) bad++; } }
+    }
+    printf("stripcheck: %d differing pixels\n", bad); gfx_strips_forget();
 }
 static void focus_tick(void) {
     static int64_t last; int64_t n = us(); if (!S.fo.run) { last = n; return; }
@@ -296,6 +351,10 @@ static void focus_tick(void) {
     if (--S.fo.left > 0) return;
     if (S.fo.ph == 0) { if (S.fo.rd >= S.fo.rds) { focus_reset(); g_chime = 3; } else { S.fo.ph = 1; S.fo.left = S.fo.brk * 60; g_chime = 2; } }
     else { S.fo.ph = 0; S.fo.rd++; S.fo.left = S.fo.len * 60; g_chime = 3; }
+}
+static void fxtick(lv_timer_t *t) {      /* 30 fps for the clock's effects, and only there */
+    (void)t; if (bench_frozen || (S.scr != SCR_CLOCK && S.scr != SCR_RING && !(S.scr == SCR_SOUND && S.play) && !(S.scr == SCR_FOCUS && S.fo.run))) return;
+    S.fx = (uint32_t)(us() / 33000); redraw();
 }
 static void tick(lv_timer_t *t) {
     (void)t; int64_t n = us(); static ui_t drawn;
@@ -322,8 +381,14 @@ void ui_start(void) {
     lv_obj_t *scr = lv_screen_active(); lv_obj_set_style_bg_color(scr, lv_color_black(), 0); lv_obj_remove_flag(scr, LV_OBJ_FLAG_SCROLLABLE);
     canvas = lv_obj_create(scr); lv_obj_remove_style_all(canvas); lv_obj_set_size(canvas, 466, 466); lv_obj_set_pos(canvas, 0, 0);
     lv_obj_add_flag(canvas, LV_OBJ_FLAG_CLICKABLE); lv_obj_remove_flag(canvas, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_add_event_cb(canvas, on_draw, LV_EVENT_DRAW_MAIN, NULL); lv_obj_add_event_cb(canvas, on_touch, LV_EVENT_ALL, NULL);
-    lv_timer_create(tick, 50, NULL);
+    static lv_draw_buf_t *fb; fb = lv_draw_buf_create(466, 466, LV_COLOR_FORMAT_RGB565, 0);
+    for (int i = 0; i < 2; i++) sbuf[i] = heap_caps_malloc(466 * GFX_STRIP_H * 2, MALLOC_CAP_DMA | MALLOC_CAP_INTERNAL);
+    sc = lv_canvas_create(scr); lv_obj_add_flag(sc, LV_OBJ_FLAG_HIDDEN);
+    view = lv_canvas_create(scr); lv_canvas_set_draw_buf(view, fb); lv_obj_set_pos(view, 0, 0); lv_obj_remove_flag(view, LV_OBJ_FLAG_CLICKABLE);
+    lv_obj_move_background(view); lv_obj_add_event_cb(canvas, on_touch, LV_EVENT_ALL, NULL);
+    lv_timer_create(render, 16, NULL);
+    lv_display_set_flush_cb(lv_display_get_default(), flush_nop);    /* the picture goes to the panel by bsp_display_blit_raw; anything LVGL itself flushes is dropped */
+    lv_timer_create(tick, 50, NULL); lv_timer_create(fxtick, 33, NULL);
     bsp_display_unlock();
     ESP_LOGI(TAG, "interface up");
 }

@@ -27,7 +27,7 @@ static void status(void) {
            g_time_trusted, g_time_estimated, s.no_time, s.sched_damaged, g_bench_mute, g_alarm_vol);
 }
 static void shot(void) {
-    bsp_display_lock(-1); lv_draw_buf_t *d = lv_snapshot_take(lv_screen_active(), LV_COLOR_FORMAT_RGB565); bsp_display_unlock();
+    bsp_display_lock(-1); ui_shot_prepare(); lv_draw_buf_t *d = lv_snapshot_take(lv_screen_active(), LV_COLOR_FORMAT_RGB565); bsp_display_unlock();
     if (!d) { printf("ERR shot\n"); return; }
     int w = d->header.w, h = d->header.h; printf("SHOT %d %d\n", w, h); static char ln[466 * 4 + 2];
     for (int y = 0; y < h; y++) {

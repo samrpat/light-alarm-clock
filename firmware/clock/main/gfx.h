@@ -17,6 +17,15 @@ static inline col_t mixc(col_t a, col_t b, float k) { col_t o = {a.r + (b.r - a.
 static inline col_t mulc(col_t a, float k) { col_t o = {a.r * k, a.g * k, a.b * k}; return o; }
 static inline col_t hexc(uint32_t h) { col_t o = {(float)(h >> 16 & 255), (float)(h >> 8 & 255), (float)(h & 255)}; return o; }
 
+#define GFX_STRIP_H 26     /* must be even: the panel takes only even row starts and counts */
+#define GFX_STRIPS 18
+void gfx_record_begin(int ox, int oy);          /* ui_draw() now only records and hashes */
+bool gfx_strip_dirty(int s);
+void gfx_strip_sent(int s);
+void gfx_strips_forget(void);
+void gfx_replay_old(lv_layer_t *layer, int y0, int y1);
+void gfx_hold_old(void);
+void gfx_replay(lv_layer_t *layer, int y0, int y1);   /* y0 < 0: everything */
 void gfx_begin(lv_layer_t *layer, int ox, int oy);         /* ox, oy: the small burn-in shift */
 void gfx_pt(float ang, float r, float *x, float *y);        /* point on a circle round the centre */
 void gfx_fill_v(uint32_t top, uint32_t bottom);             /* whole screen, vertical gradient */

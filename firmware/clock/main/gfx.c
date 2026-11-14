@@ -4,14 +4,47 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
+#include "esp_heap_caps.h"
 
 static lv_layer_t *L; static int OX, OY;
-/* with no layer (the layout check) nothing is drawn, only the boxes are recorded */
-#define lv_draw_rect(l, ...) do { if (l) lv_draw_rect(l, __VA_ARGS__); } while (0)
-#define lv_draw_arc(l, ...) do { if (l) lv_draw_arc(l, __VA_ARGS__); } while (0)
-#define lv_draw_line(l, ...) do { if (l) lv_draw_line(l, __VA_ARGS__); } while (0)
-#define lv_draw_label(l, ...) do { if (l) lv_draw_label(l, __VA_ARGS__); } while (0)
-#define lv_draw_triangle(l, ...) do { if (l) lv_draw_triangle(l, __VA_ARGS__); } while (0)
+/* ---- drawing goes through a recorded list ----
+ * ui_draw() runs once per change in REC mode: every primitive is stored with its bounding box and hashed into the 26-row bands it touches.
+ * Only bands whose hash changed are drawn (replayed) into a small internal-RAM buffer and sent to the panel.
+ * FULL mode draws straight to a layer (the screenshot canvas); PLAIN mode (no layer) only records the layout-check boxes. */
+enum { M_PLAIN, M_FULL, M_REC };
+enum { T_RECT, T_ARC, T_LINE, T_LABEL, T_TRI, T_IMG };
+typedef struct {
+    uint8_t type; lv_area_t bb, area; char text[40];
+    union { lv_draw_rect_dsc_t r; lv_draw_arc_dsc_t a; lv_draw_line_dsc_t l; lv_draw_label_dsc_t t; lv_draw_triangle_dsc_t g; lv_draw_image_dsc_t i; } d;
+} rec_t;
+#define MAXREC 700
+static int mode; static rec_t *recs; static int nrec; static uint32_t hs[GFX_STRIPS], sent[GFX_STRIPS], extra_h;
+static const size_t DSZ[] = {sizeof(lv_draw_rect_dsc_t), sizeof(lv_draw_arc_dsc_t), sizeof(lv_draw_line_dsc_t), sizeof(lv_draw_label_dsc_t), sizeof(lv_draw_triangle_dsc_t), sizeof(lv_draw_image_dsc_t)};
+static uint32_t fnv(uint32_t h, const void *p, size_t n) { const uint8_t *b = p; while (n--) h = (h ^ *b++) * 16777619u; return h; }
+static bool take(int type, const void *dsc, const lv_area_t *bb, const lv_area_t *area, const char *text) {
+    if (mode == M_FULL) return true;
+    if (mode != M_REC) return false;
+    int s0 = bb->y1 < 0 ? 0 : bb->y1 / GFX_STRIP_H, s1 = (bb->y2 > 465 ? 465 : bb->y2) / GFX_STRIP_H;
+    if (bb->y2 < 0 || bb->y1 > 465 || bb->x2 < 0 || bb->x1 > 465 || nrec >= MAXREC) return false;
+    if (!recs) recs = heap_caps_malloc(sizeof(rec_t) * MAXREC, MALLOC_CAP_SPIRAM);
+    if (!recs) return false;
+    rec_t *r = &recs[nrec++]; r->type = type; r->bb = *bb; r->area = area ? *area : *bb; memcpy(&r->d, dsc, DSZ[type]); r->text[0] = 0;
+    if (text) strlcpy(r->text, text, sizeof r->text);
+    if (type == T_LABEL) r->d.t.text = NULL;
+    uint32_t h = fnv(2166136261u, &r->d, DSZ[type]); h = fnv(h, &r->area, sizeof r->area); h = fnv(h, r->text, strlen(r->text)); h ^= type * 7919u + (type == T_IMG ? extra_h : 0);
+    if (type == T_LABEL) r->d.t.text = r->text;
+    for (int i = s0; i <= s1; i++) hs[i] = (hs[i] ^ h) * 16777619u;
+    return false;
+}
+static lv_area_t bb_arc(const lv_draw_arc_dsc_t *d) { int r = d->radius + 2; return (lv_area_t){d->center.x - r, d->center.y - r, d->center.x + r, d->center.y + r}; }
+static lv_area_t bb_line(const lv_draw_line_dsc_t *d) { int w = d->width / 2 + 2, x0 = (int)fminf(d->p1.x, d->p2.x), x1 = (int)fmaxf(d->p1.x, d->p2.x), y0 = (int)fminf(d->p1.y, d->p2.y), y1 = (int)fmaxf(d->p1.y, d->p2.y); return (lv_area_t){x0 - w, y0 - w, x1 + w, y1 + w}; }
+static lv_area_t bb_tri(const lv_draw_triangle_dsc_t *d) { int x0 = 9999, y0 = 9999, x1 = -9999, y1 = -9999; for (int i = 0; i < 3; i++) { int x = (int)d->p[i].x, y = (int)d->p[i].y; if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; } return (lv_area_t){x0 - 2, y0 - 2, x1 + 2, y1 + 2}; }
+#define lv_draw_rect(l, d, a) do { if (take(T_RECT, d, a, a, NULL)) lv_draw_rect(l, d, a); } while (0)
+#define lv_draw_arc(l, d) do { lv_area_t bb_ = bb_arc(d); if (take(T_ARC, d, &bb_, NULL, NULL)) lv_draw_arc(l, d); } while (0)
+#define lv_draw_line(l, d) do { lv_area_t bb_ = bb_line(d); if (take(T_LINE, d, &bb_, NULL, NULL)) lv_draw_line(l, d); } while (0)
+#define lv_draw_label(l, d, a) do { if (take(T_LABEL, d, a, a, (d)->text)) lv_draw_label(l, d, a); } while (0)
+#define lv_draw_triangle(l, d) do { lv_area_t bb_ = bb_tri(d); if (take(T_TRI, d, &bb_, NULL, NULL)) lv_draw_triangle(l, d); } while (0)
+#define lv_draw_image(l, d, a) do { if (take(T_IMG, d, a, a, NULL)) lv_draw_image(l, d, a); } while (0)
 #define OPA(o) ((lv_opa_t)((o) <= 0 ? 0 : (o) >= 1 ? 255 : (int)((o) * 255 + .5f)))
 
 /* ---- boxes for the layout check ---- */
@@ -44,7 +77,38 @@ int gfx_check(char *msg, int n, bool line_limit) {
 }
 
 /* ---- primitives ---- */
-void gfx_begin(lv_layer_t *layer, int ox, int oy) { L = layer; OX = ox; OY = oy; }
+void gfx_begin(lv_layer_t *layer, int ox, int oy) { L = layer; OX = ox; OY = oy; mode = layer ? M_FULL : M_PLAIN; }
+void gfx_record_begin(int ox, int oy) { L = NULL; OX = ox; OY = oy; mode = M_REC; nrec = 0; for (int i = 0; i < GFX_STRIPS; i++) hs[i] = 2166136261u; }
+bool gfx_strip_dirty(int s) { return hs[s] != sent[s]; }
+void gfx_strip_sent(int s) { sent[s] = hs[s]; }
+void gfx_strips_forget(void) { memset(sent, 0, sizeof sent); }
+/* replay a recorded list: the rows y0..y1 only (y0 < 0: everything) */
+static rec_t *old; static int nold;
+static void replay_list(rec_t *l, int n, lv_layer_t *layer, int y0, int y1) {
+    int sm = mode; mode = M_FULL;
+    for (int i = 0; i < n; i++) {
+        rec_t *r = &l[i]; if (y0 >= 0 && (r->bb.y2 < y0 || r->bb.y1 > y1)) continue;
+        switch (r->type) {
+        case T_RECT: lv_draw_rect(layer, &r->d.r, &r->area); break;
+        case T_ARC: lv_draw_arc(layer, &r->d.a); break;
+        case T_LINE: lv_draw_line(layer, &r->d.l); break;
+        case T_LABEL: lv_draw_label(layer, &r->d.t, &r->area); break;
+        case T_TRI: lv_draw_triangle(layer, &r->d.g); break;
+        case T_IMG: lv_draw_image(layer, &r->d.i, &r->area); break;
+        }
+    }
+    mode = sm;
+}
+void gfx_replay(lv_layer_t *layer, int y0, int y1) { replay_list(recs, nrec, layer, y0, y1); }
+void gfx_replay_old(lv_layer_t *layer, int y0, int y1) { replay_list(old, nold, layer, y0, y1); }
+/* keep the picture on the glass as the "old" scene of a slide transition */
+void gfx_hold_old(void) {
+    if (!recs || !nrec) { nold = 0; return; }
+    if (!old) old = heap_caps_malloc(sizeof(rec_t) * MAXREC, MALLOC_CAP_SPIRAM);
+    if (!old) { nold = 0; return; }
+    memcpy(old, recs, sizeof(rec_t) * nrec); nold = nrec;
+    for (int i = 0; i < nold; i++) if (old[i].type == T_LABEL) old[i].d.t.text = old[i].text;
+}
 void gfx_pt(float a, float r, float *x, float *y) { float t = a * 0.01745329f; *x = C + r * sinf(t); *y = C - r * cosf(t); }
 static void area(lv_area_t *a, float x, float y, float w, float h) { a->x1 = (int)lroundf(x) + OX; a->y1 = (int)lroundf(y) + OY; a->x2 = a->x1 + (int)lroundf(w) - 1; a->y2 = a->y1 + (int)lroundf(h) - 1; }
 
@@ -62,9 +126,20 @@ void gfx_fill_v3(uint32_t top, uint32_t mid, uint32_t bot, float opa) {
         lv_area_t a = {0, k ? 256 : 0, 465, k ? 465 : 255}; lv_draw_rect(L, &d, &a);
     }
 }
-void gfx_glow(col_t bg) {                                    /* centre (233,186), radius 289: bg in the middle, a fifth of it at the edge */
+/* the glow is 48 big overlapping circles: far too slow to redraw each frame, so it is drawn once per colour into a cached image */
+static void glow_draw(col_t bg) {
     gfx_fill_v(rgb(mulc(bg, .2f)), rgb(mulc(bg, .2f)));
     for (int i = 1; i <= 48; i++) { float k = i / 48.0f; gfx_circle(C, 186, 289 * (1 - k), rgb(mulc(bg, .2f + .8f * k)), 1); }
+}
+void gfx_glow(col_t bg) {                                    /* centre (233,186), radius 289: bg in the middle, a fifth of it at the edge */
+    if (mode == M_PLAIN) return;
+    static lv_obj_t *gc; static lv_draw_buf_t *gb; static uint32_t key = 0xFFFFFFFF; uint32_t k = rgb(bg);
+    if (!gc) { gb = lv_draw_buf_create(466, 466, LV_COLOR_FORMAT_RGB565, 0); gc = lv_canvas_create(lv_screen_active()); lv_canvas_set_draw_buf(gc, gb); lv_obj_add_flag(gc, LV_OBJ_FLAG_HIDDEN); }
+    if (k != key) {
+        lv_layer_t *sl = L; int sx = OX, sy = OY, sm = mode; lv_layer_t gl; lv_canvas_init_layer(gc, &gl); L = &gl; OX = OY = 0; mode = M_FULL;
+        glow_draw(bg); lv_canvas_finish_layer(gc, &gl); L = sl; OX = sx; OY = sy; mode = sm; key = k;
+    }
+    extra_h = k; lv_draw_image_dsc_t d; lv_draw_image_dsc_init(&d); d.src = gb; lv_area_t a = {0, 0, 465, 465}; lv_draw_image(L, &d, &a);
 }
 void gfx_circle(float cx, float cy, float r, uint32_t col, float opa) {
     if (r <= 0.3f) return;

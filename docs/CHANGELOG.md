@@ -108,3 +108,7 @@
 - Step 3b-2: ring task, alarm chime, clock-chip restore and set, and a bench console added to `firmware/clock`; builds, not yet flashed.
 - Bench testing on the real board found four engine and storage bugs (D-049); each is fixed with a host test (518,798 checks). The alarm sound "Rise" is specified and built; tap, hold and BOOT-button stops are real. New `tools/bench.py`: muted self-test (17 of 17 engine checks passed on hardware), sound check, one real run. Open: the board went silent on USB after repeated software restarts.
 - Step 3c: the full touch interface runs on the board (D-050): all screens, 16 sleep sounds with timer and pre-dawn return, focus timer, lamp, settings. New bench commands `shot` and `layoutcheck`; on-device layout check 666 states, 0 problems. The temporary face is removed. Supervisor, safe mode and battery rules are still to do.
+
+## Phase 3, step 3d: smooth display path and black design
+- Banded renderer straight to the panel (changed bands only), black backgrounds, clock effects, slide transitions, equalizer on Sound, pulsing round dot on Focus.
+- Fixed: white lines (odd-row bands), dead touch (deleted refresh timer).

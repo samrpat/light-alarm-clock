@@ -371,3 +371,9 @@ Rules: never delete an entry. To change a decision, add a new one and mark the o
 - **Changed from the concept:** the Brightness page title is "Brightness" (the longer title touched its dot at some values).
 - **Open:** sounds are untuned; battery page is a placeholder; background glow shows faint steps on a 16-bit colour screen.
 
+
+## D-051: Black interface, banded renderer straight to the panel (proposed)
+- **Decision:** every screen has a black background (colour lives in the elements); the clock gets live effects (day rim and sun orb, clouds, fireflies, rising sun, alarm ripples). The picture is drawn by recording each primitive once per change, hashing it into 26-row bands and drawing only changed bands into internal RAM, sent straight to the panel (`bsp_display_blit_raw`); LVGL's own flush is a no-op. Slide transitions replay the old and new recorded scenes with an offset.
+- **Why:** LVGL's strip pipeline took about 74 ms per update and showed as a wipe; a PSRAM full-frame canvas took 25-90 ms of pixel work. The old glow was 48 full-screen circles.
+- **Constraints found on the bench:** panel bands must start on an even row and have an even height (25-row bands drew white lines); a full-frame DMA buffer does not fit; `lv_display_delete_refr_timer` leaves a dangling pointer and killed touch (use a no-op flush instead).
+- **Local change:** the Waveshare display driver is copied to `firmware/clock/components_local/` (80 MHz QSPI, `bsp_display_blit_raw`); `managed_components` is untracked.
